@@ -1,29 +1,116 @@
-import { getEditor } from "./RichEditor";
+import {
+  getEditor
+} from "./RichEditor";
 
 const buttons = [
 
-  { id: "undo", label: "↶", action: e => e.chain().focus().undo().run() },
-  { id: "redo", label: "↷", action: e => e.chain().focus().redo().run() },
+  {
+    id: "undo",
+    label: "↶",
+    action: editor =>
+      editor.chain().focus().undo().run(),
+    active: () => false,
+    enabled: editor => editor.can().undo()
+  },
+
+  {
+    id: "redo",
+    label: "↷",
+    action: editor =>
+      editor.chain().focus().redo().run(),
+    active: () => false,
+    enabled: editor => editor.can().redo()
+  },
 
   { separator: true },
 
-  { id: "bold", label: "<b>B</b>", action: e => e.chain().focus().toggleBold().run() },
-  { id: "italic", label: "<i>I</i>", action: e => e.chain().focus().toggleItalic().run() },
-  { id: "strike", label: "<s>S</s>", action: e => e.chain().focus().toggleStrike().run() },
+  {
+    id: "bold",
+    label: "<b>B</b>",
+    action: editor =>
+      editor.chain().focus().toggleBold().run(),
+    active: editor => editor.isActive("bold"),
+    enabled: editor => editor.can().toggleBold()
+  },
+
+  {
+    id: "italic",
+    label: "<i>I</i>",
+    action: editor =>
+      editor.chain().focus().toggleItalic().run(),
+    active: editor => editor.isActive("italic"),
+    enabled: editor => editor.can().toggleItalic()
+  },
+
+  {
+    id: "strike",
+    label: "<s>S</s>",
+    action: editor =>
+      editor.chain().focus().toggleStrike().run(),
+    active: editor => editor.isActive("strike"),
+    enabled: editor => editor.can().toggleStrike()
+  },
 
   { separator: true },
 
-  { id: "h1", label: "H1", action: e => e.chain().focus().toggleHeading({ level: 1 }).run() },
-  { id: "h2", label: "H2", action: e => e.chain().focus().toggleHeading({ level: 2 }).run() },
+  {
+    id: "h1",
+    label: "H1",
+    action: editor =>
+      editor.chain().focus().toggleHeading({ level: 1 }).run(),
+    active: editor =>
+      editor.isActive("heading", { level: 1 }),
+    enabled: editor =>
+      editor.can().toggleHeading({ level: 1 })
+  },
+
+  {
+    id: "h2",
+    label: "H2",
+    action: editor =>
+      editor.chain().focus().toggleHeading({ level: 2 }).run(),
+    active: editor =>
+      editor.isActive("heading", { level: 2 }),
+    enabled: editor =>
+      editor.can().toggleHeading({ level: 2 })
+  },
 
   { separator: true },
 
-  { id: "bullet", label: "•", action: e => e.chain().focus().toggleBulletList().run() },
-  { id: "ordered", label: "1.", action: e => e.chain().focus().toggleOrderedList().run() },
+  {
+    id: "bullet",
+    label: "•",
+    action: editor =>
+      editor.chain().focus().toggleBulletList().run(),
+    active: editor =>
+      editor.isActive("bulletList"),
+    enabled: editor =>
+      editor.can().toggleBulletList()
+  },
+
+  {
+    id: "ordered",
+    label: "1.",
+    action: editor =>
+      editor.chain().focus().toggleOrderedList().run(),
+    active: editor =>
+      editor.isActive("orderedList"),
+    enabled: editor =>
+      editor.can().toggleOrderedList()
+  },
 
   { separator: true },
 
-  { id: "quote", label: "❝", action: e => e.chain().focus().toggleBlockquote().run() }
+  {
+    id: "quote",
+    label: "❝",
+    action: editor =>
+      editor.chain().focus().toggleBlockquote().run(),
+    active: editor =>
+      editor.isActive("blockquote"),
+    enabled: editor =>
+      editor.can().toggleBlockquote()
+  }
 
 ];
 
@@ -42,10 +129,10 @@ ${buttons.map(button => {
   return `
 
 <button
-    class="toolbar-button"
-    data-command="${button.id}">
+class="toolbar-button"
+id="toolbar-${button.id}">
 
-    ${button.label}
+${button.label}
 
 </button>
 
@@ -65,24 +152,61 @@ export function initToolbar() {
 
   if (!editor) return;
 
-  document
-    .querySelectorAll(".toolbar-button")
-    .forEach(button => {
+  buttons.forEach(button => {
 
-      const config = buttons.find(
-        b => b.id === button.dataset.command
+    if (button.separator) return;
+
+    const element =
+      document.getElementById(
+        `toolbar-${button.id}`
       );
 
-      if (!config) return;
+    if (!element) return;
 
-      button.onclick = () => {
+    element.onclick = () => {
 
-        config.action(editor);
+      button.action(editor);
 
-        editor.commands.focus();
+      updateToolbar();
 
-      };
+    };
 
-    });
+  });
+
+  document.addEventListener(
+    "editor:refresh",
+    updateToolbar
+  );
+
+  updateToolbar();
+
+}
+
+function updateToolbar() {
+
+  const editor = getEditor();
+
+  if (!editor) return;
+
+  buttons.forEach(button => {
+
+    if (button.separator) return;
+
+    const element =
+      document.getElementById(
+        `toolbar-${button.id}`
+      );
+
+    if (!element) return;
+
+    element.classList.toggle(
+      "active",
+      button.active(editor)
+    );
+
+    element.disabled =
+      !button.enabled(editor);
+
+  });
 
 }

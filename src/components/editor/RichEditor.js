@@ -13,7 +13,9 @@ export function createEditor({
 }) {
 
   if (!element) {
-    throw new Error("RichEditor : élément DOM introuvable.");
+    throw new Error(
+      "RichEditor : élément DOM introuvable."
+    );
   }
 
   destroyEditor();
@@ -31,17 +33,46 @@ export function createEditor({
     autofocus: false,
 
     editorProps: {
+
       attributes: {
+
         class: "tiptap-editor",
+
         spellcheck: "true"
+
       }
+
+    },
+
+    onCreate() {
+
+      refreshToolbar();
+
     },
 
     onUpdate({ editor }) {
 
       if (typeof onUpdate === "function") {
-        onUpdate(editor.getHTML());
+
+        onUpdate(
+          editor.getHTML()
+        );
+
       }
+
+      refreshToolbar();
+
+    },
+
+    onSelectionUpdate() {
+
+      refreshToolbar();
+
+    },
+
+    onTransaction() {
+
+      refreshToolbar();
 
     }
 
@@ -52,24 +83,38 @@ export function createEditor({
 }
 
 /**
- * Retourne l'instance.
+ * Retourne l'éditeur.
  */
 export function getEditor() {
+
   return editor;
+
 }
 
 /**
  * Retourne le HTML.
  */
 export function getHTML() {
-  return editor ? editor.getHTML() : "";
+
+  if (!editor) {
+    return "";
+  }
+
+  return editor.getHTML();
+
 }
 
 /**
  * Retourne le texte brut.
  */
 export function getText() {
-  return editor ? editor.getText() : "";
+
+  if (!editor) {
+    return "";
+  }
+
+  return editor.getText();
+
 }
 
 /**
@@ -79,31 +124,52 @@ export function setContent(content = "") {
 
   if (!editor) return;
 
-  editor.commands.setContent(content, {
-    emitUpdate: false
-  });
+  editor.commands.setContent(
+    content,
+    {
+      emitUpdate: false
+    }
+  );
+
+  refreshToolbar();
 
 }
 
 /**
- * Focus.
+ * Donne le focus.
  */
 export function focusEditor() {
 
-  if (editor) {
-    editor.commands.focus();
-  }
+  if (!editor) return;
+
+  editor.commands.focus();
 
 }
 
 /**
- * Destruction.
+ * Rafraîchit la Toolbar.
+ */
+export function refreshToolbar() {
+
+  document.dispatchEvent(
+
+    new CustomEvent(
+      "editor:refresh"
+    )
+
+  );
+
+}
+
+/**
+ * Détruit l'éditeur.
  */
 export function destroyEditor() {
 
   if (!editor) return;
 
   editor.destroy();
+
   editor = null;
 
 }
