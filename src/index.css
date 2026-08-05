@@ -1,0 +1,217 @@
+@import "./styles/header.css";
+@import "./styles/projects.css";
+@import "./styles/modal.css";
+@import "./styles/workspace.css";
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #1e1e1e;
+  --panel: #252526;
+  --card: #2d2d30;
+  --accent: #0e639c;
+  --accent-hover: #1177bb;
+  --border: #3c3c3c;
+  --text: #ffffff;
+  --text-secondary: #c8c8c8;
+}
+
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+}
+
+#app {
+  width: 100vw;
+  height: 100vh;
+}
+
+.app {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+/* ==========================================
+   SIDEBAR
+========================================== */
+
+.sidebar {
+  width: 260px;
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar h2 {
+  margin-bottom: 30px;
+  font-size: 22px;
+}
+
+.sidebar button {
+  background: transparent;
+  border: none;
+  color: white;
+  text-align: left;
+  padding: 14px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.sidebar button:hover {
+  background: var(--accent);
+}
+
+.sidebar button.active {
+  background: var(--accent);
+  border-left: 4px solid #4fc3f7;
+  font-weight: bold;
+}
+
+/* ==========================================
+   CONTENU
+========================================== */
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 40px;
+}
+
+.content h1 {
+  font-size: 38px;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: #bbbbbb;
+  margin-bottom: 35px;
+}
+
+/* ==========================================
+   DASHBOARD
+========================================== */
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 10px rgba(0,0,0,.25);
+  transition: .2s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.card h3 {
+  margin-bottom: 15px;
+}
+
+.card span {
+  display: block;
+  font-size: 34px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.card p {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+/* ==========================================
+   ACTIVITÉ
+========================================== */
+
+.dashboard-section {
+  margin-top: 45px;
+}
+
+.dashboard-section h2 {
+  margin-bottom: 15px;
+}
+
+.activity-box {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 25px;
+  min-height: 140px;
+}
+
+/* ==========================================
+   MODULE PROJETS
+========================================== */
+
+.projects-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 25px;
+}
+
+.project-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.project-card {
+  display: flex;
+  align-items: center;
+  background: var(--card);
+  border-radius: 12px;
+  padding: 22px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.project-card:hover {
+  background: #343438;
+  transform: translateY(-2px);
+}
+
+.project-icon {
+  font-size: 40px;
+  margin-right: 25px;
+}
+
+.project-info h3 {
+  margin-bottom: 8px;
+}
+
+.project-info p {
+  color: var(--text-secondary);
+}
+
+/* ==========================================
+   BOUTONS
+========================================== */
+
+.primary-button {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.primary-button:hover {
+  background: var(--accent-hover);
+}
