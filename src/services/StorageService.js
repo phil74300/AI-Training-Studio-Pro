@@ -1,15 +1,55 @@
+/**
+ * Charge les projets depuis Electron.
+ */
 export async function loadProjects() {
-  return await window.api.loadProjects();
+
+  try {
+
+    const projects = await window.api.loadProjects();
+
+    return Array.isArray(projects)
+      ? projects
+      : [];
+
+  } catch (error) {
+
+    console.error(
+      "Erreur de chargement des projets :",
+      error
+    );
+
+    return [];
+
+  }
+
 }
 
+/**
+ * Sauvegarde les projets.
+ */
 export async function saveProjects(projects) {
-  await window.api.saveProjects(projects);
 
-  console.log(
-    "💾 Sauvegarde automatique :",
-    projects.length,
-    "projet(s)"
-  );
+  try {
 
-  return true;
+    await window.api.saveProjects(projects);
+
+    console.log(
+      "💾 Sauvegarde automatique :",
+      projects.length,
+      "projet(s)"
+    );
+
+    return true;
+
+  } catch (error) {
+
+    console.error(
+      "Erreur de sauvegarde :",
+      error
+    );
+
+    return false;
+
+  }
+
 }

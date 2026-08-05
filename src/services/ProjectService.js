@@ -16,7 +16,7 @@ export async function initProjectsStorage() {
     projects = [];
   }
 
-  // Migration automatique des anciens projets
+  // Migration automatique
   projects.forEach(project => {
 
     if (!project.chapters) {
@@ -28,14 +28,14 @@ export async function initProjectsStorage() {
 }
 
 /**
- * Retourne tous les projets
+ * Liste des projets
  */
 export function getProjects() {
   return projects;
 }
 
 /**
- * Recherche par ID
+ * Recherche
  */
 export function getProjectById(id) {
 

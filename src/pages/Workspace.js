@@ -1,18 +1,29 @@
 import { Header } from "../components/Header";
-import { ChapterList, initChapterList } from "../components/ChapterList";
-import { ChapterModal } from "../components/ChapterModal";
+import {
+  ChapterList,
+  initChapterList
+} from "../components/ChapterList";
+
+import {
+  ChapterModal,
+  initChapterModal
+} from "../components/ChapterModal";
+
 import {
   ChapterEditor,
   initChapterEditor
 } from "../components/ChapterEditor";
 
-import { getCurrentProject } from "../services/WorkspaceService";
+import {
+  getCurrentProject
+} from "../services/WorkspaceService";
 
 export function Workspace() {
 
   const project = getCurrentProject();
 
   if (!project) {
+
     return `
       <main class="content">
 
@@ -24,9 +35,11 @@ export function Workspace() {
 
       </main>
     `;
+
   }
 
   return `
+
     <main class="content">
 
       ${Header(project.name)}
@@ -75,12 +88,16 @@ export function Workspace() {
       ${ChapterModal()}
 
     </main>
+
   `;
+
 }
 
 export function initWorkspace() {
 
   initChapterList(renderWorkspace);
+
+  initChapterModal(renderWorkspace);
 
   initChapterEditor();
 

@@ -1,9 +1,12 @@
 import {
   getChapters,
-  selectChapter
+  getCurrentChapter
 } from "../services/ChapterService";
 
-import { ChapterCard } from "./ChapterCard";
+import {
+  ChapterCard,
+  initChapterCards
+} from "./ChapterCard";
 
 export function ChapterList(refresh) {
 
@@ -12,31 +15,36 @@ export function ChapterList(refresh) {
   if (chapters.length === 0) {
 
     return `
-      <p class="empty-message">
-        Aucun chapitre.
-      </p>
+      <div class="chapter-empty">
+
+        <h3>Aucun chapitre</h3>
+
+        <p>
+          Cliquez sur <strong>Nouveau chapitre</strong>
+          pour commencer.
+        </p>
+
+      </div>
     `;
 
   }
 
-  return chapters.map(chapter => `
-      ${ChapterCard(chapter)}
-  `).join("");
+  let html = `<div class="chapter-list">`;
+
+  chapters.forEach(chapter => {
+
+    html += ChapterCard(chapter, refresh);
+
+  });
+
+  html += `</div>`;
+
+  return html;
 
 }
 
 export function initChapterList(refresh) {
 
-  document.querySelectorAll(".chapter-card").forEach(card => {
-
-    card.onclick = () => {
-
-      selectChapter(card.dataset.id);
-
-      refresh();
-
-    };
-
-  });
+  initChapterCards(refresh);
 
 }

@@ -1,8 +1,16 @@
-import { getCurrentProject } from "./WorkspaceService";
-import { updateProject } from "./ProjectService";
+import {
+  getCurrentProject
+} from "./WorkspaceService";
+
+import {
+  updateProject
+} from "./ProjectService";
 
 let currentChapter = null;
 
+/**
+ * Retourne le tableau des chapitres du projet courant.
+ */
 function getChapterArray() {
 
   const project = getCurrentProject();
@@ -19,14 +27,27 @@ function getChapterArray() {
 
 }
 
+/**
+ * Tous les chapitres
+ */
 export function getChapters() {
+
   return getChapterArray();
+
 }
 
+/**
+ * Chapitre courant
+ */
 export function getCurrentChapter() {
+
   return currentChapter;
+
 }
 
+/**
+ * Sélection
+ */
 export function selectChapter(id) {
 
   currentChapter =
@@ -36,6 +57,9 @@ export function selectChapter(id) {
 
 }
 
+/**
+ * Création
+ */
 export async function createChapter(title) {
 
   const project = getCurrentProject();
@@ -66,15 +90,17 @@ export async function createChapter(title) {
 
 }
 
+/**
+ * Renommer
+ */
 export async function renameChapter(id, title) {
 
-  const chapter = getChapterArray().find(
-    chapter => chapter.id === id
-  );
+  const chapter =
+    getChapterArray().find(
+      c => c.id === id
+    );
 
-  if (!chapter) {
-    return;
-  }
+  if (!chapter) return;
 
   chapter.title = title;
 
@@ -84,15 +110,20 @@ export async function renameChapter(id, title) {
 
 }
 
-export async function updateChapterContent(id, content) {
+/**
+ * Modifier le contenu
+ */
+export async function updateChapterContent(
+  id,
+  content
+) {
 
-  const chapter = getChapterArray().find(
-    chapter => chapter.id === id
-  );
+  const chapter =
+    getChapterArray().find(
+      c => c.id === id
+    );
 
-  if (!chapter) {
-    return;
-  }
+  if (!chapter) return;
 
   chapter.content = content;
 
@@ -102,20 +133,27 @@ export async function updateChapterContent(id, content) {
 
 }
 
+/**
+ * Suppression
+ */
 export async function deleteChapter(id) {
 
   const chapters = getChapterArray();
 
-  const index = chapters.findIndex(
-    chapter => chapter.id === id
-  );
+  const index =
+    chapters.findIndex(
+      c => c.id === id
+    );
 
-  if (index !== -1) {
+  if (index >= 0) {
     chapters.splice(index, 1);
   }
 
   if (currentChapter?.id === id) {
-    currentChapter = chapters[0] || null;
+
+    currentChapter =
+      chapters[0] || null;
+
   }
 
   await updateProject(

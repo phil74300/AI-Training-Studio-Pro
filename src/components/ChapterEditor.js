@@ -16,7 +16,7 @@ export function ChapterEditor() {
         <h2>Aucun chapitre sélectionné</h2>
 
         <p>
-          Sélectionnez ou créez un chapitre.
+          Créez ou sélectionnez un chapitre.
         </p>
 
       </div>
@@ -37,6 +37,7 @@ export function ChapterEditor() {
       <textarea
         id="chapterContentEditor"
         class="editor-content"
+        placeholder="Commencez à écrire votre chapitre..."
       >${chapter.content}</textarea>
 
     </div>
@@ -49,17 +50,50 @@ export function initChapterEditor() {
 
   const chapter = getCurrentChapter();
 
-  if (!chapter) return;
+  if (!chapter) {
+    return;
+  }
 
-  const title = document.getElementById("chapterTitleEditor");
-  const content = document.getElementById("chapterContentEditor");
+  const title =
+    document.getElementById("chapterTitleEditor");
 
-  title.oninput = () => {
-    renameChapter(chapter.id, title.value);
-  };
+  const content =
+    document.getElementById("chapterContentEditor");
 
-  content.oninput = () => {
-    updateChapterContent(chapter.id, content.value);
-  };
+  if (!title || !content) {
+    return;
+  }
+
+  let saveTimer = null;
+
+  title.addEventListener("input", () => {
+
+    clearTimeout(saveTimer);
+
+    saveTimer = setTimeout(async () => {
+
+      await renameChapter(
+        chapter.id,
+        title.value
+      );
+
+    }, 300);
+
+  });
+
+  content.addEventListener("input", () => {
+
+    clearTimeout(saveTimer);
+
+    saveTimer = setTimeout(async () => {
+
+      await updateChapterContent(
+        chapter.id,
+        content.value
+      );
+
+    }, 500);
+
+  });
 
 }
