@@ -99,7 +99,13 @@ export function initWorkspace() {
 
   initChapterModal(renderWorkspace);
 
-  initChapterEditor();
+  requestAnimationFrame(() => {
+
+    if (document.getElementById("editor")) {
+      initChapterEditor();
+    }
+
+  });
 
 }
 

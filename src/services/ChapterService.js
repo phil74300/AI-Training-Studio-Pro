@@ -9,7 +9,7 @@ import {
 let currentChapter = null;
 
 /**
- * Retourne le tableau des chapitres du projet courant.
+ * Retourne le tableau des chapitres.
  */
 function getChapterArray() {
 
@@ -19,7 +19,7 @@ function getChapterArray() {
     return [];
   }
 
-  if (!project.chapters) {
+  if (!Array.isArray(project.chapters)) {
     project.chapters = [];
   }
 
@@ -28,7 +28,7 @@ function getChapterArray() {
 }
 
 /**
- * Tous les chapitres
+ * Tous les chapitres.
  */
 export function getChapters() {
 
@@ -37,7 +37,7 @@ export function getChapters() {
 }
 
 /**
- * Chapitre courant
+ * Chapitre courant.
  */
 export function getCurrentChapter() {
 
@@ -46,7 +46,7 @@ export function getCurrentChapter() {
 }
 
 /**
- * Sélection
+ * Sélection d'un chapitre.
  */
 export function selectChapter(id) {
 
@@ -58,7 +58,7 @@ export function selectChapter(id) {
 }
 
 /**
- * Création
+ * Création.
  */
 export async function createChapter(title) {
 
@@ -91,9 +91,12 @@ export async function createChapter(title) {
 }
 
 /**
- * Renommer
+ * Renommer.
  */
-export async function renameChapter(id, title) {
+export async function renameChapter(
+  id,
+  title
+) {
 
   const chapter =
     getChapterArray().find(
@@ -111,12 +114,17 @@ export async function renameChapter(id, title) {
 }
 
 /**
- * Modifier le contenu
+ * Modifier le contenu.
  */
 export async function updateChapterContent(
   id,
   content
 ) {
+
+  console.log(
+    "💾 Sauvegarde chapitre :",
+    id
+  );
 
   const chapter =
     getChapterArray().find(
@@ -134,7 +142,7 @@ export async function updateChapterContent(
 }
 
 /**
- * Suppression
+ * Suppression.
  */
 export async function deleteChapter(id) {
 
@@ -146,7 +154,9 @@ export async function deleteChapter(id) {
     );
 
   if (index >= 0) {
+
     chapters.splice(index, 1);
+
   }
 
   if (currentChapter?.id === id) {

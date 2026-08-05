@@ -4,6 +4,18 @@ import {
   updateChapterContent
 } from "../services/ChapterService";
 
+import {
+  createEditor,
+  destroyEditor
+} from "./editor/RichEditor";
+
+import {
+  Toolbar,
+  initToolbar
+} from "./editor/Toolbar";
+
+let editor = null;
+
 export function ChapterEditor() {
 
   const chapter = getCurrentChapter();
@@ -15,9 +27,7 @@ export function ChapterEditor() {
 
         <h2>Aucun chapitre sélectionné</h2>
 
-        <p>
-          Créez ou sélectionnez un chapitre.
-        </p>
+        <p>Sélectionnez ou créez un chapitre.</p>
 
       </div>
     `;
@@ -28,17 +38,18 @@ export function ChapterEditor() {
 
     <div class="chapter-editor">
 
+      ${Toolbar()}
+
       <input
-        id="chapterTitleEditor"
+        id="chapterTitle"
         class="editor-title"
         value="${chapter.title}"
       />
 
-      <textarea
-        id="chapterContentEditor"
-        class="editor-content"
-        placeholder="Commencez à écrire votre chapitre..."
-      >${chapter.content}</textarea>
+      <div
+        id="editor"
+        class="editor-content">
+      </div>
 
     </div>
 
@@ -50,50 +61,54 @@ export function initChapterEditor() {
 
   const chapter = getCurrentChapter();
 
-  if (!chapter) {
-    return;
-  }
+  if (!chapter) return;
 
-  const title =
-    document.getElementById("chapterTitleEditor");
+  const element = document.getElementById("editor");
 
-  const content =
-    document.getElementById("chapterContentEditor");
+  if (!element) return;
 
-  if (!title || !content) {
-    return;
-  }
+  destroyEditor();
 
-  let saveTimer = null;
+  editor = createEditor({
 
-  title.addEventListener("input", () => {
+    element,
 
-    clearTimeout(saveTimer);
+    content: chapter.content || "",
 
-    saveTimer = setTimeout(async () => {
+    onUpdate(html) {
 
-      await renameChapter(
+      updateChapterContent(
+        chapter.id,
+        html
+      );
+
+    }
+
+  });
+
+  initToolbar();
+
+  const title = document.getElementById("chapterTitle");
+
+  if (title) {
+
+    title.value = chapter.title;
+
+    title.oninput = () => {
+
+      renameChapter(
         chapter.id,
         title.value
       );
 
-    }, 300);
+    };
 
-  });
+  }
 
-  content.addEventListener("input", () => {
+}
 
-    clearTimeout(saveTimer);
+export function destroyChapterEditor() {
 
-    saveTimer = setTimeout(async () => {
-
-      await updateChapterContent(
-        chapter.id,
-        content.value
-      );
-
-    }, 500);
-
-  });
+  destroyEditor();
 
 }
