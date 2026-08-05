@@ -1,0 +1,149 @@
+.editor-ribbon {
+
+    display: flex;
+
+    align-items: stretch;
+
+    gap: 14px;
+
+    padding: 12px;
+
+    margin-bottom: 20px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+
+    background: #252526;
+
+    overflow-x: auto;
+
+}
+
+.ribbon-group {
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    min-width: fit-content;
+
+    padding: 0 12px;
+
+    border-right: 1px solid #404040;
+
+}
+
+.ribbon-group:last-child {
+
+    border-right: none;
+
+}
+
+.ribbon-buttons {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    margin-bottom: 8px;
+
+}
+
+.ribbon-title {
+
+    font-size: 11px;
+
+    color: #bdbdbd;
+
+    text-transform: uppercase;
+
+    letter-spacing: .08em;
+
+    user-select: none;
+
+}
+
+.ribbon-button {
+
+    width: 42px;
+
+    height: 42px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: white;
+
+    cursor: pointer;
+
+    transition: all .15s ease;
+
+}
+
+.ribbon-button:hover:not(:disabled) {
+
+    background: var(--accent);
+
+}
+
+.ribbon-button.active {
+
+    background: var(--accent);
+
+    color: white;
+
+    box-shadow: inset 0 0 0 2px rgba(255,255,255,.12);
+
+}
+
+.ribbon-button:disabled {
+
+    opacity: .35;
+
+    cursor: default;
+
+}
+
+.ribbon-icon {
+
+    font-size: 16px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+}
+
+.editor-ribbon::-webkit-scrollbar {
+
+    height: 8px;
+
+}
+
+.editor-ribbon::-webkit-scrollbar-thumb {
+
+    background: #555;
+
+    border-radius: 8px;
+
+}

@@ -1,0 +1,324 @@
+/* ==========================================================
+   AI TRAINING STUDIO
+   Layout v0.9
+========================================================== */
+
+.workspace-layout{
+
+    display:flex;
+
+    flex-direction:column;
+
+    height:100vh;
+
+    background:#1e1e1e;
+
+    color:white;
+
+}
+
+/* ==========================================================
+   HEADER
+========================================================== */
+
+.layout-header{
+
+    height:88px;
+
+    border-bottom:1px solid #303030;
+
+    background:#252526;
+
+}
+
+/* ==========================================================
+   BODY
+========================================================== */
+
+.layout-body{
+
+    flex:1;
+
+    display:grid;
+
+    grid-template-columns:260px 1fr 320px;
+
+    overflow:hidden;
+
+}
+
+/* ==========================================================
+   SIDEBAR
+========================================================== */
+
+.layout-sidebar{
+
+    background:#202124;
+
+    border-right:1px solid #303030;
+
+    overflow:auto;
+
+}
+
+/* ==========================================================
+   EDITOR
+========================================================== */
+
+.layout-editor{
+
+    background:#2b2b2b;
+
+    overflow:auto;
+
+    padding:25px;
+
+}
+
+/* ==========================================================
+   IA
+========================================================== */
+
+.layout-ai{
+
+    background:#202124;
+
+    border-left:1px solid #303030;
+
+    overflow:auto;
+
+}
+
+/* ==========================================================
+   FOOTER
+========================================================== */
+
+.layout-footer{
+
+    height:42px;
+
+    border-top:1px solid #303030;
+
+    background:#252526;
+
+}
+
+/* ==========================================================
+   SIDEBAR
+========================================================== */
+
+.sidebar{
+
+    display:flex;
+
+    flex-direction:column;
+
+    height:100%;
+
+}
+
+.sidebar-header{
+
+    padding:20px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    border-bottom:1px solid #333;
+
+}
+
+.sidebar-logo{
+
+    width:48px;
+
+    height:48px;
+
+    border-radius:12px;
+
+    background:#5c6cff;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:24px;
+
+}
+
+.sidebar-menu{
+
+    padding:15px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+}
+
+.sidebar-item{
+
+    height:46px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:transparent;
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:0 15px;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+.sidebar-item:hover{
+
+    background:#303134;
+
+}
+
+.sidebar-item.active{
+
+    background:#5c6cff;
+
+}
+
+.sidebar-footer{
+
+    margin-top:auto;
+
+    padding:20px;
+
+    border-top:1px solid #333;
+
+    opacity:.6;
+
+}
+
+/* ==========================================================
+   AI PANEL
+========================================================== */
+
+.ai-panel{
+
+    display:flex;
+
+    flex-direction:column;
+
+    height:100%;
+
+}
+
+.ai-header{
+
+    padding:20px;
+
+    border-bottom:1px solid #333;
+
+}
+
+.ai-actions{
+
+    padding:15px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+}
+
+.ai-button{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#2d2d30;
+
+    color:white;
+
+    cursor:pointer;
+
+}
+
+.ai-button:hover{
+
+    background:#5c6cff;
+
+}
+
+/* ==========================================================
+   STATUS BAR
+========================================================== */
+
+.status-bar{
+
+    height:100%;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:0 20px;
+
+    font-size:13px;
+
+}
+
+.status-left,
+.status-center,
+.status-right{
+
+    display:flex;
+
+    gap:20px;
+
+    align-items:center;
+
+}
+
+.status-button{
+
+    padding:5px 10px;
+
+    border:none;
+
+    border-radius:6px;
+
+    background:#3a3a3a;
+
+    color:white;
+
+    cursor:pointer;
+
+}

@@ -1,0 +1,144 @@
+import {
+  execute,
+  getEditor
+} from "./RichEditor";
+
+const commands = {
+
+  undo: "undo",
+  redo: "redo",
+
+  bold: "bold",
+  italic: "italic",
+  underline: "underline",
+  strike: "strike",
+
+  h1: "h1",
+  h2: "h2",
+  h3: "h3",
+
+  bullet: "bullet",
+  ordered: "ordered",
+  quote: "quote"
+
+};
+
+export function initRibbon() {
+
+  bindButtons();
+
+  document.addEventListener(
+    "editor:refresh",
+    refreshRibbon
+  );
+
+  refreshRibbon();
+
+}
+
+function bindButtons() {
+
+  Object.keys(commands).forEach(id => {
+
+    const button =
+      document.getElementById(
+        `ribbon-${id}`
+      );
+
+    if (!button) return;
+
+    button.onclick = () => {
+
+      execute(
+        commands[id]
+      );
+
+    };
+
+  });
+
+}
+
+function refreshRibbon() {
+
+  const editor =
+    getEditor();
+
+  if (!editor) return;
+
+  updateToggle(
+    "bold",
+    editor.isActive("bold")
+  );
+
+  updateToggle(
+    "italic",
+    editor.isActive("italic")
+  );
+
+  updateToggle(
+    "strike",
+    editor.isActive("strike")
+  );
+
+  updateToggle(
+    "h1",
+    editor.isActive(
+      "heading",
+      {
+        level: 1
+      }
+    )
+  );
+
+  updateToggle(
+    "h2",
+    editor.isActive(
+      "heading",
+      {
+        level: 2
+      }
+    )
+  );
+
+  updateToggle(
+    "bullet",
+    editor.isActive(
+      "bulletList"
+    )
+  );
+
+  updateToggle(
+    "ordered",
+    editor.isActive(
+      "orderedList"
+    )
+  );
+
+  updateToggle(
+    "quote",
+    editor.isActive(
+      "blockquote"
+    )
+  );
+
+}
+
+function updateToggle(
+  id,
+  active
+) {
+
+  const button =
+    document.getElementById(
+      `ribbon-${id}`
+    );
+
+  if (!button) return;
+
+  button.classList.toggle(
+    "active",
+    active
+  );
+
+}
