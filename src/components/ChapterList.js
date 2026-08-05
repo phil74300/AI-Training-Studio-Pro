@@ -1,15 +1,18 @@
 import {
-  getChapters
+  getChapters,
+  selectChapter
 } from "../services/ChapterService";
 
-export function ChapterList() {
+import { ChapterCard } from "./ChapterCard";
+
+export function ChapterList(refresh) {
 
   const chapters = getChapters();
 
   if (chapters.length === 0) {
 
     return `
-      <p>
+      <p class="empty-message">
         Aucun chapitre.
       </p>
     `;
@@ -17,13 +20,23 @@ export function ChapterList() {
   }
 
   return chapters.map(chapter => `
-
-      <div class="chapter-item">
-
-          📑 ${chapter.title}
-
-      </div>
-
+      ${ChapterCard(chapter)}
   `).join("");
+
+}
+
+export function initChapterList(refresh) {
+
+  document.querySelectorAll(".chapter-card").forEach(card => {
+
+    card.onclick = () => {
+
+      selectChapter(card.dataset.id);
+
+      refresh();
+
+    };
+
+  });
 
 }

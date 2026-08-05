@@ -1,6 +1,12 @@
 import { Header } from "../components/Header";
+import { ChapterList, initChapterList } from "../components/ChapterList";
+import { ChapterModal } from "../components/ChapterModal";
+import {
+  ChapterEditor,
+  initChapterEditor
+} from "../components/ChapterEditor";
+
 import { getCurrentProject } from "../services/WorkspaceService";
-import { ChapterList } from "../components/ChapterList";
 
 export function Workspace() {
 
@@ -49,23 +55,39 @@ export function Workspace() {
             <button
               id="newChapter"
               class="primary-button">
+
               ➕ Nouveau chapitre
+
             </button>
 
           </div>
 
-          <h2>${project.name}</h2>
+          ${ChapterList(renderWorkspace)}
 
-          <p>
-            ${project.description || "Aucune description."}
-          </p>
+          <hr class="workspace-separator">
 
-          ${ChapterList()}
+          ${ChapterEditor()}
 
         </section>
 
       </div>
 
+      ${ChapterModal()}
+
     </main>
   `;
+}
+
+export function initWorkspace() {
+
+  initChapterList(renderWorkspace);
+
+  initChapterEditor();
+
+}
+
+function renderWorkspace() {
+
+  window.navigate("workspace");
+
 }

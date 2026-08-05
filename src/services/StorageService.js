@@ -3,5 +3,13 @@ export async function loadProjects() {
 }
 
 export async function saveProjects(projects) {
-  return await window.api.saveProjects(projects);
+  await window.api.saveProjects(projects);
+
+  console.log(
+    "💾 Sauvegarde automatique :",
+    projects.length,
+    "projet(s)"
+  );
+
+  return true;
 }

@@ -15,3 +15,17 @@ export function closeProject() {
 export function hasProjectOpen() {
   return currentProject !== null;
 }
+
+export function getCurrentProjectChapters() {
+
+  if (!currentProject) {
+    return [];
+  }
+
+  if (!currentProject.chapters) {
+    currentProject.chapters = [];
+  }
+
+  return currentProject.chapters;
+
+}

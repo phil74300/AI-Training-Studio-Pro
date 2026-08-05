@@ -6,14 +6,25 @@ import {
 let projects = [];
 
 /**
- * Charge les projets au démarrage
+ * Chargement des projets
  */
 export async function initProjectsStorage() {
+
   projects = await loadProjects();
 
   if (!Array.isArray(projects)) {
     projects = [];
   }
+
+  // Migration automatique des anciens projets
+  projects.forEach(project => {
+
+    if (!project.chapters) {
+      project.chapters = [];
+    }
+
+  });
+
 }
 
 /**
@@ -24,16 +35,39 @@ export function getProjects() {
 }
 
 /**
- * Crée un nouveau projet
+ * Recherche par ID
  */
-export async function createProject(name, type, description) {
+export function getProjectById(id) {
+
+  return projects.find(
+    project => project.id === id
+  );
+
+}
+
+/**
+ * Création
+ */
+export async function createProject(
+  name,
+  type,
+  description
+) {
 
   const project = {
+
     id: crypto.randomUUID(),
+
     name,
+
     type,
+
     description,
+
+    chapters: [],
+
     createdAt: new Date().toLocaleString()
+
   };
 
   projects.push(project);
@@ -41,42 +75,39 @@ export async function createProject(name, type, description) {
   await saveProjects(projects);
 
   return project;
-}
-
-/**
- * Supprime un projet
- */
-export async function deleteProject(id) {
-
-  projects = projects.filter(project => project.id !== id);
-
-  await saveProjects(projects);
 
 }
 
 /**
- * Recherche un projet par son ID
+ * Mise à jour
  */
-export function getProjectById(id) {
-  return projects.find(project => project.id === id);
-}
-
-/**
- * Met à jour un projet
- */
-export async function updateProject(updatedProject) {
+export async function updateProject(project) {
 
   const index = projects.findIndex(
-    project => project.id === updatedProject.id
+    p => p.id === project.id
   );
 
   if (index === -1) {
     return false;
   }
 
-  projects[index] = updatedProject;
+  projects[index] = project;
 
   await saveProjects(projects);
 
   return true;
+
+}
+
+/**
+ * Suppression
+ */
+export async function deleteProject(id) {
+
+  projects = projects.filter(
+    project => project.id !== id
+  );
+
+  await saveProjects(projects);
+
 }
