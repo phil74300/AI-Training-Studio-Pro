@@ -1,103 +1,109 @@
-const actions = [
+/* ==========================================================
+   AI TRAINING STUDIO
+   AI Panel
+========================================================== */
 
-  {
-    icon: "✨",
-    title: "Générer",
-    description: "Créer un chapitre"
-  },
+const ACTIONS = [
 
-  {
-    icon: "✍",
-    title: "Réécrire",
-    description: "Améliorer le texte"
-  },
+    {
+        id: "generate",
+        icon: "✨",
+        title: "Générer",
+        description: "Créer un chapitre"
+    },
 
-  {
-    icon: "📝",
-    title: "Corriger",
-    description: "Orthographe & style"
-  },
+    {
+        id: "rewrite",
+        icon: "✍️",
+        title: "Réécrire",
+        description: "Améliorer le texte"
+    },
 
-  {
-    icon: "📄",
-    title: "Résumer",
-    description: "Créer un résumé"
-  },
+    {
+        id: "correct",
+        icon: "📝",
+        title: "Corriger",
+        description: "Orthographe & style"
+    },
 
-  {
-    icon: "🌍",
-    title: "Traduire",
-    description: "Changer de langue"
-  }
+    {
+        id: "summary",
+        icon: "📄",
+        title: "Résumer",
+        description: "Créer un résumé"
+    },
+
+    {
+        id: "translate",
+        icon: "🌍",
+        title: "Traduire",
+        description: "Changer de langue"
+    }
 
 ];
 
 export function AIPanel() {
 
-  return `
+    return `
 
-<aside class="ai-panel">
+        <aside class="ai-panel">
 
-    <div class="ai-header">
+            <header class="ai-header">
 
-        <h2>🤖 Assistant IA</h2>
+                <h2>🤖 Assistant IA</h2>
 
-        <p>
+                <p>Aucune conversation active</p>
 
-            Aucune conversation
+            </header>
 
-        </p>
+            <section class="ai-actions">
 
-    </div>
+                ${ACTIONS.map(action => `
 
-    <div class="ai-actions">
+                    <button
+                        id="ai-${action.id}"
+                        class="ai-button">
 
-        ${actions.map(action => `
+                        <span class="ai-icon">
 
-            <button
-                class="ai-button"
-                id="ai-${action.title.toLowerCase()}">
+                            ${action.icon}
 
-                <span class="ai-icon">
+                        </span>
 
-                    ${action.icon}
+                        <div class="ai-text">
 
-                </span>
+                            <strong>
 
-                <div class="ai-text">
+                                ${action.title}
 
-                    <strong>
+                            </strong>
 
-                        ${action.title}
+                            <small>
 
-                    </strong>
+                                ${action.description}
 
-                    <small>
+                            </small>
 
-                        ${action.description}
+                        </div>
 
-                    </small>
+                    </button>
 
-                </div>
+                `).join("")}
 
-            </button>
+            </section>
 
-        `).join("")}
+            <footer class="ai-footer">
 
-    </div>
+                <small>
 
-    <div class="ai-footer">
+                    GPT non connecté
 
-        <small>
+                </small>
 
-            GPT non connecté
+            </footer>
 
-        </small>
+        </aside>
 
-    </div>
-
-</aside>
-
-`;
+    `;
 
 }

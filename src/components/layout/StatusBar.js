@@ -1,71 +1,96 @@
+/* ==========================================================
+   AI TRAINING STUDIO
+   Status Bar
+========================================================== */
+
+const EXPORTS = [
+
+    {
+        id: "html",
+        label: "HTML"
+    },
+
+    {
+        id: "pdf",
+        label: "PDF"
+    },
+
+    {
+        id: "docx",
+        label: "DOCX"
+    },
+
+    {
+        id: "scorm",
+        label: "SCORM"
+    }
+
+];
+
 export function StatusBar() {
 
-  return `
+    return `
 
-<footer class="status-bar">
+        <footer class="status-bar">
 
-    <div class="status-left">
+            <div class="status-left">
 
-        <span id="status-words">
+                <span
+                    id="status-words"
+                    class="status-item">
 
-            📝 0 mots
+                    📝 0 mots
 
-        </span>
+                </span>
 
-        <span id="status-reading">
+                <span
+                    id="status-reading"
+                    class="status-item">
 
-            ⏱ 0 min
+                    ⏱ 0 min
 
-        </span>
+                </span>
 
-        <span id="status-language">
+                <span
+                    id="status-language"
+                    class="status-item">
 
-            🇫🇷 Français
+                    🇫🇷 Français
 
-        </span>
+                </span>
 
-    </div>
+            </div>
 
-    <div class="status-center">
+            <div class="status-center">
 
-        <span id="status-save">
+                <span
+                    id="status-save"
+                    class="status-item">
 
-            💾 Sauvegarde automatique
+                    💾 Sauvegarde automatique
 
-        </span>
+                </span>
 
-    </div>
+            </div>
 
-    <div class="status-right">
+            <div class="status-right">
 
-        <button class="status-button">
+                ${EXPORTS.map(format => `
 
-            HTML
+                    <button
+                        id="export-${format.id}"
+                        class="status-button">
 
-        </button>
+                        ${format.label}
 
-        <button class="status-button">
+                    </button>
 
-            PDF
+                `).join("")}
 
-        </button>
+            </div>
 
-        <button class="status-button">
+        </footer>
 
-            DOCX
-
-        </button>
-
-        <button class="status-button">
-
-            SCORM
-
-        </button>
-
-    </div>
-
-</footer>
-
-`;
+    `;
 
 }

@@ -1,98 +1,105 @@
-const items = [
+/* ==========================================================
+   AI TRAINING STUDIO
+   Workspace Sidebar
+========================================================== */
 
-  {
-    id: "chapters",
-    icon: "📖",
-    label: "Chapitres",
-    active: true
-  },
+const MENU = [
 
-  {
-    id: "sources",
-    icon: "📚",
-    label: "Sources"
-  },
+    {
+        id: "chapters",
+        icon: "📖",
+        label: "Chapitres"
+    },
 
-  {
-    id: "media",
-    icon: "🖼️",
-    label: "Médias"
-  },
+    {
+        id: "sources",
+        icon: "📚",
+        label: "Sources"
+    },
 
-  {
-    id: "quiz",
-    icon: "❓",
-    label: "Quiz"
-  },
+    {
+        id: "media",
+        icon: "🖼️",
+        label: "Médias"
+    },
 
-  {
-    id: "ai",
-    icon: "🤖",
-    label: "Assistant IA"
-  },
+    {
+        id: "quiz",
+        icon: "❓",
+        label: "Quiz"
+    },
 
-  {
-    id: "exports",
-    icon: "📤",
-    label: "Exports"
-  },
+    {
+        id: "ai",
+        icon: "🤖",
+        label: "Assistant IA"
+    },
 
-  {
-    id: "settings",
-    icon: "⚙️",
-    label: "Paramètres"
-  }
+    {
+        id: "exports",
+        icon: "📤",
+        label: "Exports"
+    },
+
+    {
+        id: "settings",
+        icon: "⚙️",
+        label: "Paramètres"
+    }
 
 ];
 
+const ACTIVE_PANEL = "chapters";
+
 export function WorkspaceSidebar() {
 
-  return `
+    return `
 
-    <aside class="workspace-sidebar">
+        <aside class="workspace-sidebar">
 
-      <div class="workspace-sidebar-header">
+            <header class="workspace-sidebar-header">
 
-        <h2>📂 Projet</h2>
+                <h2>📂 Projet</h2>
 
-        <small>AI Training Studio</small>
+                <small>AI Training Studio</small>
 
-      </div>
+            </header>
 
-      <nav class="workspace-sidebar-menu">
+            <nav class="workspace-sidebar-menu">
 
-        ${items.map(item => `
+                ${MENU.map(item => `
 
-          <button
-            id="workspace-${item.id}"
-            class="workspace-sidebar-item ${item.active ? "active" : ""}">
+                    <button
+                        id="workspace-${item.id}"
+                        class="workspace-sidebar-item ${item.id === ACTIVE_PANEL ? "active" : ""}"
+                        data-panel="${item.id}">
 
-            <span class="workspace-sidebar-icon">
+                        <span class="workspace-sidebar-icon">
 
-              ${item.icon}
+                            ${item.icon}
 
-            </span>
+                        </span>
 
-            <span class="workspace-sidebar-label">
+                        <span class="workspace-sidebar-label">
 
-              ${item.label}
+                            ${item.label}
 
-            </span>
+                        </span>
 
-          </button>
+                    </button>
 
-        `).join("")}
+                `).join("")}
 
-      </nav>
+            </nav>
 
-      <div class="workspace-sidebar-footer">
+            <footer class="workspace-sidebar-footer">
 
-        Projet ouvert
+                Projet ouvert
 
-      </div>
+            </footer>
 
-    </aside>
+        </aside>
 
-  `;
+    `;
 
 }

@@ -1,0 +1,138 @@
+/* ==========================================================
+   AI TRAINING STUDIO
+   Status Bar
+   v1.0
+========================================================== */
+
+/* ==========================================================
+   CONTAINER
+========================================================== */
+
+.status-bar {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 0 18px;
+
+    background: var(--panel-background);
+
+    font-size: 13px;
+
+}
+
+/* ==========================================================
+   ZONES
+========================================================== */
+
+.status-left,
+.status-center,
+.status-right {
+
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+
+}
+
+/* ==========================================================
+   ITEMS
+========================================================== */
+
+.status-item {
+
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    color: var(--text-secondary);
+
+    white-space: nowrap;
+
+}
+
+/* ==========================================================
+   BUTTONS
+========================================================== */
+
+.status-button {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 64px;
+    height: 30px;
+
+    padding: 0 14px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: var(--editor-background);
+
+    color: var(--text);
+
+    cursor: pointer;
+
+    transition:
+        background .20s ease,
+        transform .12s ease;
+
+}
+
+.status-button:hover {
+
+    background: var(--accent);
+
+}
+
+.status-button:active {
+
+    transform: scale(.96);
+
+}
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media (max-width:1100px) {
+
+    .status-center {
+
+        display: none;
+
+    }
+
+}
+
+@media (max-width:800px) {
+
+    .status-left {
+
+        gap: 10px;
+
+    }
+
+    .status-right {
+
+        gap: 8px;
+
+    }
+
+    .status-button {
+
+        min-width: 54px;
+
+        padding: 0 10px;
+
+    }
+
+}
