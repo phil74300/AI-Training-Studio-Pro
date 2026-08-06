@@ -1,4 +1,5 @@
 import { Header } from "../components/Header";
+
 import {
   ChapterList,
   initChapterList
@@ -15,6 +16,10 @@ import {
 } from "../components/ChapterEditor";
 
 import {
+  WorkspaceLayout
+} from "../components/layout/WorkspaceLayout";
+
+import {
   getCurrentProject
 } from "../services/WorkspaceService";
 
@@ -25,53 +30,36 @@ export function Workspace() {
   if (!project) {
 
     return `
+
       <main class="content">
 
         ${Header("Workspace")}
 
         <p class="subtitle">
+
           Aucun projet ouvert.
+
         </p>
 
       </main>
+
     `;
 
   }
 
-  return `
+  const content = `
 
-    <main class="content">
-
-      ${Header(project.name)}
-
-      <p class="subtitle">
-        ${project.type}
-      </p>
-
-      <div class="workspace">
-
-        <aside class="workspace-sidebar">
-
-          <button>📑 Chapitres</button>
-          <button>🤖 IA</button>
-          <button>📚 Sources</button>
-          <button>🖼 Images</button>
-          <button>📄 Exports</button>
-          <button>⚙ Paramètres</button>
-
-        </aside>
-
-        <section class="workspace-content">
+      <div class="workspace-editor">
 
           <div class="workspace-toolbar">
 
-            <button
-              id="newChapter"
-              class="primary-button">
+              <button
+                  id="newChapter"
+                  class="primary-button">
 
-              ➕ Nouveau chapitre
+                  ➕ Nouveau chapitre
 
-            </button>
+              </button>
 
           </div>
 
@@ -81,9 +69,23 @@ export function Workspace() {
 
           ${ChapterEditor()}
 
-        </section>
-
       </div>
+
+  `;
+
+  return `
+
+    <main class="content">
+
+      ${Header(project.name)}
+
+      <p class="subtitle">
+
+        ${project.type}
+
+      </p>
+
+      ${WorkspaceLayout(content)}
 
       ${ChapterModal()}
 
@@ -102,7 +104,9 @@ export function initWorkspace() {
   requestAnimationFrame(() => {
 
     if (document.getElementById("editor")) {
+
       initChapterEditor();
+
     }
 
   });

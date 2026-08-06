@@ -11,6 +11,7 @@ export function Sidebar(active = "dashboard") {
   `;
 
   return `
+
     <aside class="sidebar">
 
       <h2>🤖 AI Training Studio</h2>
@@ -31,5 +32,7 @@ export function Sidebar(active = "dashboard") {
       ${item("settings", "⚙️", "Paramètres")}
 
     </aside>
+
   `;
+
 }

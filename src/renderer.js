@@ -5,7 +5,7 @@ import { getPage } from "./services/Router";
 
 const app = document.getElementById("app");
 
-// Rend cette fonction accessible depuis les autres modules
+// Navigation globale
 window.navigate = render;
 
 async function render(page = "dashboard") {
@@ -13,27 +13,41 @@ async function render(page = "dashboard") {
   const route = getPage(page);
 
   app.innerHTML = `
+
     <div class="app">
+
       ${Sidebar(page)}
+
       ${route.render()}
+
     </div>
+
   `;
 
-  // Navigation de la sidebar
-  document.querySelectorAll(".sidebar button").forEach((button) => {
-    button.onclick = () => {
-      render(button.dataset.page);
-    };
-  });
+  document
+    .querySelectorAll(".sidebar button")
+    .forEach(button => {
 
-  // Initialisation de la page
+      button.onclick = () => {
+
+        render(button.dataset.page);
+
+      };
+
+    });
+
   if (typeof route.init === "function") {
+
     await route.init();
+
   }
 
 }
 
+// Démarrage
 render("dashboard");
 
 // Test IPC
-window.api.ping().then(console.log);
+window.api
+  .ping()
+  .then(console.log);
