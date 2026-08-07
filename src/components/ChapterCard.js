@@ -1,7 +1,7 @@
-export function ChapterCard(chapter) {
+export function ChapterCard(chapter, active = false) {
   return `
     <div
-      class="chapter-card"
+      class="chapter-card ${active ? "active" : ""}"
       data-id="${chapter.id}">
 
       <div class="chapter-icon">

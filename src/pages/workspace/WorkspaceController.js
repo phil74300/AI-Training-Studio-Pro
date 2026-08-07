@@ -146,9 +146,21 @@ export class WorkspaceController {
   }
 
   selectChapter(chapterId) {
+    if (
+      this.session.chapterId === chapterId &&
+      getCurrentChapter()?.id === chapterId
+    ) {
+      return;
+    }
+
     selectCurrentChapter(chapterId);
 
     this.syncChapterSelection();
+
+    if (this.session.chapterId !== chapterId) {
+      return;
+    }
+
     this.renderWorkspace();
   }
 

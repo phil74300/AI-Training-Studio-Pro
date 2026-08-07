@@ -1,9 +1,10 @@
-import { getChapters } from "../services/ChapterService";
+import { getChapters, getCurrentChapter } from "../services/ChapterService";
 
 import { ChapterCard, initChapterCards } from "./ChapterCard";
 
 export function ChapterList() {
   const chapters = getChapters();
+  const currentChapterId = getCurrentChapter()?.id;
 
   if (chapters.length === 0) {
     return `
@@ -23,7 +24,7 @@ export function ChapterList() {
   let html = `<div class="chapter-list">`;
 
   chapters.forEach((chapter) => {
-    html += ChapterCard(chapter);
+    html += ChapterCard(chapter, chapter.id === currentChapterId);
   });
 
   html += `</div>`;
