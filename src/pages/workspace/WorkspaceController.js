@@ -1,4 +1,3 @@
-import { ChapterList, initChapterList } from "../../components/ChapterList";
 import { ChapterModal, initChapterModal } from "../../components/ChapterModal";
 import {
   ChapterEditor,
@@ -60,22 +59,6 @@ export class WorkspaceController {
 
         <div class="workspace-editor">
 
-            <div class="workspace-toolbar">
-
-                <button
-                    id="newChapter"
-                    class="primary-button">
-
-                    ➕ Nouveau chapitre
-
-                </button>
-
-            </div>
-
-            ${ChapterList()}
-
-            <hr class="workspace-separator">
-
             ${ChapterEditor()}
 
         </div>
@@ -99,7 +82,9 @@ export class WorkspaceController {
     this.abortController = new AbortController();
 
     this.registerEvents(this.abortController.signal);
-    initWorkspaceSidebar(this.abortController.signal);
+    initWorkspaceSidebar(this.abortController.signal, {
+      onChapterSelect: (chapterId) => this.selectChapter(chapterId),
+    });
 
     this.editorFrame = requestAnimationFrame(() => {
       this.editorFrame = null;
@@ -157,7 +142,6 @@ export class WorkspaceController {
   }
 
   registerEvents(signal) {
-    initChapterList((chapterId) => this.selectChapter(chapterId), signal);
     initChapterModal(() => this.refreshSession(), signal);
   }
 

@@ -1,11 +1,8 @@
 import { createExplorerPanel } from "./ExplorerPanel";
+import { ChaptersPanel } from "./panels/ChaptersPanel";
 
 export const explorerPanels = [
-  createExplorerPanel({
-    id: "chapters",
-    title: "Chapitres",
-    icon: "📖",
-  }),
+  ChaptersPanel,
   createExplorerPanel({
     id: "sources",
     title: "Sources",

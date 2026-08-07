@@ -5,6 +5,7 @@ import {
   setActiveExplorerPanel,
   destroyActiveExplorerPanel,
 } from "../explorer/ExplorerPanelRegistry";
+import { renderExplorerPanelButton } from "../explorer/ExplorerPanel";
 
 export function WorkspaceSidebar() {
   return `
@@ -23,13 +24,19 @@ export function WorkspaceSidebar() {
 
                 ${getExplorerPanels()
                   .map((panel) =>
-                    panel.render({
+                    renderExplorerPanelButton(panel, {
                       active: panel.id === getActiveExplorerPanel()?.id,
                     })
                   )
                   .join("")}
 
             </nav>
+
+            <section class="workspace-sidebar-panel">
+
+                ${getActiveExplorerPanel()?.render() || ""}
+
+            </section>
 
             <footer class="workspace-sidebar-footer">
 
@@ -42,7 +49,7 @@ export function WorkspaceSidebar() {
     `;
 }
 
-export function initWorkspaceSidebar(signal) {
+export function initWorkspaceSidebar(signal, context) {
   getExplorerPanels().forEach((panel) => {
     const button = document.getElementById(`workspace-${panel.id}`);
 
@@ -53,13 +60,14 @@ export function initWorkspaceSidebar(signal) {
       () => {
         if (setActiveExplorerPanel(panel.id)) {
           updateActivePanel();
+          mountActiveExplorerPanel(context);
         }
       },
       { signal }
     );
   });
 
-  mountActiveExplorerPanel();
+  mountActiveExplorerPanel(context);
 }
 
 export function destroyWorkspaceSidebar() {
@@ -76,4 +84,10 @@ function updateActivePanel() {
 
     button.classList.toggle("active", panel.id === activePanel?.id);
   });
+
+  const panel = document.querySelector(".workspace-sidebar-panel");
+
+  if (panel) {
+    panel.innerHTML = activePanel?.render() || "";
+  }
 }

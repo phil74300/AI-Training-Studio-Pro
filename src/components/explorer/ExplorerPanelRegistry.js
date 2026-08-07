@@ -32,14 +32,14 @@ export function getActiveExplorerPanel() {
   return panels.get(activePanelId) || null;
 }
 
-export function mountActiveExplorerPanel() {
+export function mountActiveExplorerPanel(context) {
   const panel = getActiveExplorerPanel();
 
   if (!panel || mountedPanel === panel) {
     return;
   }
 
-  panel.mount();
+  panel.mount(context);
   mountedPanel = panel;
 }
 
@@ -53,7 +53,6 @@ export function setActiveExplorerPanel(id) {
   destroyActiveExplorerPanel();
 
   activePanelId = panel.id;
-  mountActiveExplorerPanel();
 
   return true;
 }

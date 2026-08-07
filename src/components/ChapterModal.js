@@ -46,13 +46,19 @@ export function initChapterModal(refresh, signal) {
     return;
   }
 
-  const newButton = document.getElementById("newChapter");
   const cancelButton = document.getElementById("cancelChapter");
   const createButton = document.getElementById("createChapter");
 
-  newButton.addEventListener(
+  document.addEventListener(
     "click",
-    () => {
+    (event) => {
+      if (
+        !(event.target instanceof Element) ||
+        !event.target.closest("#newChapter")
+      ) {
+        return;
+      }
+
       title.value = "";
 
       modal.classList.remove("hidden");

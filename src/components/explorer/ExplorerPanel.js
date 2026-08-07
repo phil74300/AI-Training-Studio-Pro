@@ -1,30 +1,44 @@
+export function renderExplorerPanelButton(panel, { active = false } = {}) {
+  return `
+
+    <button
+        id="workspace-${panel.id}"
+        class="workspace-sidebar-item ${active ? "active" : ""}"
+        data-panel="${panel.id}">
+
+        <span class="workspace-sidebar-icon">
+
+            ${panel.icon}
+
+        </span>
+
+        <span class="workspace-sidebar-label">
+
+            ${panel.title}
+
+        </span>
+
+    </button>
+
+  `;
+}
+
 export function createExplorerPanel({ id, title, icon }) {
   return {
     id,
     title,
     icon,
 
-    render({ active = false } = {}) {
+    render() {
       return `
 
-        <button
-            id="workspace-${id}"
-            class="workspace-sidebar-item ${active ? "active" : ""}"
-            data-panel="${id}">
+        <div class="explorer-panel-placeholder">
 
-            <span class="workspace-sidebar-icon">
+            <strong>${title}</strong>
 
-                ${icon}
+            <p>Fonctionnalité bientôt disponible.</p>
 
-            </span>
-
-            <span class="workspace-sidebar-label">
-
-                ${title}
-
-            </span>
-
-        </button>
+        </div>
 
       `;
     },

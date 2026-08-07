@@ -57,6 +57,26 @@
   padding: 16px;
 }
 
+.workspace-sidebar-panel {
+  flex: 1;
+
+  min-height: 0;
+
+  overflow: auto;
+
+  padding: 0 16px 16px;
+}
+
+.explorer-panel-placeholder {
+  color: var(--text-secondary);
+
+  font-size: 13px;
+}
+
+.explorer-panel-placeholder p {
+  margin-top: 8px;
+}
+
 /* ==========================================================
    BUTTON
 ========================================================== */
