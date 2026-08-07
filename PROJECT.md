@@ -143,6 +143,7 @@ The interface should be:
 - Stable releases
 - Minimal regressions
 - High performance
+- ESLint, Prettier, and GitHub Actions CI quality checks
 
 ---
 
