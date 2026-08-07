@@ -1,6 +1,5 @@
 import {
-  getChapters,
-  getCurrentChapter
+  getChapters
 } from "../services/ChapterService";
 
 import {
@@ -33,7 +32,7 @@ export function ChapterList(refresh) {
 
   chapters.forEach(chapter => {
 
-    html += ChapterCard(chapter, refresh);
+    html += ChapterCard(chapter);
 
   });
 

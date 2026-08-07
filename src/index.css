@@ -25,6 +25,7 @@
 ========================================================== */
 
 @import "./styles/header.css";
+@import "./styles/chapter.css";
 @import "./styles/projects.css";
 @import "./styles/modal.css";
 @import "./styles/workspace.css";

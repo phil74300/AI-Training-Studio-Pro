@@ -18,6 +18,10 @@ import {
 } from "../components/layout/WorkspaceLayout";
 
 import {
+    initRibbon
+} from "../components/layout/RibbonController";
+
+import {
     getCurrentProject
 } from "../services/WorkspaceService";
 
@@ -92,6 +96,8 @@ export function initWorkspace() {
         if (document.getElementById("editor")) {
 
             initChapterEditor();
+
+            initRibbon();
 
         }
 

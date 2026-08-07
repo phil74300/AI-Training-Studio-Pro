@@ -1,7 +1,7 @@
 import {
   execute,
   getEditor
-} from "./RichEditor";
+} from "../editor/RichEditor";
 
 const commands = {
 
@@ -77,6 +77,11 @@ function refreshRibbon() {
   );
 
   updateToggle(
+    "underline",
+    editor.isActive("underline")
+  );
+
+  updateToggle(
     "strike",
     editor.isActive("strike")
   );
@@ -97,6 +102,16 @@ function refreshRibbon() {
       "heading",
       {
         level: 2
+      }
+    )
+  );
+
+  updateToggle(
+    "h3",
+    editor.isActive(
+      "heading",
+      {
+        level: 3
       }
     )
   );

@@ -3,24 +3,22 @@ import { createChapter } from "../services/ChapterService";
 export function ChapterModal() {
 
   return `
-    <div id="chapterModal" class="modal hidden">
+    <div id="chapterModal" class="modal-overlay hidden">
 
-      <div class="modal-content">
+      <div class="modal">
 
         <h2>Nouveau chapitre</h2>
 
         <input
-          id="chapterTitle"
+          id="newChapterTitle"
           type="text"
           placeholder="Titre du chapitre"
         />
 
-        <div class="modal-actions">
+        <div class="modal-buttons">
 
           <button
             id="cancelChapter"
-            class="secondary-button">
-
             Annuler
 
           </button>
@@ -45,7 +43,7 @@ export function ChapterModal() {
 export function initChapterModal(refresh) {
 
   const modal = document.getElementById("chapterModal");
-  const title = document.getElementById("chapterTitle");
+  const title = document.getElementById("newChapterTitle");
 
   if (!modal || !title) {
     return;

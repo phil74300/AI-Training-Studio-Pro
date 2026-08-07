@@ -1,6 +1,6 @@
 import "./index.css";
 
-import { Sidebar } from "./components/Sidebar";
+import { Sidebar } from "./components/sidebar";
 import { getPage } from "./services/Router";
 
 const app = document.getElementById("app");

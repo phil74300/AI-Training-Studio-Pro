@@ -1,6 +1,6 @@
 import { selectChapter } from "../services/ChapterService";
 
-export function ChapterCard(chapter, refresh) {
+export function ChapterCard(chapter) {
 
   return `
     <div

@@ -1,5 +1,6 @@
 import { Editor } from "@tiptap/core";
 import StarterKit from "@tiptap/starter-kit";
+import Underline from "@tiptap/extension-underline";
 
 let editor = null;
 
@@ -25,7 +26,8 @@ export function createEditor({
     element,
 
     extensions: [
-      StarterKit
+      StarterKit,
+      Underline
     ],
 
     content,
@@ -143,6 +145,32 @@ export function focusEditor() {
   if (!editor) return;
 
   editor.commands.focus();
+
+}
+
+/**
+ * Exécute une commande du ribbon sur l'éditeur courant.
+ */
+export function execute(command) {
+
+  if (!editor) return;
+
+  const commands = {
+    undo: () => editor.chain().focus().undo().run(),
+    redo: () => editor.chain().focus().redo().run(),
+    bold: () => editor.chain().focus().toggleBold().run(),
+    italic: () => editor.chain().focus().toggleItalic().run(),
+    underline: () => editor.chain().focus().toggleUnderline().run(),
+    strike: () => editor.chain().focus().toggleStrike().run(),
+    h1: () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
+    h2: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
+    h3: () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
+    bullet: () => editor.chain().focus().toggleBulletList().run(),
+    ordered: () => editor.chain().focus().toggleOrderedList().run(),
+    quote: () => editor.chain().focus().toggleBlockquote().run()
+  };
+
+  commands[command]?.();
 
 }
 

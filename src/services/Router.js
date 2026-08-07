@@ -1,11 +1,11 @@
 import { Dashboard } from "../pages/Dashboard";
 import { Projects, initProjects } from "../pages/Projects";
 import { Workspace, initWorkspace } from "../pages/Workspace";
-import { Books } from "../pages/Books";
-import { Training } from "../pages/Training";
-import { Images } from "../pages/Images";
-import { Exports } from "../pages/Exports";
-import { Settings } from "../pages/Settings";
+import { Books } from "../pages/books";
+import { Training } from "../pages/training";
+import { Images } from "../pages/images";
+import { Exports } from "../pages/exports";
+import { Settings } from "../pages/settings";
 
 const routes = {
 

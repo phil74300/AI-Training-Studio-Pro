@@ -14,8 +14,6 @@ import {
   initToolbar
 } from "./editor/Toolbar";
 
-let editor = null;
-
 export function ChapterEditor() {
 
   const chapter = getCurrentChapter();
@@ -69,7 +67,7 @@ export function initChapterEditor() {
 
   destroyEditor();
 
-  editor = createEditor({
+  createEditor({
 
     element,
 
