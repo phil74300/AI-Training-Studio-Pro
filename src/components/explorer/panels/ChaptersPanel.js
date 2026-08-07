@@ -1,4 +1,9 @@
 import { ChapterList, initChapterList } from "../../ChapterList";
+import {
+  ChapterContextMenu,
+  destroyChapterContextMenu,
+  initChapterContextMenu,
+} from "../../ChapterContextMenu";
 
 export const ChaptersPanel = {
   id: "chapters",
@@ -28,18 +33,22 @@ export const ChaptersPanel = {
 
         </div>
 
+        ${ChapterContextMenu()}
+
       </div>
 
     `;
   },
 
-  mount({ onChapterSelect, signal } = {}) {
-    if (typeof onChapterSelect !== "function") {
-      return;
+  mount({ onChapterChange, onChapterSelect, signal } = {}) {
+    if (typeof onChapterSelect === "function") {
+      initChapterList(onChapterSelect, signal);
     }
 
-    initChapterList(onChapterSelect, signal);
+    initChapterContextMenu({ onChange: onChapterChange, signal });
   },
 
-  destroy() {},
+  destroy() {
+    destroyChapterContextMenu();
+  },
 };

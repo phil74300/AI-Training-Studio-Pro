@@ -83,6 +83,7 @@ export class WorkspaceController {
 
     this.registerEvents(this.abortController.signal);
     initWorkspaceSidebar(this.abortController.signal, {
+      onChapterChange: () => this.refreshSession(),
       onChapterSelect: (chapterId) => this.selectChapter(chapterId),
     });
 
