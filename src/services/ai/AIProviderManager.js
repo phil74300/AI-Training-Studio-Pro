@@ -1,5 +1,7 @@
 import { AIProviderCapabilities } from "./AIProviderCapabilities";
 import { AIProviderRegistry } from "./AIProviderRegistry";
+import { AIRequest } from "./AIRequest";
+import { AIResponse } from "./AIResponse";
 
 const registryMethods = Object.freeze([
   "list",
@@ -7,6 +9,7 @@ const registryMethods = Object.freeze([
   "validateConfiguration",
   "listModels",
   "getCapabilities",
+  "execute",
   "healthCheck",
 ]);
 
@@ -106,6 +109,54 @@ export class AIProviderManager {
     );
 
     return AIProviderCapabilities.from(capabilities);
+  }
+
+  async execute(request, executionContext, providerId) {
+    if (!(request instanceof AIRequest)) {
+      throw new TypeError("AIProviderManager.execute requires an AIRequest.");
+    }
+
+    const resolvedProviderId = this.#resolveProviderId(providerId);
+
+    try {
+      const providerResponse = await this.#registry.execute(
+        resolvedProviderId,
+        request,
+        executionContext
+      );
+      const response =
+        providerResponse instanceof AIResponse
+          ? providerResponse
+          : new AIResponse(providerResponse);
+
+      if (
+        response.requestId !== request.requestId ||
+        response.providerId !== resolvedProviderId ||
+        response.modelId !== request.modelId
+      ) {
+        throw new Error(
+          "AI provider response identity does not match request."
+        );
+      }
+
+      return response;
+    } catch (error) {
+      if (executionContext?.abortSignal?.aborted) {
+        throw error;
+      }
+
+      return AIResponse.failed({
+        requestId: request.requestId,
+        providerId: resolvedProviderId,
+        modelId: request.modelId,
+        error: {
+          code: "provider-execution-failed",
+          message: "The AI provider execution failed.",
+          retryable: false,
+          details: {},
+        },
+      });
+    }
   }
 
   #resolveProviderId(providerId) {

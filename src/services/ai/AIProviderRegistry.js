@@ -67,6 +67,10 @@ export class AIProviderRegistry {
     return this.#requireAdapter(providerId).getCapabilities(modelId, config);
   }
 
+  execute(providerId, request, executionContext) {
+    return this.#requireAdapter(providerId).execute(request, executionContext);
+  }
+
   healthCheck(providerId, config) {
     return this.#requireAdapter(providerId).healthCheck(config);
   }
