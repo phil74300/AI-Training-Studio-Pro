@@ -1,28 +1,28 @@
 /* ==========================================================
    AI TRAINING STUDIO
    Workspace Layout
-   v0.9
+   Version 1.0
 ========================================================== */
 
 /* ==========================================================
    VARIABLES
 ========================================================== */
 
-:root {
+:root{
 
-    --layout-header-height: 72px;
-    --layout-footer-height: 40px;
+    --layout-header-height:72px;
+    --layout-footer-height:40px;
 
-    --workspace-sidebar-width: 260px;
-    --workspace-ai-width: 340px;
+    --workspace-sidebar-width:260px;
+    --workspace-ai-width:340px;
 
-    --layout-background: var(--bg);
-    --panel-background: var(--panel);
-    --editor-background: var(--card);
+    --layout-background:var(--bg);
+    --panel-background:var(--panel);
+    --editor-background:var(--card);
 
-    --layout-border: var(--border);
+    --layout-border:var(--border);
 
-    --layout-radius: 10px;
+    --layout-radius:10px;
 
 }
 
@@ -30,20 +30,26 @@
    WORKSPACE
 ========================================================== */
 
-.workspace-layout {
+.workspace-layout{
 
-    display: flex;
-    flex-direction: column;
+    display:flex;
+    flex-direction:column;
 
-    width: 100%;
-    height: calc(100vh - 140px);
+    flex:1;
 
-    overflow: hidden;
+    width:100%;
+    height:100%;
 
-    background: var(--layout-background);
+    min-width:0;
+    min-height:0;
 
-    border: 1px solid var(--layout-border);
-    border-radius: var(--layout-radius);
+    overflow:hidden;
+
+    background:var(--layout-background);
+
+    border:1px solid var(--layout-border);
+
+    border-radius:var(--layout-radius);
 
 }
 
@@ -51,15 +57,20 @@
    HEADER
 ========================================================== */
 
-.layout-header {
+.layout-header{
 
-    flex: 0 0 var(--layout-header-height);
+    flex:0 0 var(--layout-header-height);
 
-    overflow: hidden;
+    display:flex;
+    align-items:center;
 
-    background: var(--panel-background);
+    min-height:var(--layout-header-height);
 
-    border-bottom: 1px solid var(--layout-border);
+    overflow:hidden;
+
+    background:var(--panel-background);
+
+    border-bottom:1px solid var(--layout-border);
 
 }
 
@@ -67,21 +78,20 @@
    BODY
 ========================================================== */
 
-.layout-body {
+.layout-body{
 
-    flex: 1;
+    flex:1;
 
-    display: grid;
+    display:grid;
 
     grid-template-columns:
-
         var(--workspace-sidebar-width)
-
-        minmax(0, 1fr)
-
+        minmax(0,1fr)
         var(--workspace-ai-width);
 
-    overflow: hidden;
+    min-height:0;
+
+    overflow:hidden;
 
 }
 
@@ -89,13 +99,13 @@
    SIDEBAR
 ========================================================== */
 
-.layout-sidebar {
+.layout-sidebar{
 
-    overflow-y: auto;
+    overflow:auto;
 
-    background: var(--panel-background);
+    background:var(--panel-background);
 
-    border-right: 1px solid var(--layout-border);
+    border-right:1px solid var(--layout-border);
 
 }
 
@@ -103,30 +113,33 @@
    EDITOR
 ========================================================== */
 
-.layout-editor {
+.layout-editor{
 
-    display: flex;
-    flex-direction: column;
+    display:flex;
+    flex-direction:column;
 
-    overflow: hidden;
+    min-width:0;
+    min-height:0;
 
-    padding: 28px;
+    overflow:hidden;
 
-    background: var(--editor-background);
+    padding:24px;
+
+    background:var(--editor-background);
 
 }
 
 /* ==========================================================
-   AI PANEL
+   IA
 ========================================================== */
 
-.layout-ai {
+.layout-ai{
 
-    overflow-y: auto;
+    overflow:auto;
 
-    background: var(--panel-background);
+    background:var(--panel-background);
 
-    border-left: 1px solid var(--layout-border);
+    border-left:1px solid var(--layout-border);
 
 }
 
@@ -134,15 +147,18 @@
    FOOTER
 ========================================================== */
 
-.layout-footer {
+.layout-footer{
 
-    flex: 0 0 var(--layout-footer-height);
+    flex:0 0 var(--layout-footer-height);
 
-    overflow: hidden;
+    display:flex;
+    align-items:center;
 
-    background: var(--panel-background);
+    overflow:hidden;
 
-    border-top: 1px solid var(--layout-border);
+    background:var(--panel-background);
+
+    border-top:1px solid var(--layout-border);
 
 }
 
@@ -150,48 +166,48 @@
    RESPONSIVE
 ========================================================== */
 
-@media (max-width: 1400px) {
+@media (max-width:1400px){
 
-    .layout-body {
+    .layout-body{
 
         grid-template-columns:
             220px
-            minmax(0, 1fr)
+            minmax(0,1fr)
             300px;
 
     }
 
 }
 
-@media (max-width: 1100px) {
+@media (max-width:1100px){
 
-    .layout-body {
+    .layout-body{
 
         grid-template-columns:
             220px
-            minmax(0, 1fr);
+            minmax(0,1fr);
 
     }
 
-    .layout-ai {
+    .layout-ai{
 
-        display: none;
+        display:none;
 
     }
 
 }
 
-@media (max-width: 900px) {
+@media (max-width:900px){
 
-    .layout-body {
+    .layout-body{
 
-        grid-template-columns: 1fr;
+        grid-template-columns:1fr;
 
     }
 
-    .layout-sidebar {
+    .layout-sidebar{
 
-        display: none;
+        display:none;
 
     }
 

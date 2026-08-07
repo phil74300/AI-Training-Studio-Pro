@@ -1,120 +1,106 @@
-import { Header } from "../components/Header";
-
 import {
-  ChapterList,
-  initChapterList
+    ChapterList,
+    initChapterList
 } from "../components/ChapterList";
 
 import {
-  ChapterModal,
-  initChapterModal
+    ChapterModal,
+    initChapterModal
 } from "../components/ChapterModal";
 
 import {
-  ChapterEditor,
-  initChapterEditor
+    ChapterEditor,
+    initChapterEditor
 } from "../components/ChapterEditor";
 
 import {
-  WorkspaceLayout
+    WorkspaceLayout
 } from "../components/layout/WorkspaceLayout";
 
 import {
-  getCurrentProject
+    getCurrentProject
 } from "../services/WorkspaceService";
 
 export function Workspace() {
 
-  const project = getCurrentProject();
+    const project = getCurrentProject();
 
-  if (!project) {
+    if (!project) {
 
-    return `
+        return `
 
-      <main class="content">
+            <div class="workspace-empty">
 
-        ${Header("Workspace")}
+                <h1>Aucun projet ouvert</h1>
 
-        <p class="subtitle">
+                <p>
 
-          Aucun projet ouvert.
+                    Ouvrez un projet.
 
-        </p>
+                </p>
 
-      </main>
+            </div>
+
+        `;
+
+    }
+
+    const content = `
+
+        <div class="workspace-editor">
+
+            <div class="workspace-toolbar">
+
+                <button
+                    id="newChapter"
+                    class="primary-button">
+
+                    ➕ Nouveau chapitre
+
+                </button>
+
+            </div>
+
+            ${ChapterList(renderWorkspace)}
+
+            <hr class="workspace-separator">
+
+            ${ChapterEditor()}
+
+        </div>
 
     `;
 
-  }
+    return `
 
-  const content = `
+        ${WorkspaceLayout(content)}
 
-      <div class="workspace-editor">
+        ${ChapterModal()}
 
-          <div class="workspace-toolbar">
-
-              <button
-                  id="newChapter"
-                  class="primary-button">
-
-                  ➕ Nouveau chapitre
-
-              </button>
-
-          </div>
-
-          ${ChapterList(renderWorkspace)}
-
-          <hr class="workspace-separator">
-
-          ${ChapterEditor()}
-
-      </div>
-
-  `;
-
-  return `
-
-    <main class="content">
-
-      ${Header(project.name)}
-
-      <p class="subtitle">
-
-        ${project.type}
-
-      </p>
-
-      ${WorkspaceLayout(content)}
-
-      ${ChapterModal()}
-
-    </main>
-
-  `;
+    `;
 
 }
 
 export function initWorkspace() {
 
-  initChapterList(renderWorkspace);
+    initChapterList(renderWorkspace);
 
-  initChapterModal(renderWorkspace);
+    initChapterModal(renderWorkspace);
 
-  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
 
-    if (document.getElementById("editor")) {
+        if (document.getElementById("editor")) {
 
-      initChapterEditor();
+            initChapterEditor();
 
-    }
+        }
 
-  });
+    });
 
 }
 
 function renderWorkspace() {
 
-  window.navigate("workspace");
+    window.navigate("workspace");
 
 }

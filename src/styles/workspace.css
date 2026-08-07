@@ -1,30 +1,63 @@
+/* ==========================================================
+   AI TRAINING STUDIO
+   Workspace
+   Version 0.9.1
+========================================================== */
+
 .workspace{
 
     display:flex;
 
-    height:650px;
+    flex:1;
 
-    margin-top:30px;
+    width:100%;
+    height:100%;
+
+    min-width:0;
+    min-height:0;
+
+    overflow:hidden;
 
 }
 
 .workspace-sidebar{
 
-    width:250px;
-
-    background:#252526;
-
-    border-radius:12px;
-
-    padding:20px;
-
     display:flex;
-
     flex-direction:column;
 
-    gap:12px;
+    width:260px;
+    flex-shrink:0;
+
+    background:var(--panel);
+
+    border-right:1px solid var(--border);
+
+    overflow:auto;
 
 }
+
+.workspace-content{
+
+    display:flex;
+    flex-direction:column;
+
+    flex:1;
+
+    min-width:0;
+    min-height:0;
+
+    overflow:hidden;
+
+    margin:0;
+    padding:0;
+
+    background:transparent;
+
+}
+
+/* ==========================================================
+   LEGACY
+========================================================== */
 
 .workspace-sidebar button{
 
@@ -32,34 +65,10 @@
 
     border:none;
 
-    color:white;
+    color:inherit;
 
     text-align:left;
 
-    padding:14px;
-
-    border-radius:8px;
-
     cursor:pointer;
-
-}
-
-.workspace-sidebar button:hover{
-
-    background:#0e639c;
-
-}
-
-.workspace-content{
-
-    flex:1;
-
-    margin-left:25px;
-
-    background:#2d2d30;
-
-    border-radius:12px;
-
-    padding:30px;
 
 }

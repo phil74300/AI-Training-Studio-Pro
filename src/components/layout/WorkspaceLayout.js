@@ -5,46 +5,46 @@ import { StatusBar } from "./StatusBar";
 
 export function WorkspaceLayout(content = "") {
 
-  return `
+    return `
 
-    <div class="workspace-layout">
+        <section class="workspace-layout">
 
-      <header class="layout-header">
+            <header class="layout-header">
 
-        ${Ribbon()}
+                ${Ribbon()}
 
-      </header>
+            </header>
 
-      <div class="layout-body">
+            <section class="layout-body">
 
-        <aside class="layout-sidebar">
+                <aside class="layout-sidebar">
 
-          ${WorkspaceSidebar()}
+                    ${WorkspaceSidebar()}
 
-        </aside>
+                </aside>
 
-        <main class="layout-editor">
+                <main class="layout-editor">
 
-          ${content}
+                    ${content}
 
-        </main>
+                </main>
 
-        <aside class="layout-ai">
+                <aside class="layout-ai">
 
-          ${AIPanel()}
+                    ${AIPanel()}
 
-        </aside>
+                </aside>
 
-      </div>
+            </section>
 
-      <footer class="layout-footer">
+            <footer class="layout-footer">
 
-        ${StatusBar()}
+                ${StatusBar()}
 
-      </footer>
+            </footer>
 
-    </div>
+        </section>
 
-  `;
+    `;
 
 }
