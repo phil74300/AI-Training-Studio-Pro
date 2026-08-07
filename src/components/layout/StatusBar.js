@@ -3,6 +3,11 @@
    Status Bar
 ========================================================== */
 
+import { observeAIWorkspace } from "../../services/ai/AIWorkspaceService";
+import { getAIStatusLabel } from "../../services/ai/AIStatus";
+
+const APPLICATION_VERSION = "1.0.0";
+
 const EXPORTS = [
   {
     id: "html",
@@ -25,6 +30,8 @@ const EXPORTS = [
   },
 ];
 
+let cleanup = null;
+
 export function StatusBar() {
   return `
 
@@ -33,26 +40,26 @@ export function StatusBar() {
             <div class="status-left">
 
                 <span
-                    id="status-words"
+                    id="status-project"
                     class="status-item">
 
-                    📝 0 mots
+                    📂 Aucun projet
 
                 </span>
 
                 <span
-                    id="status-reading"
+                    id="status-chapter"
                     class="status-item">
 
-                    ⏱ 0 min
+                    📑 Aucun chapitre
 
                 </span>
 
                 <span
-                    id="status-language"
+                    id="status-chapter-count"
                     class="status-item">
 
-                    🇫🇷 Français
+                    📚 0 chapitre
 
                 </span>
 
@@ -68,9 +75,25 @@ export function StatusBar() {
 
                 </span>
 
+                <span
+                    id="status-ai"
+                    class="status-item">
+
+                    🤖 IA inactive
+
+                </span>
+
             </div>
 
             <div class="status-right">
+
+                <span
+                    id="status-version"
+                    class="status-item">
+
+                    v${APPLICATION_VERSION}
+
+                </span>
 
                 ${EXPORTS.map(
                   (format) => `
@@ -91,4 +114,50 @@ export function StatusBar() {
         </footer>
 
     `;
+}
+
+export function initStatusBar({ getWorkspaceState, signal } = {}) {
+  destroyStatusBar();
+
+  const updateStatusBar = ({ status }) => {
+    const workspace = getWorkspaceState?.() || {};
+
+    updateStatusItem(
+      "status-project",
+      `📂 ${workspace.projectName || "Aucun projet"}`
+    );
+    updateStatusItem(
+      "status-chapter",
+      `📑 ${workspace.chapterTitle || "Aucun chapitre"}`
+    );
+    updateStatusItem(
+      "status-chapter-count",
+      `📚 ${workspace.chapterCount || 0} chapitre${workspace.chapterCount === 1 ? "" : "s"}`
+    );
+    updateStatusItem(
+      "status-save",
+      `💾 ${workspace.saveStatus || "Sauvegarde automatique"}`
+    );
+    updateStatusItem(
+      "status-ai",
+      `🤖 ${getAIStatusLabel(workspace.aiStatus || status)}`
+    );
+  };
+
+  cleanup = observeAIWorkspace(updateStatusBar);
+
+  signal?.addEventListener("abort", destroyStatusBar, { once: true });
+}
+
+export function destroyStatusBar() {
+  cleanup?.();
+  cleanup = null;
+}
+
+function updateStatusItem(id, value) {
+  const element = document.getElementById(id);
+
+  if (element) {
+    element.textContent = value;
+  }
 }

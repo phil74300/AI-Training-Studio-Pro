@@ -1,44 +1,16 @@
-/* ==========================================================
-   AI TRAINING STUDIO
-   AI Panel
-========================================================== */
+import { AIAction, getAIActions } from "../../services/ai/AIAction";
+import { observeAIWorkspace } from "../../services/ai/AIWorkspaceService";
+import { getAIStatusLabel } from "../../services/ai/AIStatus";
 
-const ACTIONS = [
-  {
-    id: "generate",
-    icon: "✨",
-    title: "Générer",
-    description: "Créer un chapitre",
-  },
+const panelActions = getAIActions([
+  AIAction.GENERATE_LESSON,
+  AIAction.IMPROVE_TEXT,
+  AIAction.CORRECT_TEXT,
+  AIAction.SUMMARIZE,
+  AIAction.TRANSLATE,
+]);
 
-  {
-    id: "rewrite",
-    icon: "✍️",
-    title: "Réécrire",
-    description: "Améliorer le texte",
-  },
-
-  {
-    id: "correct",
-    icon: "📝",
-    title: "Corriger",
-    description: "Orthographe & style",
-  },
-
-  {
-    id: "summary",
-    icon: "📄",
-    title: "Résumer",
-    description: "Créer un résumé",
-  },
-
-  {
-    id: "translate",
-    icon: "🌍",
-    title: "Traduire",
-    description: "Changer de langue",
-  },
-];
+let cleanup = null;
 
 export function AIPanel() {
   return `
@@ -55,8 +27,9 @@ export function AIPanel() {
 
             <section class="ai-actions">
 
-                ${ACTIONS.map(
-                  (action) => `
+                ${panelActions
+                  .map(
+                    (action) => `
 
                     <button
                         id="ai-${action.id}"
@@ -87,7 +60,8 @@ export function AIPanel() {
                     </button>
 
                 `
-                ).join("")}
+                  )
+                  .join("")}
 
             </section>
 
@@ -95,7 +69,7 @@ export function AIPanel() {
 
                 <small>
 
-                    GPT non connecté
+                    <span id="ai-status">IA inactive</span>
 
                 </small>
 
@@ -104,4 +78,23 @@ export function AIPanel() {
         </aside>
 
     `;
+}
+
+export function initAIPanel(signal) {
+  destroyAIPanel();
+
+  cleanup = observeAIWorkspace(({ status }) => {
+    const statusElement = document.getElementById("ai-status");
+
+    if (statusElement) {
+      statusElement.textContent = getAIStatusLabel(status);
+    }
+  });
+
+  signal?.addEventListener("abort", destroyAIPanel, { once: true });
+}
+
+export function destroyAIPanel() {
+  cleanup?.();
+  cleanup = null;
 }

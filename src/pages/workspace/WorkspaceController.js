@@ -5,12 +5,22 @@ import {
   initChapterEditor,
 } from "../../components/ChapterEditor";
 import { WorkspaceLayout } from "../../components/layout/WorkspaceLayout";
+import { destroyAIPanel, initAIPanel } from "../../components/layout/AIPanel";
 import { initRibbon } from "../../components/layout/RibbonController";
+import {
+  destroyStatusBar,
+  initStatusBar,
+} from "../../components/layout/StatusBar";
 import {
   destroyWorkspaceSidebar,
   initWorkspaceSidebar,
 } from "../../components/layout/WorkspaceSidebar";
 import { resetExplorerPanels } from "../../components/explorer/ExplorerPanelRegistry";
+import {
+  getAIWorkspaceState,
+  initializeAIWorkspace,
+  resetAIWorkspace,
+} from "../../services/ai/AIWorkspaceService";
 import {
   clearCurrentChapter,
   getCurrentChapter,
@@ -81,10 +91,17 @@ export class WorkspaceController {
 
     this.abortController = new AbortController();
 
+    initializeAIWorkspace();
+
     this.registerEvents(this.abortController.signal);
     initWorkspaceSidebar(this.abortController.signal, {
       onChapterChange: () => this.refreshSession(),
       onChapterSelect: (chapterId) => this.selectChapter(chapterId),
+    });
+    initAIPanel(this.abortController.signal);
+    initStatusBar({
+      getWorkspaceState: () => this.getStatusState(),
+      signal: this.abortController.signal,
     });
 
     this.editorFrame = requestAnimationFrame(() => {
@@ -111,8 +128,12 @@ export class WorkspaceController {
     this.abortController?.abort();
     this.abortController = null;
 
+    destroyAIPanel();
+    destroyStatusBar();
     destroyWorkspaceSidebar();
     destroyChapterEditor();
+
+    resetAIWorkspace();
   }
 
   openProject(project) {
@@ -208,6 +229,20 @@ export class WorkspaceController {
     }
 
     this.session.chapterId = chapter.id;
+  }
+
+  getStatusState() {
+    const project = getCurrentProject();
+    const chapter = getCurrentChapter();
+    const { status: aiStatus } = getAIWorkspaceState();
+
+    return {
+      projectName: project?.name || "Aucun projet",
+      chapterTitle: chapter?.title || "Aucun chapitre",
+      chapterCount: project?.chapters?.length || 0,
+      saveStatus: "Sauvegarde automatique",
+      aiStatus,
+    };
   }
 
   renderWorkspace() {
