@@ -10,12 +10,19 @@ export function ChapterList() {
     return `
       <div class="chapter-empty">
 
-        <h3>Aucun chapitre</h3>
+        <span class="chapter-empty-icon">📖</span>
 
-        <p>
-          Cliquez sur <strong>Nouveau chapitre</strong>
-          pour commencer.
-        </p>
+        <h3>Pas encore de chapitre</h3>
+
+        <p>Créez votre premier chapitre pour commencer.</p>
+
+        <button
+          id="createFirstChapter"
+          class="primary-button">
+
+          Créer un chapitre
+
+        </button>
 
       </div>
     `;

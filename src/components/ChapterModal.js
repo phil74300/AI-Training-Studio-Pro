@@ -54,7 +54,7 @@ export function initChapterModal(refresh, signal) {
     (event) => {
       if (
         !(event.target instanceof Element) ||
-        !event.target.closest("#newChapter")
+        !event.target.closest("#newChapter, #createFirstChapter")
       ) {
         return;
       }

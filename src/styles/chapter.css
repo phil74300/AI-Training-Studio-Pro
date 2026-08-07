@@ -58,6 +58,38 @@
   background: #363636;
 }
 
+.chapter-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 32px 12px;
+
+  color: var(--text-secondary);
+
+  text-align: center;
+}
+
+.chapter-empty-icon {
+  font-size: 28px;
+}
+
+.chapter-empty h3 {
+  color: var(--text);
+
+  font-size: 15px;
+}
+
+.chapter-empty p {
+  font-size: 13px;
+}
+
+.chapter-empty .primary-button {
+  width: 100%;
+}
+
 .chapter-icon {
   font-size: 26px;
 }
