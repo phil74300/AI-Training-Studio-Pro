@@ -8,6 +8,11 @@ import {
 import { WorkspaceLayout } from "../../components/layout/WorkspaceLayout";
 import { initRibbon } from "../../components/layout/RibbonController";
 import {
+  destroyWorkspaceSidebar,
+  initWorkspaceSidebar,
+} from "../../components/layout/WorkspaceSidebar";
+import { resetExplorerPanels } from "../../components/explorer/ExplorerPanelRegistry";
+import {
   clearCurrentChapter,
   getCurrentChapter,
   selectChapter as selectCurrentChapter,
@@ -94,6 +99,7 @@ export class WorkspaceController {
     this.abortController = new AbortController();
 
     this.registerEvents(this.abortController.signal);
+    initWorkspaceSidebar(this.abortController.signal);
 
     this.editorFrame = requestAnimationFrame(() => {
       this.editorFrame = null;
@@ -119,6 +125,7 @@ export class WorkspaceController {
     this.abortController?.abort();
     this.abortController = null;
 
+    destroyWorkspaceSidebar();
     destroyChapterEditor();
   }
 
@@ -142,6 +149,7 @@ export class WorkspaceController {
 
   reset() {
     this.destroy();
+    resetExplorerPanels();
     clearCurrentChapter();
 
     this.session.projectId = null;

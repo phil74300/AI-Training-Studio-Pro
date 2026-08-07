@@ -1,53 +1,10 @@
-/* ==========================================================
-   AI TRAINING STUDIO
-   Workspace Sidebar
-========================================================== */
-
-const MENU = [
-  {
-    id: "chapters",
-    icon: "📖",
-    label: "Chapitres",
-  },
-
-  {
-    id: "sources",
-    icon: "📚",
-    label: "Sources",
-  },
-
-  {
-    id: "media",
-    icon: "🖼️",
-    label: "Médias",
-  },
-
-  {
-    id: "quiz",
-    icon: "❓",
-    label: "Quiz",
-  },
-
-  {
-    id: "ai",
-    icon: "🤖",
-    label: "Assistant IA",
-  },
-
-  {
-    id: "exports",
-    icon: "📤",
-    label: "Exports",
-  },
-
-  {
-    id: "settings",
-    icon: "⚙️",
-    label: "Paramètres",
-  },
-];
-
-const ACTIVE_PANEL = "chapters";
+import {
+  getActiveExplorerPanel,
+  getExplorerPanels,
+  mountActiveExplorerPanel,
+  setActiveExplorerPanel,
+  destroyActiveExplorerPanel,
+} from "../explorer/ExplorerPanelRegistry";
 
 export function WorkspaceSidebar() {
   return `
@@ -64,30 +21,13 @@ export function WorkspaceSidebar() {
 
             <nav class="workspace-sidebar-menu">
 
-                ${MENU.map(
-                  (item) => `
-
-                    <button
-                        id="workspace-${item.id}"
-                        class="workspace-sidebar-item ${item.id === ACTIVE_PANEL ? "active" : ""}"
-                        data-panel="${item.id}">
-
-                        <span class="workspace-sidebar-icon">
-
-                            ${item.icon}
-
-                        </span>
-
-                        <span class="workspace-sidebar-label">
-
-                            ${item.label}
-
-                        </span>
-
-                    </button>
-
-                `
-                ).join("")}
+                ${getExplorerPanels()
+                  .map((panel) =>
+                    panel.render({
+                      active: panel.id === getActiveExplorerPanel()?.id,
+                    })
+                  )
+                  .join("")}
 
             </nav>
 
@@ -100,4 +40,40 @@ export function WorkspaceSidebar() {
         </aside>
 
     `;
+}
+
+export function initWorkspaceSidebar(signal) {
+  getExplorerPanels().forEach((panel) => {
+    const button = document.getElementById(`workspace-${panel.id}`);
+
+    if (!button) return;
+
+    button.addEventListener(
+      "click",
+      () => {
+        if (setActiveExplorerPanel(panel.id)) {
+          updateActivePanel();
+        }
+      },
+      { signal }
+    );
+  });
+
+  mountActiveExplorerPanel();
+}
+
+export function destroyWorkspaceSidebar() {
+  destroyActiveExplorerPanel();
+}
+
+function updateActivePanel() {
+  const activePanel = getActiveExplorerPanel();
+
+  getExplorerPanels().forEach((panel) => {
+    const button = document.getElementById(`workspace-${panel.id}`);
+
+    if (!button) return;
+
+    button.classList.toggle("active", panel.id === activePanel?.id);
+  });
 }
