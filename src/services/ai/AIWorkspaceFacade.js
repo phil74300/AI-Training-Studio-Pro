@@ -1,4 +1,4 @@
-import { AIProviderManager } from "./AIProviderManager";
+import { createAIProviderManager } from "./AIProviderComposition";
 
 const providerManagerMethods = Object.freeze([
   "listProviders",
@@ -19,7 +19,7 @@ const isProviderManager = (providerManager) => {
 export class AIWorkspaceFacade {
   #providerManager;
 
-  constructor(providerManager = new AIProviderManager()) {
+  constructor(providerManager = createAIProviderManager()) {
     if (!isProviderManager(providerManager)) {
       throw new TypeError(
         "AIWorkspaceFacade requires an AI provider manager contract."

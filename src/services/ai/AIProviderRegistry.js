@@ -86,6 +86,21 @@ export class AIProviderRegistry {
   }
 
   #createDescriptor(provider) {
+    if (provider.descriptor) {
+      if (
+        typeof provider.descriptor !== "object" ||
+        !Object.isFrozen(provider.descriptor)
+      ) {
+        throw new TypeError("AI provider descriptor must be immutable.");
+      }
+
+      if (provider.descriptor.id !== provider.id) {
+        throw new Error("AI provider descriptor id does not match adapter id.");
+      }
+
+      return provider.descriptor;
+    }
+
     return Object.freeze({
       id: provider.id,
     });
