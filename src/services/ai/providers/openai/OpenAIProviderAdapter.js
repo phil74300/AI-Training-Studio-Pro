@@ -1,4 +1,8 @@
 import { AIProviderAdapter } from "../../AIProviderAdapter";
+import {
+  AIProviderHealth,
+  AIProviderHealthStatus,
+} from "../../AIProviderHealth";
 import { AIRequest } from "../../AIRequest";
 import { AIResponse } from "../../AIResponse";
 import { OpenAIConfigurationValidator } from "./configuration/OpenAIConfigurationValidator";
@@ -28,11 +32,27 @@ const createOfflineError = ({ requestId, modelId }) =>
   });
 
 export class OpenAIProviderAdapter extends AIProviderAdapter {
-  constructor() {
+  #healthCheckService;
+
+  constructor({ healthCheckService = null } = {}) {
     super(OPENAI_PROVIDER_ID);
 
+    if (
+      healthCheckService !== null &&
+      typeof healthCheckService?.check !== "function"
+    ) {
+      throw new TypeError(
+        "OpenAIProviderAdapter requires a health-check service contract."
+      );
+    }
+
+    this.#healthCheckService = healthCheckService;
+
     Object.defineProperty(this, "descriptor", {
-      value: new OpenAIProviderDescriptor({ models: OPENAI_MODEL_CATALOG }),
+      value: new OpenAIProviderDescriptor({
+        models: OPENAI_MODEL_CATALOG,
+        liveHealthCheck: healthCheckService !== null,
+      }),
       enumerable: true,
       writable: false,
     });
@@ -76,15 +96,38 @@ export class OpenAIProviderAdapter extends AIProviderAdapter {
     });
   }
 
-  healthCheck() {
-    return Object.freeze({
-      providerId: this.id,
-      available: false,
-      live: false,
-      reason: "Live OpenAI health checks are not available in AI-7.1.",
-      metadata: Object.freeze({
-        openai: Object.freeze({ networkRequestPerformed: false }),
-      }),
-    });
+  healthCheck(config = {}) {
+    const checkedAt = new Date();
+    const validation = configurationValidator.validate(config);
+
+    if (!validation.valid || !validation.configuration.enabled) {
+      return AIProviderHealth.failed({
+        providerId: this.id,
+        status: AIProviderHealthStatus.INVALID_CONFIGURATION,
+        checkedAt,
+        error: {
+          code: "openai-invalid-configuration",
+          retryable: false,
+          message: "The OpenAI configuration is invalid or disabled.",
+        },
+        metadata: { networkRequestPerformed: false },
+      });
+    }
+
+    if (!this.#healthCheckService) {
+      return AIProviderHealth.failed({
+        providerId: this.id,
+        status: AIProviderHealthStatus.INVALID_CONFIGURATION,
+        checkedAt,
+        error: {
+          code: "openai-trusted-health-check-unavailable",
+          retryable: false,
+          message: "The trusted OpenAI health-check service is unavailable.",
+        },
+        metadata: { networkRequestPerformed: false },
+      });
+    }
+
+    return this.#healthCheckService.check(validation.configuration);
   }
 }

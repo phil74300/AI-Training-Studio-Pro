@@ -157,6 +157,24 @@ healthCheck(config)
 
 Adapters must return or emit normalized contracts. Provider-specific errors must be mapped to stable categories while retaining safe diagnostic metadata. Providers must never manipulate the editor or UI directly.
 
+### Provider health checks
+
+Provider health checks use the provider-manager-controlled availability path and are separate from content execution tasks. They do not render prompts, create tasks or results, or generate content.
+
+The normalized provider health states are:
+
+- `AVAILABLE`;
+- `UNAUTHORIZED`;
+- `FORBIDDEN`;
+- `UNREACHABLE`;
+- `TIMEOUT`;
+- `INVALID_CONFIGURATION`;
+- `UNKNOWN_ERROR`.
+
+An unavailable health result contains only a stable error code, its normalized category, a retryable flag, and a human-readable message. Raw provider errors, response bodies, stack traces, authorization headers, and credential material must not cross the trusted boundary.
+
+Health checks requiring credentials execute only in trusted Electron code. The trusted health service resolves the credential through `CredentialStore`, performs the minimum non-generative provider request, and returns a normalized health result through `AIProviderManager`. Renderer-safe provider composition remains network-inert when no trusted health service is supplied.
+
 ## 7. Provider and model capabilities
 
 Capabilities are discovered at the model level because models from the same provider may differ. A normalized capability descriptor must cover:

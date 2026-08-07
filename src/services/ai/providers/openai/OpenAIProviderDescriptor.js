@@ -2,7 +2,7 @@ import { AIProviderCapabilities } from "../../AIProviderCapabilities";
 import { OPENAI_PROVIDER_ID } from "./OpenAIModelDescriptor";
 
 export class OpenAIProviderDescriptor {
-  constructor({ models }) {
+  constructor({ models, liveHealthCheck = false }) {
     if (!Array.isArray(models) || models.length === 0) {
       throw new TypeError(
         "OpenAIProviderDescriptor requires at least one model descriptor."
@@ -18,8 +18,10 @@ export class OpenAIProviderDescriptor {
     this.availability = Object.freeze({
       state: "unavailable",
       liveExecution: false,
-      liveHealthCheck: false,
-      reason: "Live OpenAI integration is not available in AI-7.1.",
+      liveHealthCheck,
+      reason: liveHealthCheck
+        ? "Live health checks are available through the trusted boundary."
+        : "A trusted OpenAI health-check service is not configured.",
     });
     this.models = Object.freeze([...models]);
     this.capabilities = new AIProviderCapabilities({

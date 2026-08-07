@@ -1,4 +1,5 @@
 import { AIProviderCapabilities } from "./AIProviderCapabilities";
+import { AIProviderHealth, AIProviderHealthStatus } from "./AIProviderHealth";
 import { AIProviderRegistry } from "./AIProviderRegistry";
 import { AIRequest } from "./AIRequest";
 import { AIResponse } from "./AIResponse";
@@ -26,6 +27,18 @@ const normalizeCheck = (result, property) => {
 
   return result?.[property] === true;
 };
+
+const createHealthError = (providerId, status, code, message) =>
+  AIProviderHealth.failed({
+    providerId,
+    status,
+    checkedAt: new Date(),
+    error: {
+      code,
+      retryable: status === AIProviderHealthStatus.UNKNOWN_ERROR,
+      message,
+    },
+  });
 
 export class AIProviderManager {
   #registry;
@@ -74,11 +87,27 @@ export class AIProviderManager {
         providerId: resolvedProviderId,
         available: false,
         validation,
-        health: null,
+        health: createHealthError(
+          resolvedProviderId,
+          AIProviderHealthStatus.INVALID_CONFIGURATION,
+          "provider-invalid-configuration",
+          "The AI provider configuration is invalid."
+        ),
       });
     }
 
-    const health = await this.#registry.healthCheck(resolvedProviderId, config);
+    let health;
+
+    try {
+      health = await this.#registry.healthCheck(resolvedProviderId, config);
+    } catch {
+      health = createHealthError(
+        resolvedProviderId,
+        AIProviderHealthStatus.UNKNOWN_ERROR,
+        "provider-health-check-failed",
+        "The AI provider health check failed."
+      );
+    }
 
     return Object.freeze({
       providerId: resolvedProviderId,

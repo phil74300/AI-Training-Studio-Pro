@@ -3,11 +3,13 @@ import { AIProviderRegistry } from "./AIProviderRegistry";
 import { MockAIProviderAdapter } from "./providers/MockAIProviderAdapter";
 import { OpenAIProviderAdapter } from "./providers/openai/OpenAIProviderAdapter";
 
-export const createAIProviderRegistry = () =>
+export const createAIProviderRegistry = ({
+  openAIHealthCheckService = null,
+} = {}) =>
   new AIProviderRegistry([
     new MockAIProviderAdapter(),
-    new OpenAIProviderAdapter(),
+    new OpenAIProviderAdapter({ healthCheckService: openAIHealthCheckService }),
   ]);
 
-export const createAIProviderManager = () =>
-  new AIProviderManager(createAIProviderRegistry());
+export const createAIProviderManager = (options = {}) =>
+  new AIProviderManager(createAIProviderRegistry(options));
