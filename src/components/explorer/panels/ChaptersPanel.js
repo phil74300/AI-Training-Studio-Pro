@@ -22,7 +22,11 @@ export const ChaptersPanel = {
 
         </div>
 
-        ${ChapterList()}
+        <div class="explorer-chapter-list">
+
+          ${ChapterList()}
+
+        </div>
 
       </div>
 
