@@ -58,6 +58,9 @@ body {
 
   --accent: #0e639c;
   --accent-hover: #1177bb;
+  --surface-hover: #363636;
+  --surface-active: #2d3f52;
+  --focus-ring: #4fc3f7;
 
   --border: #3c3c3c;
 
@@ -207,6 +210,11 @@ body {
 
 button {
   font: inherit;
+}
+
+.workspace-layout :is(button, input, [contenteditable="true"]):focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 .primary-button {

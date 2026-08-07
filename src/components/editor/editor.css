@@ -5,11 +5,11 @@
 
   flex-wrap: wrap;
 
-  gap: 8px;
+  gap: 6px;
 
-  padding: 12px;
+  padding: 10px;
 
-  margin-bottom: 15px;
+  margin-bottom: 12px;
 
   border: 1px solid var(--border);
 
@@ -39,17 +39,20 @@
 
   background: transparent;
 
-  color: white;
+  color: var(--text);
 
   cursor: pointer;
 
   font-size: 15px;
 
-  transition: all 0.15s ease;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    transform 0.12s ease;
 }
 
 .toolbar-button:hover:not(:disabled) {
-  background: var(--accent);
+  background: var(--surface-hover);
 }
 
 .toolbar-button.active {
@@ -65,7 +68,7 @@
 .toolbar-button:disabled {
   opacity: 0.35;
 
-  cursor: default;
+  cursor: not-allowed;
 }
 
 .tiptap-editor {
@@ -86,6 +89,8 @@
   line-height: 1.7;
 
   outline: none;
+
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 .tiptap-editor h1 {
@@ -131,4 +136,6 @@
 
 .tiptap-editor:focus {
   border-color: var(--accent);
+
+  box-shadow: 0 0 0 2px rgba(79, 195, 247, 0.3);
 }

@@ -30,7 +30,7 @@
 .workspace-sidebar-header {
   flex: 0 0 auto;
 
-  padding: 22px 20px;
+  padding: 18px 18px 16px;
 
   border-bottom: 1px solid var(--layout-border);
 }
@@ -56,14 +56,21 @@
 ========================================================== */
 
 .workspace-sidebar-menu {
-  flex: 0 0 auto;
+  flex: 0 1 auto;
 
   display: flex;
   flex-direction: column;
 
-  gap: 8px;
+  gap: 4px;
 
-  padding: 16px;
+  min-height: 0;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  padding: 12px;
+
+  scrollbar-gutter: stable;
 }
 
 .workspace-sidebar-panel {
@@ -74,7 +81,7 @@
 
   overflow: hidden;
 
-  padding: 0 16px 16px;
+  padding: 0 12px 12px;
 }
 
 .explorer-chapters {
@@ -103,6 +110,10 @@
 
   overflow-x: hidden;
   overflow-y: auto;
+
+  padding-right: 2px;
+
+  scrollbar-gutter: stable;
 }
 
 .chapter-list,
@@ -129,12 +140,12 @@
   display: flex;
   align-items: center;
 
-  gap: 14px;
+  gap: 10px;
 
   width: 100%;
-  height: 46px;
+  min-height: 42px;
 
-  padding: 0 16px;
+  padding: 0 12px;
 
   border: none;
   border-radius: 10px;
@@ -152,7 +163,7 @@
 }
 
 .workspace-sidebar-item:hover {
-  background: #363636;
+  background: var(--surface-hover);
 }
 
 .workspace-sidebar-item:active {
@@ -160,7 +171,9 @@
 }
 
 .workspace-sidebar-item.active {
-  background: var(--accent);
+  background: var(--surface-active);
+
+  box-shadow: inset 3px 0 0 var(--focus-ring);
 
   font-weight: 600;
 }
@@ -208,7 +221,7 @@
 
   margin-top: auto;
 
-  padding: 18px 20px;
+  padding: 14px 18px;
 
   border-top: 1px solid var(--layout-border);
 

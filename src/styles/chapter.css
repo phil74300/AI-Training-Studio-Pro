@@ -1,10 +1,11 @@
 .chapter-card {
   display: flex;
   align-items: center;
-  gap: 15px;
-  padding: 18px;
-  margin-bottom: 12px;
+  gap: 12px;
+  padding: 12px;
+  margin-bottom: 8px;
   background: #353538;
+  border: 1px solid transparent;
   border-radius: 10px;
   cursor: pointer;
   transition: 0.2s;
@@ -12,12 +13,12 @@
 }
 
 .chapter-card:hover {
-  background: #404044;
+  background: var(--surface-hover);
 }
 
 .chapter-card.active {
-  background: #2d3f52;
-  border-left-color: #4fc3f7;
+  background: var(--surface-active);
+  border-left-color: var(--focus-ring);
 }
 
 .chapter-context-menu {
@@ -55,7 +56,7 @@
 }
 
 .chapter-context-menu button:hover {
-  background: #363636;
+  background: var(--surface-hover);
 }
 
 .chapter-empty {
@@ -65,7 +66,9 @@
 
   gap: 12px;
 
-  padding: 32px 12px;
+  min-height: 100%;
+
+  padding: 28px 12px;
 
   color: var(--text-secondary);
 
@@ -88,22 +91,42 @@
 
 .chapter-empty .primary-button {
   width: 100%;
+
+  max-width: 220px;
 }
 
 .chapter-icon {
-  font-size: 26px;
+  flex: 0 0 auto;
+
+  font-size: 22px;
 }
 
 .chapter-info {
   flex: 1;
+
+  min-width: 0;
 }
 
 .chapter-info h4 {
   margin-bottom: 5px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
 }
 
 .chapter-info small {
+  display: block;
+
   color: #9c9c9c;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
 }
 
 .workspace-separator {
@@ -115,44 +138,32 @@
 .chapter-editor {
   display: flex;
   flex-direction: column;
+
+  min-width: 0;
 }
 
 .editor-title {
   width: 100%;
-  background: #252526;
-  color: white;
-  border: none;
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 15px;
+  padding: 14px 16px;
   font-size: 24px;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
 }
 
 .editor-content {
   width: 100%;
-  height: 400px;
 
-  background: #252526;
-
-  color: white;
-
-  border: none;
-
-  border-radius: 10px;
-
-  padding: 20px;
-
-  resize: none;
-
-  font-size: 15px;
-
-  line-height: 1.6;
+  min-width: 0;
+  min-height: 0;
 }
 
 .editor-empty {
   text-align: center;
 
-  padding: 80px;
+  padding: clamp(48px, 12vh, 120px) 24px;
 
   color: #8c8c8c;
 }
