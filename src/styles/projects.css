@@ -1,39 +1,39 @@
-.projects-toolbar{
-    display:flex;
-    justify-content:flex-end;
-    margin-bottom:25px;
+.projects-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 25px;
 }
 
-.project-list{
-    display:flex;
-    flex-direction:column;
-    gap:18px;
+.project-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
-.project-card{
-    display:flex;
-    align-items:center;
-    background:#2d2d30;
-    border-radius:12px;
-    padding:22px;
-    transition:.2s;
-    cursor:pointer;
+.project-card {
+  display: flex;
+  align-items: center;
+  background: #2d2d30;
+  border-radius: 12px;
+  padding: 22px;
+  transition: 0.2s;
+  cursor: pointer;
 }
 
-.project-card:hover{
-    transform:translateY(-2px);
-    background:#343438;
+.project-card:hover {
+  transform: translateY(-2px);
+  background: #343438;
 }
 
-.project-icon{
-    font-size:40px;
-    margin-right:25px;
+.project-icon {
+  font-size: 40px;
+  margin-right: 25px;
 }
 
-.project-info h3{
-    margin-bottom:8px;
+.project-info h3 {
+  margin-bottom: 8px;
 }
 
-.project-info p{
-    color:#bdbdbd;
+.project-info p {
+  color: #bdbdbd;
 }

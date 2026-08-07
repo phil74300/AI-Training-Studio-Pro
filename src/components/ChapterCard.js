@@ -1,7 +1,6 @@
 import { selectChapter } from "../services/ChapterService";
 
 export function ChapterCard(chapter) {
-
   return `
     <div
       class="chapter-card"
@@ -23,23 +22,14 @@ export function ChapterCard(chapter) {
 
     </div>
   `;
-
 }
 
 export function initChapterCards(refresh) {
+  document.querySelectorAll(".chapter-card").forEach((card) => {
+    card.onclick = () => {
+      selectChapter(card.dataset.id);
 
-  document
-    .querySelectorAll(".chapter-card")
-    .forEach(card => {
-
-      card.onclick = () => {
-
-        selectChapter(card.dataset.id);
-
-        refresh();
-
-      };
-
-    });
-
+      refresh();
+    };
+  });
 }

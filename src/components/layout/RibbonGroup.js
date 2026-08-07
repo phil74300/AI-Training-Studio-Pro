@@ -1,23 +1,13 @@
-import {
-  RibbonButton
-} from "./RibbonButton";
+import { RibbonButton } from "./RibbonButton";
 
-export function RibbonGroup(
-  title,
-  buttons = []
-) {
-
+export function RibbonGroup(title, buttons = []) {
   return `
 
 <div class="ribbon-group">
 
     <div class="ribbon-buttons">
 
-        ${buttons.map(button =>
-
-            RibbonButton(button)
-
-        ).join("")}
+        ${buttons.map((button) => RibbonButton(button)).join("")}
 
     </div>
 
@@ -30,5 +20,4 @@ export function RibbonGroup(
 </div>
 
 `;
-
 }

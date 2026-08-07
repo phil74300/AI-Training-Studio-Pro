@@ -1,7 +1,6 @@
 import { hasProjectOpen } from "../services/WorkspaceService";
 
 export function Sidebar(active = "dashboard") {
-
   const item = (id, icon, label) => `
     <button
       class="${active === id ? "active" : ""}"
@@ -19,11 +18,7 @@ export function Sidebar(active = "dashboard") {
       ${item("dashboard", "🏠", "Dashboard")}
       ${item("projects", "📁", "Projets")}
 
-      ${
-        hasProjectOpen()
-          ? item("workspace", "💼", "Workspace")
-          : ""
-      }
+      ${hasProjectOpen() ? item("workspace", "💼", "Workspace") : ""}
 
       ${item("books", "📚", "Livres")}
       ${item("training", "🎓", "Formations")}
@@ -34,5 +29,4 @@ export function Sidebar(active = "dashboard") {
     </aside>
 
   `;
-
 }

@@ -8,207 +8,175 @@
    VARIABLES
 ========================================================== */
 
-:root{
+:root {
+  --layout-header-height: 72px;
+  --layout-footer-height: 40px;
 
-    --layout-header-height:72px;
-    --layout-footer-height:40px;
+  --workspace-sidebar-width: 260px;
+  --workspace-ai-width: 340px;
 
-    --workspace-sidebar-width:260px;
-    --workspace-ai-width:340px;
+  --layout-background: var(--bg);
+  --panel-background: var(--panel);
+  --editor-background: var(--card);
 
-    --layout-background:var(--bg);
-    --panel-background:var(--panel);
-    --editor-background:var(--card);
+  --layout-border: var(--border);
 
-    --layout-border:var(--border);
-
-    --layout-radius:10px;
-
+  --layout-radius: 10px;
 }
 
 /* ==========================================================
    WORKSPACE
 ========================================================== */
 
-.workspace-layout{
+.workspace-layout {
+  display: flex;
+  flex-direction: column;
 
-    display:flex;
-    flex-direction:column;
+  flex: 1;
 
-    flex:1;
+  width: 100%;
+  height: 100%;
 
-    width:100%;
-    height:100%;
+  min-width: 0;
+  min-height: 0;
 
-    min-width:0;
-    min-height:0;
+  overflow: hidden;
 
-    overflow:hidden;
+  background: var(--layout-background);
 
-    background:var(--layout-background);
+  border: 1px solid var(--layout-border);
 
-    border:1px solid var(--layout-border);
-
-    border-radius:var(--layout-radius);
-
+  border-radius: var(--layout-radius);
 }
 
 /* ==========================================================
    HEADER
 ========================================================== */
 
-.layout-header{
+.layout-header {
+  flex: 0 0 var(--layout-header-height);
 
-    flex:0 0 var(--layout-header-height);
+  display: flex;
+  align-items: center;
 
-    display:flex;
-    align-items:center;
+  min-height: var(--layout-header-height);
 
-    min-height:var(--layout-header-height);
+  overflow: hidden;
 
-    overflow:hidden;
+  background: var(--panel-background);
 
-    background:var(--panel-background);
-
-    border-bottom:1px solid var(--layout-border);
-
+  border-bottom: 1px solid var(--layout-border);
 }
 
 /* ==========================================================
    BODY
 ========================================================== */
 
-.layout-body{
+.layout-body {
+  flex: 1;
 
-    flex:1;
+  display: grid;
 
-    display:grid;
+  grid-template-columns:
+    var(--workspace-sidebar-width)
+    minmax(0, 1fr)
+    var(--workspace-ai-width);
 
-    grid-template-columns:
-        var(--workspace-sidebar-width)
-        minmax(0,1fr)
-        var(--workspace-ai-width);
+  min-height: 0;
 
-    min-height:0;
-
-    overflow:hidden;
-
+  overflow: hidden;
 }
 
 /* ==========================================================
    SIDEBAR
 ========================================================== */
 
-.layout-sidebar{
+.layout-sidebar {
+  overflow: auto;
 
-    overflow:auto;
+  background: var(--panel-background);
 
-    background:var(--panel-background);
-
-    border-right:1px solid var(--layout-border);
-
+  border-right: 1px solid var(--layout-border);
 }
 
 /* ==========================================================
    EDITOR
 ========================================================== */
 
-.layout-editor{
+.layout-editor {
+  display: flex;
+  flex-direction: column;
 
-    display:flex;
-    flex-direction:column;
+  min-width: 0;
+  min-height: 0;
 
-    min-width:0;
-    min-height:0;
+  overflow: hidden;
 
-    overflow:hidden;
+  padding: 24px;
 
-    padding:24px;
-
-    background:var(--editor-background);
-
+  background: var(--editor-background);
 }
 
 /* ==========================================================
    IA
 ========================================================== */
 
-.layout-ai{
+.layout-ai {
+  overflow: auto;
 
-    overflow:auto;
+  background: var(--panel-background);
 
-    background:var(--panel-background);
-
-    border-left:1px solid var(--layout-border);
-
+  border-left: 1px solid var(--layout-border);
 }
 
 /* ==========================================================
    FOOTER
 ========================================================== */
 
-.layout-footer{
+.layout-footer {
+  flex: 0 0 var(--layout-footer-height);
 
-    flex:0 0 var(--layout-footer-height);
+  display: flex;
+  align-items: center;
 
-    display:flex;
-    align-items:center;
+  overflow: hidden;
 
-    overflow:hidden;
+  background: var(--panel-background);
 
-    background:var(--panel-background);
-
-    border-top:1px solid var(--layout-border);
-
+  border-top: 1px solid var(--layout-border);
 }
 
 /* ==========================================================
    RESPONSIVE
 ========================================================== */
 
-@media (max-width:1400px){
-
-    .layout-body{
-
-        grid-template-columns:
-            220px
-            minmax(0,1fr)
-            300px;
-
-    }
-
+@media (max-width: 1400px) {
+  .layout-body {
+    grid-template-columns:
+      220px
+      minmax(0, 1fr)
+      300px;
+  }
 }
 
-@media (max-width:1100px){
+@media (max-width: 1100px) {
+  .layout-body {
+    grid-template-columns:
+      220px
+      minmax(0, 1fr);
+  }
 
-    .layout-body{
-
-        grid-template-columns:
-            220px
-            minmax(0,1fr);
-
-    }
-
-    .layout-ai{
-
-        display:none;
-
-    }
-
+  .layout-ai {
+    display: none;
+  }
 }
 
-@media (max-width:900px){
+@media (max-width: 900px) {
+  .layout-body {
+    grid-template-columns: 1fr;
+  }
 
-    .layout-body{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .layout-sidebar{
-
-        display:none;
-
-    }
-
+  .layout-sidebar {
+    display: none;
+  }
 }

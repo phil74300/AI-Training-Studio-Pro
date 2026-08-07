@@ -1,18 +1,11 @@
-import {
-  getChapters
-} from "../services/ChapterService";
+import { getChapters } from "../services/ChapterService";
 
-import {
-  ChapterCard,
-  initChapterCards
-} from "./ChapterCard";
+import { ChapterCard, initChapterCards } from "./ChapterCard";
 
-export function ChapterList(refresh) {
-
+export function ChapterList() {
   const chapters = getChapters();
 
   if (chapters.length === 0) {
-
     return `
       <div class="chapter-empty">
 
@@ -25,25 +18,19 @@ export function ChapterList(refresh) {
 
       </div>
     `;
-
   }
 
   let html = `<div class="chapter-list">`;
 
-  chapters.forEach(chapter => {
-
+  chapters.forEach((chapter) => {
     html += ChapterCard(chapter);
-
   });
 
   html += `</div>`;
 
   return html;
-
 }
 
 export function initChapterList(refresh) {
-
   initChapterCards(refresh);
-
 }

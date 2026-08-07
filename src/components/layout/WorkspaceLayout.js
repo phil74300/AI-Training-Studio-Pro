@@ -4,8 +4,7 @@ import { AIPanel } from "./AIPanel";
 import { StatusBar } from "./StatusBar";
 
 export function WorkspaceLayout(content = "") {
-
-    return `
+  return `
 
         <section class="workspace-layout">
 
@@ -46,5 +45,4 @@ export function WorkspaceLayout(content = "") {
         </section>
 
     `;
-
 }

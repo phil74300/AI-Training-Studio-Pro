@@ -1,7 +1,7 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,.65);
+  background: rgba(0, 0, 0, 0.65);
 
   display: flex;
   justify-content: center;
@@ -34,7 +34,6 @@
 .modal input,
 .modal textarea,
 .modal select {
-
   width: 100%;
 
   padding: 12px;
@@ -55,7 +54,6 @@
 }
 
 .modal-buttons {
-
   display: flex;
 
   justify-content: flex-end;
@@ -66,7 +64,6 @@
 }
 
 .modal-buttons button:not(.primary-button) {
-
   background: #444;
 
   color: white;

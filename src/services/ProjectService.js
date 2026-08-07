@@ -1,7 +1,4 @@
-import {
-  loadProjects,
-  saveProjects
-} from "./StorageService";
+import { loadProjects, saveProjects } from "./StorageService";
 
 let projects = [];
 
@@ -9,7 +6,6 @@ let projects = [];
  * Chargement des projets
  */
 export async function initProjectsStorage() {
-
   projects = await loadProjects();
 
   if (!Array.isArray(projects)) {
@@ -17,14 +13,11 @@ export async function initProjectsStorage() {
   }
 
   // Migration automatique
-  projects.forEach(project => {
-
+  projects.forEach((project) => {
     if (!project.chapters) {
       project.chapters = [];
     }
-
   });
-
 }
 
 /**
@@ -38,24 +31,14 @@ export function getProjects() {
  * Recherche
  */
 export function getProjectById(id) {
-
-  return projects.find(
-    project => project.id === id
-  );
-
+  return projects.find((project) => project.id === id);
 }
 
 /**
  * Création
  */
-export async function createProject(
-  name,
-  type,
-  description
-) {
-
+export async function createProject(name, type, description) {
   const project = {
-
     id: crypto.randomUUID(),
 
     name,
@@ -66,8 +49,7 @@ export async function createProject(
 
     chapters: [],
 
-    createdAt: new Date().toLocaleString()
-
+    createdAt: new Date().toLocaleString(),
   };
 
   projects.push(project);
@@ -75,17 +57,13 @@ export async function createProject(
   await saveProjects(projects);
 
   return project;
-
 }
 
 /**
  * Mise à jour
  */
 export async function updateProject(project) {
-
-  const index = projects.findIndex(
-    p => p.id === project.id
-  );
+  const index = projects.findIndex((p) => p.id === project.id);
 
   if (index === -1) {
     return false;
@@ -96,18 +74,13 @@ export async function updateProject(project) {
   await saveProjects(projects);
 
   return true;
-
 }
 
 /**
  * Suppression
  */
 export async function deleteProject(id) {
-
-  projects = projects.filter(
-    project => project.id !== id
-  );
+  projects = projects.filter((project) => project.id !== id);
 
   await saveProjects(projects);
-
 }

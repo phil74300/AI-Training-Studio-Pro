@@ -4,47 +4,44 @@
 ========================================================== */
 
 const ACTIONS = [
+  {
+    id: "generate",
+    icon: "✨",
+    title: "Générer",
+    description: "Créer un chapitre",
+  },
 
-    {
-        id: "generate",
-        icon: "✨",
-        title: "Générer",
-        description: "Créer un chapitre"
-    },
+  {
+    id: "rewrite",
+    icon: "✍️",
+    title: "Réécrire",
+    description: "Améliorer le texte",
+  },
 
-    {
-        id: "rewrite",
-        icon: "✍️",
-        title: "Réécrire",
-        description: "Améliorer le texte"
-    },
+  {
+    id: "correct",
+    icon: "📝",
+    title: "Corriger",
+    description: "Orthographe & style",
+  },
 
-    {
-        id: "correct",
-        icon: "📝",
-        title: "Corriger",
-        description: "Orthographe & style"
-    },
+  {
+    id: "summary",
+    icon: "📄",
+    title: "Résumer",
+    description: "Créer un résumé",
+  },
 
-    {
-        id: "summary",
-        icon: "📄",
-        title: "Résumer",
-        description: "Créer un résumé"
-    },
-
-    {
-        id: "translate",
-        icon: "🌍",
-        title: "Traduire",
-        description: "Changer de langue"
-    }
-
+  {
+    id: "translate",
+    icon: "🌍",
+    title: "Traduire",
+    description: "Changer de langue",
+  },
 ];
 
 export function AIPanel() {
-
-    return `
+  return `
 
         <aside class="ai-panel">
 
@@ -58,7 +55,8 @@ export function AIPanel() {
 
             <section class="ai-actions">
 
-                ${ACTIONS.map(action => `
+                ${ACTIONS.map(
+                  (action) => `
 
                     <button
                         id="ai-${action.id}"
@@ -88,7 +86,8 @@ export function AIPanel() {
 
                     </button>
 
-                `).join("")}
+                `
+                ).join("")}
 
             </section>
 
@@ -105,5 +104,4 @@ export function AIPanel() {
         </aside>
 
     `;
-
 }

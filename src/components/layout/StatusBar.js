@@ -4,32 +4,29 @@
 ========================================================== */
 
 const EXPORTS = [
+  {
+    id: "html",
+    label: "HTML",
+  },
 
-    {
-        id: "html",
-        label: "HTML"
-    },
+  {
+    id: "pdf",
+    label: "PDF",
+  },
 
-    {
-        id: "pdf",
-        label: "PDF"
-    },
+  {
+    id: "docx",
+    label: "DOCX",
+  },
 
-    {
-        id: "docx",
-        label: "DOCX"
-    },
-
-    {
-        id: "scorm",
-        label: "SCORM"
-    }
-
+  {
+    id: "scorm",
+    label: "SCORM",
+  },
 ];
 
 export function StatusBar() {
-
-    return `
+  return `
 
         <footer class="status-bar">
 
@@ -75,7 +72,8 @@ export function StatusBar() {
 
             <div class="status-right">
 
-                ${EXPORTS.map(format => `
+                ${EXPORTS.map(
+                  (format) => `
 
                     <button
                         id="export-${format.id}"
@@ -85,12 +83,12 @@ export function StatusBar() {
 
                     </button>
 
-                `).join("")}
+                `
+                ).join("")}
 
             </div>
 
         </footer>
 
     `;
-
 }

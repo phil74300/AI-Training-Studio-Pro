@@ -4,56 +4,53 @@
 ========================================================== */
 
 const MENU = [
+  {
+    id: "chapters",
+    icon: "📖",
+    label: "Chapitres",
+  },
 
-    {
-        id: "chapters",
-        icon: "📖",
-        label: "Chapitres"
-    },
+  {
+    id: "sources",
+    icon: "📚",
+    label: "Sources",
+  },
 
-    {
-        id: "sources",
-        icon: "📚",
-        label: "Sources"
-    },
+  {
+    id: "media",
+    icon: "🖼️",
+    label: "Médias",
+  },
 
-    {
-        id: "media",
-        icon: "🖼️",
-        label: "Médias"
-    },
+  {
+    id: "quiz",
+    icon: "❓",
+    label: "Quiz",
+  },
 
-    {
-        id: "quiz",
-        icon: "❓",
-        label: "Quiz"
-    },
+  {
+    id: "ai",
+    icon: "🤖",
+    label: "Assistant IA",
+  },
 
-    {
-        id: "ai",
-        icon: "🤖",
-        label: "Assistant IA"
-    },
+  {
+    id: "exports",
+    icon: "📤",
+    label: "Exports",
+  },
 
-    {
-        id: "exports",
-        icon: "📤",
-        label: "Exports"
-    },
-
-    {
-        id: "settings",
-        icon: "⚙️",
-        label: "Paramètres"
-    }
-
+  {
+    id: "settings",
+    icon: "⚙️",
+    label: "Paramètres",
+  },
 ];
 
 const ACTIVE_PANEL = "chapters";
 
 export function WorkspaceSidebar() {
-
-    return `
+  return `
 
         <aside class="workspace-sidebar">
 
@@ -67,7 +64,8 @@ export function WorkspaceSidebar() {
 
             <nav class="workspace-sidebar-menu">
 
-                ${MENU.map(item => `
+                ${MENU.map(
+                  (item) => `
 
                     <button
                         id="workspace-${item.id}"
@@ -88,7 +86,8 @@ export function WorkspaceSidebar() {
 
                     </button>
 
-                `).join("")}
+                `
+                ).join("")}
 
             </nav>
 
@@ -101,5 +100,4 @@ export function WorkspaceSidebar() {
         </aside>
 
     `;
-
 }

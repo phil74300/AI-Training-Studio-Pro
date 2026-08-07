@@ -1,94 +1,88 @@
-.chapter-card{
-  display:flex;
-  align-items:center;
-  gap:15px;
-  padding:18px;
-  margin-bottom:12px;
-  background:#353538;
-  border-radius:10px;
-  cursor:pointer;
-  transition:.2s;
-  border-left:4px solid transparent;
+.chapter-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 18px;
+  margin-bottom: 12px;
+  background: #353538;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+  border-left: 4px solid transparent;
 }
 
-.chapter-card:hover{
-  background:#404044;
+.chapter-card:hover {
+  background: #404044;
 }
 
-.chapter-card.active{
-  background:#2d3f52;
-  border-left-color:#4fc3f7;
+.chapter-card.active {
+  background: #2d3f52;
+  border-left-color: #4fc3f7;
 }
 
-.chapter-icon{
-  font-size:26px;
+.chapter-icon {
+  font-size: 26px;
 }
 
-.chapter-info{
-  flex:1;
+.chapter-info {
+  flex: 1;
 }
 
-.chapter-info h4{
-  margin-bottom:5px;
+.chapter-info h4 {
+  margin-bottom: 5px;
 }
 
-.chapter-info small{
-  color:#9c9c9c;
+.chapter-info small {
+  color: #9c9c9c;
 }
 
-.workspace-separator{
-  margin:30px 0;
-  border:none;
-  border-top:1px solid #3c3c3c;
+.workspace-separator {
+  margin: 30px 0;
+  border: none;
+  border-top: 1px solid #3c3c3c;
 }
 
-.chapter-editor{
-  display:flex;
-  flex-direction:column;
+.chapter-editor {
+  display: flex;
+  flex-direction: column;
 }
 
-.editor-title{
-
-  width:100%;
-  background:#252526;
-  color:white;
-  border:none;
-  border-radius:8px;
-  padding:15px;
-  font-size:24px;
-  margin-bottom:15px;
-
+.editor-title {
+  width: 100%;
+  background: #252526;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 15px;
+  font-size: 24px;
+  margin-bottom: 15px;
 }
 
-.editor-content{
+.editor-content {
+  width: 100%;
+  height: 400px;
 
-  width:100%;
-  height:400px;
+  background: #252526;
 
-  background:#252526;
+  color: white;
 
-  color:white;
+  border: none;
 
-  border:none;
+  border-radius: 10px;
 
-  border-radius:10px;
+  padding: 20px;
 
-  padding:20px;
+  resize: none;
 
-  resize:none;
+  font-size: 15px;
 
-  font-size:15px;
-
-  line-height:1.6;
-
+  line-height: 1.6;
 }
 
-.editor-empty{
+.editor-empty {
+  text-align: center;
 
-  text-align:center;
+  padding: 80px;
 
-  padding:80px;
-
-  color:#8c8c8c;
-
+  color: #8c8c8c;
 }

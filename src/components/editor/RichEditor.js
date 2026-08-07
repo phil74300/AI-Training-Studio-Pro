@@ -7,152 +7,109 @@ let editor = null;
 /**
  * Création de l'éditeur Tiptap.
  */
-export function createEditor({
-  element,
-  content = "",
-  onUpdate = null
-}) {
-
+export function createEditor({ element, content = "", onUpdate = null }) {
   if (!element) {
-    throw new Error(
-      "RichEditor : élément DOM introuvable."
-    );
+    throw new Error("RichEditor : élément DOM introuvable.");
   }
 
   destroyEditor();
 
   editor = new Editor({
-
     element,
 
-    extensions: [
-      StarterKit,
-      Underline
-    ],
+    extensions: [StarterKit, Underline],
 
     content,
 
     autofocus: false,
 
     editorProps: {
-
       attributes: {
-
         class: "tiptap-editor",
 
-        spellcheck: "true"
-
-      }
-
+        spellcheck: "true",
+      },
     },
 
     onCreate() {
-
       refreshToolbar();
-
     },
 
     onUpdate({ editor }) {
-
       if (typeof onUpdate === "function") {
-
-        onUpdate(
-          editor.getHTML()
-        );
-
+        onUpdate(editor.getHTML());
       }
 
       refreshToolbar();
-
     },
 
     onSelectionUpdate() {
-
       refreshToolbar();
-
     },
 
     onTransaction() {
-
       refreshToolbar();
-
-    }
-
+    },
   });
 
   return editor;
-
 }
 
 /**
  * Retourne l'éditeur.
  */
 export function getEditor() {
-
   return editor;
-
 }
 
 /**
  * Retourne le HTML.
  */
 export function getHTML() {
-
   if (!editor) {
     return "";
   }
 
   return editor.getHTML();
-
 }
 
 /**
  * Retourne le texte brut.
  */
 export function getText() {
-
   if (!editor) {
     return "";
   }
 
   return editor.getText();
-
 }
 
 /**
  * Remplace le contenu.
  */
 export function setContent(content = "") {
-
   if (!editor) return;
 
-  editor.commands.setContent(
-    content,
-    {
-      emitUpdate: false
-    }
-  );
+  editor.commands.setContent(content, {
+    emitUpdate: false,
+  });
 
   refreshToolbar();
-
 }
 
 /**
  * Donne le focus.
  */
 export function focusEditor() {
-
   if (!editor) return;
 
   editor.commands.focus();
-
 }
 
 /**
  * Exécute une commande du ribbon sur l'éditeur courant.
  */
 export function execute(command) {
-
   if (!editor) return;
 
   const commands = {
@@ -167,37 +124,26 @@ export function execute(command) {
     h3: () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
     bullet: () => editor.chain().focus().toggleBulletList().run(),
     ordered: () => editor.chain().focus().toggleOrderedList().run(),
-    quote: () => editor.chain().focus().toggleBlockquote().run()
+    quote: () => editor.chain().focus().toggleBlockquote().run(),
   };
 
   commands[command]?.();
-
 }
 
 /**
  * Rafraîchit la Toolbar.
  */
 export function refreshToolbar() {
-
-  document.dispatchEvent(
-
-    new CustomEvent(
-      "editor:refresh"
-    )
-
-  );
-
+  document.dispatchEvent(new CustomEvent("editor:refresh"));
 }
 
 /**
  * Détruit l'éditeur.
  */
 export function destroyEditor() {
-
   if (!editor) return;
 
   editor.destroy();
 
   editor = null;
-
 }

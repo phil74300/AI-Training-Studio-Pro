@@ -17,7 +17,6 @@ export function hasProjectOpen() {
 }
 
 export function getCurrentProjectChapters() {
-
   if (!currentProject) {
     return [];
   }
@@ -27,5 +26,4 @@ export function getCurrentProjectChapters() {
   }
 
   return currentProject.chapters;
-
 }

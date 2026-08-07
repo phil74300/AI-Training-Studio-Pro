@@ -1,7 +1,6 @@
 import { createChapter } from "../services/ChapterService";
 
 export function ChapterModal() {
-
   return `
     <div id="chapterModal" class="modal-overlay hidden">
 
@@ -37,11 +36,9 @@ export function ChapterModal() {
 
     </div>
   `;
-
 }
 
 export function initChapterModal(refresh) {
-
   const modal = document.getElementById("chapterModal");
   const title = document.getElementById("newChapterTitle");
 
@@ -54,23 +51,18 @@ export function initChapterModal(refresh) {
   const createButton = document.getElementById("createChapter");
 
   newButton.onclick = () => {
-
     title.value = "";
 
     modal.classList.remove("hidden");
 
     title.focus();
-
   };
 
   cancelButton.onclick = () => {
-
     modal.classList.add("hidden");
-
   };
 
   createButton.onclick = async () => {
-
     const value = title.value.trim();
 
     if (!value) {
@@ -82,23 +74,17 @@ export function initChapterModal(refresh) {
     modal.classList.add("hidden");
 
     refresh();
-
   };
 
   modal.onclick = (event) => {
-
     if (event.target === modal) {
       modal.classList.add("hidden");
     }
-
   };
 
   document.addEventListener("keydown", (event) => {
-
     if (event.key === "Escape") {
       modal.classList.add("hidden");
     }
-
   });
-
 }

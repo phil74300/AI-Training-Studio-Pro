@@ -8,41 +8,39 @@ import { Exports } from "../pages/exports";
 import { Settings } from "../pages/settings";
 
 const routes = {
-
   dashboard: {
-    render: Dashboard
+    render: Dashboard,
   },
 
   projects: {
     render: Projects,
-    init: initProjects
+    init: initProjects,
   },
 
   workspace: {
     render: Workspace,
-    init: initWorkspace
+    init: initWorkspace,
   },
 
   books: {
-    render: Books
+    render: Books,
   },
 
   training: {
-    render: Training
+    render: Training,
   },
 
   images: {
-    render: Images
+    render: Images,
   },
 
   exports: {
-    render: Exports
+    render: Exports,
   },
 
   settings: {
-    render: Settings
-  }
-
+    render: Settings,
+  },
 };
 
 export function getPage(page) {

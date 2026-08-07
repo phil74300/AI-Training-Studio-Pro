@@ -1,25 +1,17 @@
 import {
   getCurrentChapter,
   renameChapter,
-  updateChapterContent
+  updateChapterContent,
 } from "../services/ChapterService";
 
-import {
-  createEditor,
-  destroyEditor
-} from "./editor/RichEditor";
+import { createEditor, destroyEditor } from "./editor/RichEditor";
 
-import {
-  Toolbar,
-  initToolbar
-} from "./editor/Toolbar";
+import { Toolbar, initToolbar } from "./editor/Toolbar";
 
 export function ChapterEditor() {
-
   const chapter = getCurrentChapter();
 
   if (!chapter) {
-
     return `
       <div class="editor-empty">
 
@@ -29,7 +21,6 @@ export function ChapterEditor() {
 
       </div>
     `;
-
   }
 
   return `
@@ -52,11 +43,9 @@ export function ChapterEditor() {
     </div>
 
   `;
-
 }
 
 export function initChapterEditor() {
-
   const chapter = getCurrentChapter();
 
   if (!chapter) return;
@@ -68,20 +57,13 @@ export function initChapterEditor() {
   destroyEditor();
 
   createEditor({
-
     element,
 
     content: chapter.content || "",
 
     onUpdate(html) {
-
-      updateChapterContent(
-        chapter.id,
-        html
-      );
-
-    }
-
+      updateChapterContent(chapter.id, html);
+    },
   });
 
   initToolbar();
@@ -89,24 +71,14 @@ export function initChapterEditor() {
   const title = document.getElementById("chapterTitle");
 
   if (title) {
-
     title.value = chapter.title;
 
     title.oninput = () => {
-
-      renameChapter(
-        chapter.id,
-        title.value
-      );
-
+      renameChapter(chapter.id, title.value);
     };
-
   }
-
 }
 
 export function destroyChapterEditor() {
-
   destroyEditor();
-
 }

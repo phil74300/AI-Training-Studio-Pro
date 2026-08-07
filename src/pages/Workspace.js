@@ -1,37 +1,20 @@
-import {
-    ChapterList,
-    initChapterList
-} from "../components/ChapterList";
+import { ChapterList, initChapterList } from "../components/ChapterList";
 
-import {
-    ChapterModal,
-    initChapterModal
-} from "../components/ChapterModal";
+import { ChapterModal, initChapterModal } from "../components/ChapterModal";
 
-import {
-    ChapterEditor,
-    initChapterEditor
-} from "../components/ChapterEditor";
+import { ChapterEditor, initChapterEditor } from "../components/ChapterEditor";
 
-import {
-    WorkspaceLayout
-} from "../components/layout/WorkspaceLayout";
+import { WorkspaceLayout } from "../components/layout/WorkspaceLayout";
 
-import {
-    initRibbon
-} from "../components/layout/RibbonController";
+import { initRibbon } from "../components/layout/RibbonController";
 
-import {
-    getCurrentProject
-} from "../services/WorkspaceService";
+import { getCurrentProject } from "../services/WorkspaceService";
 
 export function Workspace() {
+  const project = getCurrentProject();
 
-    const project = getCurrentProject();
-
-    if (!project) {
-
-        return `
+  if (!project) {
+    return `
 
             <div class="workspace-empty">
 
@@ -46,10 +29,9 @@ export function Workspace() {
             </div>
 
         `;
+  }
 
-    }
-
-    const content = `
+  const content = `
 
         <div class="workspace-editor">
 
@@ -65,7 +47,7 @@ export function Workspace() {
 
             </div>
 
-            ${ChapterList(renderWorkspace)}
+            ${ChapterList()}
 
             <hr class="workspace-separator">
 
@@ -75,38 +57,29 @@ export function Workspace() {
 
     `;
 
-    return `
+  return `
 
         ${WorkspaceLayout(content)}
 
         ${ChapterModal()}
 
     `;
-
 }
 
 export function initWorkspace() {
+  initChapterList(renderWorkspace);
 
-    initChapterList(renderWorkspace);
+  initChapterModal(renderWorkspace);
 
-    initChapterModal(renderWorkspace);
+  requestAnimationFrame(() => {
+    if (document.getElementById("editor")) {
+      initChapterEditor();
 
-    requestAnimationFrame(() => {
-
-        if (document.getElementById("editor")) {
-
-            initChapterEditor();
-
-            initRibbon();
-
-        }
-
-    });
-
+      initRibbon();
+    }
+  });
 }
 
 function renderWorkspace() {
-
-    window.navigate("workspace");
-
+  window.navigate("workspace");
 }

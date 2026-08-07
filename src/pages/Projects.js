@@ -6,7 +6,7 @@ import {
   initProjectsStorage,
   getProjects,
   createProject,
-  deleteProject
+  deleteProject,
 } from "../services/ProjectService";
 
 export function Projects() {
@@ -30,18 +30,15 @@ export function Projects() {
 }
 
 export async function initProjects() {
-
   await initProjectsStorage();
 
   const modal = document.getElementById("projectModal");
   const list = document.getElementById("projectList");
 
   function refreshProjects() {
-
     const projects = getProjects();
 
     if (projects.length === 0) {
-
       list.innerHTML = `
         <div class="project-card">
 
@@ -60,8 +57,7 @@ export async function initProjects() {
 
     list.innerHTML = "";
 
-    projects.forEach(project => {
-
+    projects.forEach((project) => {
       list.innerHTML += `
         <div class="project-card" data-id="${project.id}">
 
@@ -83,45 +79,33 @@ export async function initProjects() {
 
         </div>
       `;
-
     });
 
     // Suppression
-    document.querySelectorAll(".delete-button").forEach(button => {
-
+    document.querySelectorAll(".delete-button").forEach((button) => {
       button.onclick = async (event) => {
-
         event.stopPropagation();
 
         await deleteProject(button.dataset.id);
 
         refreshProjects();
-
       };
-
     });
 
     // Ouverture du projet
-    document.querySelectorAll(".project-card").forEach(card => {
-
+    document.querySelectorAll(".project-card").forEach((card) => {
       card.onclick = () => {
-
-        const project = getProjects().find(
-          p => p.id === card.dataset.id
-        );
+        const project = getProjects().find((p) => p.id === card.dataset.id);
 
         if (!project) return;
-        
+
         console.log("Projet ouvert :", project);
 
         openProject(project);
 
         window.navigate("workspace");
-
       };
-
     });
-
   }
 
   document.getElementById("newProject").onclick = () => {
@@ -133,7 +117,6 @@ export async function initProjects() {
   };
 
   document.getElementById("createProject").onclick = async () => {
-
     const name = document.getElementById("projectName").value.trim();
     const type = document.getElementById("projectType").value;
     const description = document.getElementById("projectDescription").value;
@@ -152,7 +135,6 @@ export async function initProjects() {
     modal.classList.add("hidden");
 
     refreshProjects();
-
   };
 
   document.addEventListener("keydown", (event) => {

@@ -8,140 +8,118 @@
    CONTAINER
 ========================================================== */
 
-.editor-ribbon{
+.editor-ribbon {
+  display: flex;
+  align-items: stretch;
 
-    display:flex;
-    align-items:stretch;
+  gap: 12px;
 
-    gap:12px;
+  width: 100%;
+  height: 100%;
 
-    width:100%;
-    height:100%;
+  padding: 10px 18px;
 
-    padding:10px 18px;
+  overflow-x: auto;
+  overflow-y: hidden;
 
-    overflow-x:auto;
-    overflow-y:hidden;
-
-    background:var(--panel-background);
-
+  background: var(--panel-background);
 }
 
 /* ==========================================================
    SCROLLBAR
 ========================================================== */
 
-.editor-ribbon::-webkit-scrollbar{
-
-    height:6px;
-
+.editor-ribbon::-webkit-scrollbar {
+  height: 6px;
 }
 
-.editor-ribbon::-webkit-scrollbar-track{
-
-    background:transparent;
-
+.editor-ribbon::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-.editor-ribbon::-webkit-scrollbar-thumb{
+.editor-ribbon::-webkit-scrollbar-thumb {
+  background: #4a4a4a;
 
-    background:#4a4a4a;
-
-    border-radius:6px;
-
+  border-radius: 6px;
 }
 
 /* ==========================================================
    GROUP
 ========================================================== */
 
-.ribbon-group{
+.ribbon-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
+  min-width: max-content;
 
-    min-width:max-content;
+  padding: 8px;
 
-    padding:8px;
+  border: 1px solid var(--layout-border);
 
-    border:1px solid var(--layout-border);
+  border-radius: 10px;
 
-    border-radius:10px;
+  background: var(--editor-background);
 
-    background:var(--editor-background);
-
-    transition:
-        border-color .20s ease,
-        background .20s ease;
-
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
 }
 
-.ribbon-group:hover{
-
-    border-color:var(--accent);
-
+.ribbon-group:hover {
+  border-color: var(--accent);
 }
 
 /* ==========================================================
    BUTTON CONTAINER
 ========================================================== */
 
-.ribbon-buttons{
+.ribbon-buttons {
+  display: flex;
+  align-items: center;
 
-    display:flex;
-    align-items:center;
-
-    gap:6px;
-
+  gap: 6px;
 }
 
 /* ==========================================================
    BUTTON
 ========================================================== */
 
-.ribbon-button{
+.ribbon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+  width: 42px;
+  height: 42px;
 
-    width:42px;
-    height:42px;
+  border: none;
+  border-radius: 8px;
 
-    border:none;
-    border-radius:8px;
+  background: transparent;
 
-    background:transparent;
+  color: var(--text);
 
-    color:var(--text);
+  cursor: pointer;
 
-    cursor:pointer;
+  transition:
+    background 0.18s ease,
+    transform 0.12s ease;
 
-    transition:
-        background .18s ease,
-        transform .12s ease;
-
-    font-size:16px;
-
+  font-size: 16px;
 }
 
-.ribbon-button:hover{
-
-    background:#3a3a3a;
-
+.ribbon-button:hover {
+  background: #3a3a3a;
 }
 
-.ribbon-button:active{
-
-    transform:scale(.95);
-
+.ribbon-button:active {
+  transform: scale(0.95);
 }
 
-.ribbon-button.active{
-
-    background:var(--accent);
-
+.ribbon-button.active {
+  background: var(--accent);
 }
 
 /* ==========================================================
@@ -151,51 +129,41 @@
 .ribbon-button b,
 .ribbon-button i,
 .ribbon-button u,
-.ribbon-button s{
-
-    pointer-events:none;
-
+.ribbon-button s {
+  pointer-events: none;
 }
 
 /* ==========================================================
    TITLE
 ========================================================== */
 
-.ribbon-title{
+.ribbon-title {
+  margin-top: 8px;
 
-    margin-top:8px;
+  text-align: center;
 
-    text-align:center;
+  font-size: 11px;
 
-    font-size:11px;
+  color: var(--text-secondary);
 
-    color:var(--text-secondary);
-
-    user-select:none;
-
+  user-select: none;
 }
 
 /* ==========================================================
    RESPONSIVE
 ========================================================== */
 
-@media (max-width:1200px){
+@media (max-width: 1200px) {
+  .editor-ribbon {
+    gap: 8px;
 
-    .editor-ribbon{
+    padding: 8px;
+  }
 
-        gap:8px;
+  .ribbon-button {
+    width: 38px;
+    height: 38px;
 
-        padding:8px;
-
-    }
-
-    .ribbon-button{
-
-        width:38px;
-        height:38px;
-
-        font-size:15px;
-
-    }
-
+    font-size: 15px;
+  }
 }
