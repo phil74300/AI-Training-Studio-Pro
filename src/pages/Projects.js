@@ -1,6 +1,6 @@
 import { Header } from "../components/Header";
 import { ProjectModal } from "../components/ProjectModal";
-import { openProject } from "../services/WorkspaceService";
+import { openWorkspaceProject } from "./Workspace";
 
 import {
   initProjectsStorage,
@@ -101,7 +101,7 @@ export async function initProjects() {
 
         console.log("Projet ouvert :", project);
 
-        openProject(project);
+        openWorkspaceProject(project);
 
         window.navigate("workspace");
       };

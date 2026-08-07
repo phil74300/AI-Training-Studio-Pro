@@ -31,6 +31,6 @@ export function ChapterList() {
   return html;
 }
 
-export function initChapterList(refresh, signal) {
-  initChapterCards(refresh, signal);
+export function initChapterList(onSelect, signal) {
+  initChapterCards(onSelect, signal);
 }

@@ -11,3 +11,11 @@ export function initWorkspace() {
 export function destroyWorkspace() {
   workspaceController.destroy();
 }
+
+export function openWorkspaceProject(project) {
+  workspaceController.openProject(project);
+}
+
+export function closeWorkspaceProject() {
+  workspaceController.closeProject();
+}

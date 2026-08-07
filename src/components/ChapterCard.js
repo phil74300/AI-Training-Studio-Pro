@@ -1,5 +1,3 @@
-import { selectChapter } from "../services/ChapterService";
-
 export function ChapterCard(chapter) {
   return `
     <div
@@ -24,14 +22,12 @@ export function ChapterCard(chapter) {
   `;
 }
 
-export function initChapterCards(refresh, signal) {
+export function initChapterCards(onSelect, signal) {
   document.querySelectorAll(".chapter-card").forEach((card) => {
     card.addEventListener(
       "click",
       () => {
-        selectChapter(card.dataset.id);
-
-        refresh();
+        onSelect(card.dataset.id);
       },
       { signal }
     );

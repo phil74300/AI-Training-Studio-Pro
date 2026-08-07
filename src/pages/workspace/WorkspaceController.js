@@ -7,15 +7,31 @@ import {
 } from "../../components/ChapterEditor";
 import { WorkspaceLayout } from "../../components/layout/WorkspaceLayout";
 import { initRibbon } from "../../components/layout/RibbonController";
-import { getCurrentProject } from "../../services/WorkspaceService";
+import {
+  clearCurrentChapter,
+  getCurrentChapter,
+  selectChapter as selectCurrentChapter,
+} from "../../services/ChapterService";
+import {
+  closeProject as closeCurrentProject,
+  getCurrentProject,
+  openProject as openCurrentProject,
+} from "../../services/WorkspaceService";
 
 export class WorkspaceController {
   abortController = null;
 
   editorFrame = null;
 
+  session = {
+    projectId: null,
+    chapterId: null,
+  };
+
   render() {
     const project = getCurrentProject();
+
+    this.ensureSession(project);
 
     if (!project) {
       return `
@@ -73,6 +89,8 @@ export class WorkspaceController {
   mount() {
     this.destroy();
 
+    this.ensureSession(getCurrentProject());
+
     this.abortController = new AbortController();
 
     this.registerEvents(this.abortController.signal);
@@ -104,11 +122,91 @@ export class WorkspaceController {
     destroyChapterEditor();
   }
 
-  registerEvents(signal) {
-    const renderWorkspace = () => window.navigate("workspace");
+  openProject(project) {
+    if (!project?.id) {
+      return;
+    }
 
-    initChapterList(renderWorkspace, signal);
-    initChapterModal(renderWorkspace, signal);
+    this.reset();
+
+    openCurrentProject(project);
+
+    this.session.projectId = project.id;
+  }
+
+  closeProject() {
+    this.reset();
+
+    closeCurrentProject();
+  }
+
+  reset() {
+    this.destroy();
+    clearCurrentChapter();
+
+    this.session.projectId = null;
+    this.session.chapterId = null;
+  }
+
+  registerEvents(signal) {
+    initChapterList((chapterId) => this.selectChapter(chapterId), signal);
+    initChapterModal(() => this.refreshSession(), signal);
+  }
+
+  selectChapter(chapterId) {
+    selectCurrentChapter(chapterId);
+
+    this.syncChapterSelection();
+    this.renderWorkspace();
+  }
+
+  refreshSession() {
+    this.syncChapterSelection();
+    this.renderWorkspace();
+  }
+
+  ensureSession(project) {
+    if (!project) {
+      clearCurrentChapter();
+
+      this.session.projectId = null;
+      this.session.chapterId = null;
+
+      return;
+    }
+
+    if (this.session.projectId !== project.id) {
+      clearCurrentChapter();
+
+      this.session.projectId = project.id;
+      this.session.chapterId = null;
+
+      return;
+    }
+
+    this.syncChapterSelection();
+  }
+
+  syncChapterSelection() {
+    const project = getCurrentProject();
+    const chapter = getCurrentChapter();
+
+    const chapterBelongsToProject = project?.chapters?.some(
+      (item) => item.id === chapter?.id
+    );
+
+    if (!chapterBelongsToProject) {
+      clearCurrentChapter();
+      this.session.chapterId = null;
+
+      return;
+    }
+
+    this.session.chapterId = chapter.id;
+  }
+
+  renderWorkspace() {
+    window.navigate("workspace");
   }
 }
 

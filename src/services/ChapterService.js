@@ -36,6 +36,13 @@ export function getCurrentChapter() {
 }
 
 /**
+ * Réinitialise le chapitre courant.
+ */
+export function clearCurrentChapter() {
+  currentChapter = null;
+}
+
+/**
  * Sélection d'un chapitre.
  */
 export function selectChapter(id) {
