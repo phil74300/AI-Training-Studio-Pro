@@ -1,19 +1,8 @@
-export const AIStatus = Object.freeze({
-  IDLE: "IDLE",
-  READY: "READY",
-  WORKING: "WORKING",
-  SUCCESS: "SUCCESS",
-  ERROR: "ERROR",
-});
+import { AIAvailability, getAIAvailabilityLabel } from "./AIAvailability";
 
-const statusLabels = {
-  [AIStatus.IDLE]: "IA inactive",
-  [AIStatus.READY]: "IA prête",
-  [AIStatus.WORKING]: "IA en cours",
-  [AIStatus.SUCCESS]: "IA terminée",
-  [AIStatus.ERROR]: "Erreur IA",
-};
+// Compatibility alias for the current Workspace UI projection.
+export const AIStatus = AIAvailability;
 
 export function getAIStatusLabel(status) {
-  return statusLabels[status] || statusLabels[AIStatus.IDLE];
+  return getAIAvailabilityLabel(status);
 }

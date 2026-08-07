@@ -20,7 +20,7 @@ export class AIProviderRegistry {
 
     this.#providers.set(providerId, provider);
 
-    return provider;
+    return this.get(providerId);
   }
 
   unregister(providerId) {
@@ -32,7 +32,9 @@ export class AIProviderRegistry {
   }
 
   get(providerId) {
-    return this.#providers.get(providerId) || null;
+    const provider = this.#providers.get(providerId);
+
+    return provider ? this.#createDescriptor(provider) : null;
   }
 
   require(providerId) {
@@ -46,6 +48,42 @@ export class AIProviderRegistry {
   }
 
   list() {
-    return Object.freeze([...this.#providers.values()]);
+    return Object.freeze(
+      [...this.#providers.values()].map((provider) =>
+        this.#createDescriptor(provider)
+      )
+    );
+  }
+
+  validateConfiguration(providerId, config) {
+    return this.#requireAdapter(providerId).validateConfiguration(config);
+  }
+
+  listModels(providerId, config) {
+    return this.#requireAdapter(providerId).listModels(config);
+  }
+
+  getCapabilities(providerId, modelId, config) {
+    return this.#requireAdapter(providerId).getCapabilities(modelId, config);
+  }
+
+  healthCheck(providerId, config) {
+    return this.#requireAdapter(providerId).healthCheck(config);
+  }
+
+  #requireAdapter(providerId) {
+    const provider = this.#providers.get(providerId);
+
+    if (!provider) {
+      throw new Error(`Unknown AI provider: ${providerId}`);
+    }
+
+    return provider;
+  }
+
+  #createDescriptor(provider) {
+    return Object.freeze({
+      id: provider.id,
+    });
   }
 }

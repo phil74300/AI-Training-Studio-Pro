@@ -1,35 +1,41 @@
-import { AIStatus } from "./AIStatus";
+import { AIAvailability, isAIAvailability } from "./AIAvailability";
 
 let state = {
-  status: AIStatus.IDLE,
-  task: null,
+  availability: AIAvailability.IDLE,
 };
 
 const observers = new Set();
 
 export function getAIWorkspaceState() {
-  return { ...state };
+  return Object.freeze({
+    availability: state.availability,
+    status: state.availability,
+  });
 }
 
-export function setAIWorkspaceStatus(status, task = null) {
-  if (!Object.values(AIStatus).includes(status)) {
+export function setAIWorkspaceAvailability(availability) {
+  if (!isAIAvailability(availability)) {
     throw new Error("AIWorkspaceService : statut IA invalide.");
   }
 
   state = {
-    status,
-    task,
+    availability,
   };
 
   observers.forEach((observer) => observer(getAIWorkspaceState()));
 }
 
+// Compatibility entry point while WorkspaceController migrates to the facade.
+export function setAIWorkspaceStatus(status) {
+  setAIWorkspaceAvailability(status);
+}
+
 export function initializeAIWorkspace() {
-  setAIWorkspaceStatus(AIStatus.READY);
+  setAIWorkspaceAvailability(AIAvailability.READY);
 }
 
 export function resetAIWorkspace() {
-  setAIWorkspaceStatus(AIStatus.IDLE);
+  setAIWorkspaceAvailability(AIAvailability.IDLE);
 }
 
 export function observeAIWorkspace(observer) {

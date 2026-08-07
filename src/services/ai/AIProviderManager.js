@@ -1,6 +1,21 @@
 import { AIProviderCapabilities } from "./AIProviderCapabilities";
 import { AIProviderRegistry } from "./AIProviderRegistry";
 
+const registryMethods = Object.freeze([
+  "list",
+  "require",
+  "validateConfiguration",
+  "listModels",
+  "getCapabilities",
+  "healthCheck",
+]);
+
+const isProviderRegistry = (registry) => {
+  return registryMethods.every(
+    (method) => typeof registry?.[method] === "function"
+  );
+};
+
 const normalizeCheck = (result, property) => {
   if (typeof result === "boolean") {
     return result;
@@ -15,8 +30,10 @@ export class AIProviderManager {
   #selectedProviderId = null;
 
   constructor(registry = new AIProviderRegistry()) {
-    if (!(registry instanceof AIProviderRegistry)) {
-      throw new TypeError("AIProviderManager requires an AIProviderRegistry.");
+    if (!isProviderRegistry(registry)) {
+      throw new TypeError(
+        "AIProviderManager requires an AI provider registry contract."
+      );
     }
 
     this.#registry = registry;
@@ -42,31 +59,26 @@ export class AIProviderManager {
     return this.#selectedProviderId;
   }
 
-  getProvider(providerId = this.#selectedProviderId) {
-    if (!providerId) {
-      throw new Error("No AI provider selected.");
-    }
-
-    return this.#registry.require(providerId);
-  }
-
   async validateAvailability(config = {}, providerId) {
-    const provider = this.getProvider(providerId);
-    const validation = await provider.validateConfiguration(config);
+    const resolvedProviderId = this.#resolveProviderId(providerId);
+    const validation = await this.#registry.validateConfiguration(
+      resolvedProviderId,
+      config
+    );
 
     if (!normalizeCheck(validation, "valid")) {
       return Object.freeze({
-        providerId: provider.id,
+        providerId: resolvedProviderId,
         available: false,
         validation,
         health: null,
       });
     }
 
-    const health = await provider.healthCheck(config);
+    const health = await this.#registry.healthCheck(resolvedProviderId, config);
 
     return Object.freeze({
-      providerId: provider.id,
+      providerId: resolvedProviderId,
       available: normalizeCheck(health, "available"),
       validation,
       health,
@@ -74,7 +86,10 @@ export class AIProviderManager {
   }
 
   async listModels(config = {}, providerId) {
-    const models = await this.getProvider(providerId).listModels(config);
+    const models = await this.#registry.listModels(
+      this.#resolveProviderId(providerId),
+      config
+    );
 
     if (!Array.isArray(models)) {
       throw new TypeError("AI provider listModels() must return an array.");
@@ -84,11 +99,24 @@ export class AIProviderManager {
   }
 
   async getCapabilities(modelId, config = {}, providerId) {
-    const capabilities = await this.getProvider(providerId).getCapabilities(
+    const capabilities = await this.#registry.getCapabilities(
+      this.#resolveProviderId(providerId),
       modelId,
       config
     );
 
     return AIProviderCapabilities.from(capabilities);
+  }
+
+  #resolveProviderId(providerId) {
+    const resolvedProviderId = providerId || this.#selectedProviderId;
+
+    if (!resolvedProviderId) {
+      throw new Error("No AI provider selected.");
+    }
+
+    this.#registry.require(resolvedProviderId);
+
+    return resolvedProviderId;
   }
 }

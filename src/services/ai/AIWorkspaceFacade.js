@@ -1,11 +1,29 @@
 import { AIProviderManager } from "./AIProviderManager";
 
+const providerManagerMethods = Object.freeze([
+  "listProviders",
+  "selectProvider",
+  "clearSelection",
+  "getSelectedProviderId",
+  "validateAvailability",
+  "listModels",
+  "getCapabilities",
+]);
+
+const isProviderManager = (providerManager) => {
+  return providerManagerMethods.every(
+    (method) => typeof providerManager?.[method] === "function"
+  );
+};
+
 export class AIWorkspaceFacade {
   #providerManager;
 
   constructor(providerManager = new AIProviderManager()) {
-    if (!(providerManager instanceof AIProviderManager)) {
-      throw new TypeError("AIWorkspaceFacade requires an AIProviderManager.");
+    if (!isProviderManager(providerManager)) {
+      throw new TypeError(
+        "AIWorkspaceFacade requires an AI provider manager contract."
+      );
     }
 
     this.#providerManager = providerManager;

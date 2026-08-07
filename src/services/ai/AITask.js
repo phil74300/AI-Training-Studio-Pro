@@ -1,8 +1,8 @@
-import { AIStatus } from "./AIStatus";
+import { AITaskStatus } from "./AITaskStatus";
 
 export function createAITask(actionId) {
   return {
     actionId,
-    status: AIStatus.IDLE,
+    status: AITaskStatus.CREATED,
   };
 }

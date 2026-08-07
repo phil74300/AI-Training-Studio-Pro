@@ -1,9 +1,67 @@
+import { AIResult } from "./AIResult";
+
 const cloneRecord = (value, field) => {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     throw new TypeError(`${field} must be an object.`);
   }
 
   return Object.freeze({ ...value });
+};
+
+const requireId = (value, field) => {
+  if (typeof value !== "string" || !value.trim()) {
+    throw new TypeError(`${field} must be a non-empty string.`);
+  }
+
+  return value.trim();
+};
+
+const normalizeMetric = (value, field) => {
+  if (value === null) {
+    return null;
+  }
+
+  if (!Number.isFinite(value) || value < 0) {
+    throw new TypeError(`${field} must be a non-negative number or null.`);
+  }
+
+  return value;
+};
+
+const normalizeUsage = (usage) => {
+  const normalized = cloneRecord(usage, "usage");
+
+  return Object.freeze({
+    inputUnits: normalizeMetric(
+      normalized.inputUnits ?? null,
+      "usage.inputUnits"
+    ),
+    outputUnits: normalizeMetric(
+      normalized.outputUnits ?? null,
+      "usage.outputUnits"
+    ),
+    totalUnits: normalizeMetric(
+      normalized.totalUnits ?? null,
+      "usage.totalUnits"
+    ),
+    cachedInputUnits: normalizeMetric(
+      normalized.cachedInputUnits ?? null,
+      "usage.cachedInputUnits"
+    ),
+    reasoningUnits: normalizeMetric(
+      normalized.reasoningUnits ?? null,
+      "usage.reasoningUnits"
+    ),
+    imageUnits: normalizeMetric(
+      normalized.imageUnits ?? null,
+      "usage.imageUnits"
+    ),
+    toolCalls: normalizeMetric(normalized.toolCalls ?? null, "usage.toolCalls"),
+    durationMs: normalizeMetric(
+      normalized.durationMs ?? null,
+      "usage.durationMs"
+    ),
+  });
 };
 
 const normalizeError = (error) => {
@@ -27,8 +85,14 @@ const normalizeError = (error) => {
   });
 };
 
+export const AI_RESPONSE_SCHEMA_VERSION = 1;
+
 export class AIResponse {
   constructor({
+    schemaVersion = AI_RESPONSE_SCHEMA_VERSION,
+    requestId,
+    providerId,
+    modelId,
     success,
     result = null,
     usage = {},
@@ -36,6 +100,10 @@ export class AIResponse {
     providerMetadata = {},
     error = null,
   }) {
+    if (!Number.isInteger(schemaVersion) || schemaVersion <= 0) {
+      throw new TypeError("schemaVersion must be a positive integer.");
+    }
+
     if (typeof success !== "boolean") {
       throw new TypeError("AIResponse.success must be a boolean.");
     }
@@ -48,9 +116,21 @@ export class AIResponse {
       throw new Error("A successful AIResponse cannot contain an error.");
     }
 
+    if (success && result === null) {
+      throw new Error("A successful AIResponse requires a result.");
+    }
+
+    if (!success && result !== null) {
+      throw new Error("A failed AIResponse cannot contain a result.");
+    }
+
+    this.schemaVersion = schemaVersion;
+    this.requestId = requireId(requestId, "requestId");
+    this.providerId = requireId(providerId, "providerId");
+    this.modelId = requireId(modelId, "modelId");
     this.success = success;
-    this.result = result;
-    this.usage = cloneRecord(usage, "usage");
+    this.result = success ? AIResult.from(result) : null;
+    this.usage = normalizeUsage(usage);
     this.finishReason = finishReason;
     this.providerMetadata = cloneRecord(providerMetadata, "providerMetadata");
     this.error = success ? null : normalizeError(error);
@@ -59,12 +139,20 @@ export class AIResponse {
   }
 
   static completed({
+    schemaVersion = AI_RESPONSE_SCHEMA_VERSION,
+    requestId,
+    providerId,
+    modelId,
     result,
     usage = {},
     finishReason = null,
     providerMetadata = {},
   }) {
     return new AIResponse({
+      schemaVersion,
+      requestId,
+      providerId,
+      modelId,
       success: true,
       result,
       usage,
@@ -73,8 +161,20 @@ export class AIResponse {
     });
   }
 
-  static failed({ error, usage = {}, providerMetadata = {} }) {
+  static failed({
+    schemaVersion = AI_RESPONSE_SCHEMA_VERSION,
+    requestId,
+    providerId,
+    modelId,
+    error,
+    usage = {},
+    providerMetadata = {},
+  }) {
     return new AIResponse({
+      schemaVersion,
+      requestId,
+      providerId,
+      modelId,
       success: false,
       usage,
       providerMetadata,
