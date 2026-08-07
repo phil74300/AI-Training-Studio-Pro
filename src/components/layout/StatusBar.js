@@ -3,10 +3,8 @@
    Status Bar
 ========================================================== */
 
-import { observeAIWorkspace } from "../../services/ai/AIWorkspaceService";
 import { getAIStatusLabel } from "../../services/ai/AIStatus";
-
-const APPLICATION_VERSION = "1.0.0";
+import { observeWorkspaceStatus } from "../../services/workspace/WorkspaceStatusService";
 
 const EXPORTS = [
   {
@@ -91,7 +89,7 @@ export function StatusBar() {
                     id="status-version"
                     class="status-item">
 
-                    v${APPLICATION_VERSION}
+                    v—
 
                 </span>
 
@@ -116,19 +114,17 @@ export function StatusBar() {
     `;
 }
 
-export function initStatusBar({ getWorkspaceState, signal } = {}) {
+export function initStatusBar(signal) {
   destroyStatusBar();
 
-  const updateStatusBar = ({ status }) => {
-    const workspace = getWorkspaceState?.() || {};
-
+  cleanup = observeWorkspaceStatus((workspace) => {
     updateStatusItem(
       "status-project",
-      `📂 ${workspace.projectName || "Aucun projet"}`
+      `📂 ${workspace.activeProject?.name || "Aucun projet"}`
     );
     updateStatusItem(
       "status-chapter",
-      `📑 ${workspace.chapterTitle || "Aucun chapitre"}`
+      `📑 ${workspace.activeChapter?.title || "Aucun chapitre"}`
     );
     updateStatusItem(
       "status-chapter-count",
@@ -138,13 +134,9 @@ export function initStatusBar({ getWorkspaceState, signal } = {}) {
       "status-save",
       `💾 ${workspace.saveStatus || "Sauvegarde automatique"}`
     );
-    updateStatusItem(
-      "status-ai",
-      `🤖 ${getAIStatusLabel(workspace.aiStatus || status)}`
-    );
-  };
-
-  cleanup = observeAIWorkspace(updateStatusBar);
+    updateStatusItem("status-ai", `🤖 ${getAIStatusLabel(workspace.aiStatus)}`);
+    updateStatusItem("status-version", `v${workspace.applicationVersion}`);
+  });
 
   signal?.addEventListener("abort", destroyStatusBar, { once: true });
 }

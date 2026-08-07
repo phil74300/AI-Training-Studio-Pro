@@ -19,6 +19,7 @@ import { resetExplorerPanels } from "../../components/explorer/ExplorerPanelRegi
 import {
   getAIWorkspaceState,
   initializeAIWorkspace,
+  observeAIWorkspace,
   resetAIWorkspace,
 } from "../../services/ai/AIWorkspaceService";
 import {
@@ -31,11 +32,17 @@ import {
   getCurrentProject,
   openProject as openCurrentProject,
 } from "../../services/WorkspaceService";
+import { WorkspaceStatus } from "../../services/workspace/WorkspaceStatus";
+import { publishWorkspaceStatus } from "../../services/workspace/WorkspaceStatusService";
 
 export class WorkspaceController {
   abortController = null;
 
   editorFrame = null;
+
+  statusCleanup = null;
+
+  workspaceReadyState = WorkspaceStatus.IDLE;
 
   session = {
     projectId: null,
@@ -92,6 +99,7 @@ export class WorkspaceController {
     this.abortController = new AbortController();
 
     initializeAIWorkspace();
+    this.mountWorkspaceStatus(this.abortController.signal);
 
     this.registerEvents(this.abortController.signal);
     initWorkspaceSidebar(this.abortController.signal, {
@@ -99,10 +107,7 @@ export class WorkspaceController {
       onChapterSelect: (chapterId) => this.selectChapter(chapterId),
     });
     initAIPanel(this.abortController.signal);
-    initStatusBar({
-      getWorkspaceState: () => this.getStatusState(),
-      signal: this.abortController.signal,
-    });
+    initStatusBar(this.abortController.signal);
 
     this.editorFrame = requestAnimationFrame(() => {
       this.editorFrame = null;
@@ -114,7 +119,9 @@ export class WorkspaceController {
         return;
       }
 
-      initChapterEditor(this.abortController.signal);
+      initChapterEditor(this.abortController.signal, {
+        onChapterChange: () => this.publishWorkspaceStatus(),
+      });
       initRibbon(this.abortController.signal);
     });
   }
@@ -128,12 +135,14 @@ export class WorkspaceController {
     this.abortController?.abort();
     this.abortController = null;
 
+    this.destroyWorkspaceStatus();
     destroyAIPanel();
     destroyStatusBar();
     destroyWorkspaceSidebar();
     destroyChapterEditor();
 
     resetAIWorkspace();
+    this.publishWorkspaceStatus();
   }
 
   openProject(project) {
@@ -146,12 +155,14 @@ export class WorkspaceController {
     openCurrentProject(project);
 
     this.session.projectId = project.id;
+    this.publishWorkspaceStatus();
   }
 
   closeProject() {
     this.reset();
 
     closeCurrentProject();
+    this.publishWorkspaceStatus();
   }
 
   reset() {
@@ -161,6 +172,8 @@ export class WorkspaceController {
 
     this.session.projectId = null;
     this.session.chapterId = null;
+
+    this.publishWorkspaceStatus();
   }
 
   registerEvents(signal) {
@@ -183,11 +196,13 @@ export class WorkspaceController {
       return;
     }
 
+    this.publishWorkspaceStatus();
     this.renderWorkspace();
   }
 
   refreshSession() {
     this.syncChapterSelection();
+    this.publishWorkspaceStatus();
     this.renderWorkspace();
   }
 
@@ -198,6 +213,8 @@ export class WorkspaceController {
       this.session.projectId = null;
       this.session.chapterId = null;
 
+      this.publishWorkspaceStatus();
+
       return;
     }
 
@@ -206,6 +223,8 @@ export class WorkspaceController {
 
       this.session.projectId = project.id;
       this.session.chapterId = null;
+
+      this.publishWorkspaceStatus();
 
       return;
     }
@@ -225,24 +244,57 @@ export class WorkspaceController {
       clearCurrentChapter();
       this.session.chapterId = null;
 
+      this.publishWorkspaceStatus();
+
       return;
     }
 
     this.session.chapterId = chapter.id;
+    this.publishWorkspaceStatus();
   }
 
-  getStatusState() {
+  mountWorkspaceStatus(signal) {
+    this.destroyWorkspaceStatus();
+
+    this.workspaceReadyState = WorkspaceStatus.READY;
+
+    this.statusCleanup = observeAIWorkspace(() => {
+      this.publishWorkspaceStatus();
+    });
+
+    signal?.addEventListener("abort", () => this.destroyWorkspaceStatus(), {
+      once: true,
+    });
+  }
+
+  destroyWorkspaceStatus() {
+    if (
+      !this.statusCleanup &&
+      this.workspaceReadyState === WorkspaceStatus.IDLE
+    ) {
+      return;
+    }
+
+    this.statusCleanup?.();
+    this.statusCleanup = null;
+
+    this.workspaceReadyState = WorkspaceStatus.IDLE;
+    this.publishWorkspaceStatus();
+  }
+
+  publishWorkspaceStatus() {
     const project = getCurrentProject();
     const chapter = getCurrentChapter();
     const { status: aiStatus } = getAIWorkspaceState();
 
-    return {
-      projectName: project?.name || "Aucun projet",
-      chapterTitle: chapter?.title || "Aucun chapitre",
+    publishWorkspaceStatus({
+      activeProject: project,
+      activeChapter: chapter,
       chapterCount: project?.chapters?.length || 0,
       saveStatus: "Sauvegarde automatique",
       aiStatus,
-    };
+      readyState: this.workspaceReadyState,
+    });
   }
 
   renderWorkspace() {

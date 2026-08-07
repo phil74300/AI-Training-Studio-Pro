@@ -1,6 +1,6 @@
 import { AIAction, getAIActions } from "../../services/ai/AIAction";
-import { observeAIWorkspace } from "../../services/ai/AIWorkspaceService";
 import { getAIStatusLabel } from "../../services/ai/AIStatus";
+import { observeWorkspaceStatus } from "../../services/workspace/WorkspaceStatusService";
 
 const panelActions = getAIActions([
   AIAction.GENERATE_LESSON,
@@ -83,11 +83,11 @@ export function AIPanel() {
 export function initAIPanel(signal) {
   destroyAIPanel();
 
-  cleanup = observeAIWorkspace(({ status }) => {
+  cleanup = observeWorkspaceStatus(({ aiStatus }) => {
     const statusElement = document.getElementById("ai-status");
 
     if (statusElement) {
-      statusElement.textContent = getAIStatusLabel(status);
+      statusElement.textContent = getAIStatusLabel(aiStatus);
     }
   });
 

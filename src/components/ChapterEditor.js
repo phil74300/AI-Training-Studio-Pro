@@ -45,7 +45,7 @@ export function ChapterEditor() {
   `;
 }
 
-export function initChapterEditor(signal) {
+export function initChapterEditor(signal, { onChapterChange } = {}) {
   const chapter = getCurrentChapter();
 
   if (!chapter) return;
@@ -77,6 +77,7 @@ export function initChapterEditor(signal) {
       "input",
       () => {
         renameChapter(chapter.id, title.value);
+        onChapterChange?.();
       },
       { signal }
     );
