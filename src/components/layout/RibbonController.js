@@ -1,22 +1,28 @@
-import { execute, getEditor } from "../editor/RichEditor";
+import { getEditor } from "../editor/RichEditor";
+import {
+  executeEditorCommand,
+  getEditorCommandState,
+  getEditorCommands,
+} from "../editor/EditorCommandRegistry";
 
-const commands = {
-  undo: "undo",
-  redo: "redo",
-
-  bold: "bold",
-  italic: "italic",
-  underline: "underline",
-  strike: "strike",
-
-  h1: "h1",
-  h2: "h2",
-  h3: "h3",
-
-  bullet: "bullet",
-  ordered: "ordered",
-  quote: "quote",
-};
+const commandIds = [
+  "undo",
+  "redo",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "h1",
+  "h2",
+  "h3",
+  "bullet",
+  "ordered",
+  "quote",
+  "link",
+  "image",
+  "table",
+  "ai",
+];
 
 export function initRibbon(signal) {
   bindButtons(signal);
@@ -27,15 +33,16 @@ export function initRibbon(signal) {
 }
 
 function bindButtons(signal) {
-  Object.keys(commands).forEach((id) => {
-    const button = document.getElementById(`ribbon-${id}`);
+  getEditorCommands(commandIds).forEach((command) => {
+    const button = document.getElementById(`ribbon-${command.id}`);
 
     if (!button) return;
 
     button.addEventListener(
       "click",
       () => {
-        execute(commands[id]);
+        executeEditorCommand(command.id, getEditor());
+        refreshRibbon();
       },
       { signal }
     );
@@ -45,48 +52,14 @@ function bindButtons(signal) {
 function refreshRibbon() {
   const editor = getEditor();
 
-  if (!editor) return;
+  getEditorCommands(commandIds).forEach((command) => {
+    const button = document.getElementById(`ribbon-${command.id}`);
 
-  updateToggle("bold", editor.isActive("bold"));
+    if (!button) return;
 
-  updateToggle("italic", editor.isActive("italic"));
+    const state = getEditorCommandState(command.id, editor);
 
-  updateToggle("underline", editor.isActive("underline"));
-
-  updateToggle("strike", editor.isActive("strike"));
-
-  updateToggle(
-    "h1",
-    editor.isActive("heading", {
-      level: 1,
-    })
-  );
-
-  updateToggle(
-    "h2",
-    editor.isActive("heading", {
-      level: 2,
-    })
-  );
-
-  updateToggle(
-    "h3",
-    editor.isActive("heading", {
-      level: 3,
-    })
-  );
-
-  updateToggle("bullet", editor.isActive("bulletList"));
-
-  updateToggle("ordered", editor.isActive("orderedList"));
-
-  updateToggle("quote", editor.isActive("blockquote"));
-}
-
-function updateToggle(id, active) {
-  const button = document.getElementById(`ribbon-${id}`);
-
-  if (!button) return;
-
-  button.classList.toggle("active", active);
+    button.classList.toggle("active", state.active);
+    button.disabled = !state.enabled;
+  });
 }

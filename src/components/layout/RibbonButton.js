@@ -11,11 +11,13 @@ export function RibbonButton(button) {
 
     data-command="${button.id}"
 
+    ${button.supported ? "" : "disabled"}
+
 >
 
     <span class="ribbon-icon">
 
-        ${button.icon}
+        ${button.ribbonIcon}
 
     </span>
 

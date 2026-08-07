@@ -1,95 +1,20 @@
 import { getEditor } from "./RichEditor";
+import {
+  executeEditorCommand,
+  getEditorCommandState,
+  getEditorCommands,
+} from "./EditorCommandRegistry";
 
 const buttons = [
-  {
-    id: "undo",
-    label: "↶",
-    action: (editor) => editor.chain().focus().undo().run(),
-    active: () => false,
-    enabled: (editor) => editor.can().undo(),
-  },
-
-  {
-    id: "redo",
-    label: "↷",
-    action: (editor) => editor.chain().focus().redo().run(),
-    active: () => false,
-    enabled: (editor) => editor.can().redo(),
-  },
-
+  ...getEditorCommands(["undo", "redo"]),
   { separator: true },
-
-  {
-    id: "bold",
-    label: "<b>B</b>",
-    action: (editor) => editor.chain().focus().toggleBold().run(),
-    active: (editor) => editor.isActive("bold"),
-    enabled: (editor) => editor.can().toggleBold(),
-  },
-
-  {
-    id: "italic",
-    label: "<i>I</i>",
-    action: (editor) => editor.chain().focus().toggleItalic().run(),
-    active: (editor) => editor.isActive("italic"),
-    enabled: (editor) => editor.can().toggleItalic(),
-  },
-
-  {
-    id: "strike",
-    label: "<s>S</s>",
-    action: (editor) => editor.chain().focus().toggleStrike().run(),
-    active: (editor) => editor.isActive("strike"),
-    enabled: (editor) => editor.can().toggleStrike(),
-  },
-
+  ...getEditorCommands(["bold", "italic", "strike"]),
   { separator: true },
-
-  {
-    id: "h1",
-    label: "H1",
-    action: (editor) =>
-      editor.chain().focus().toggleHeading({ level: 1 }).run(),
-    active: (editor) => editor.isActive("heading", { level: 1 }),
-    enabled: (editor) => editor.can().toggleHeading({ level: 1 }),
-  },
-
-  {
-    id: "h2",
-    label: "H2",
-    action: (editor) =>
-      editor.chain().focus().toggleHeading({ level: 2 }).run(),
-    active: (editor) => editor.isActive("heading", { level: 2 }),
-    enabled: (editor) => editor.can().toggleHeading({ level: 2 }),
-  },
-
+  ...getEditorCommands(["h1", "h2"]),
   { separator: true },
-
-  {
-    id: "bullet",
-    label: "•",
-    action: (editor) => editor.chain().focus().toggleBulletList().run(),
-    active: (editor) => editor.isActive("bulletList"),
-    enabled: (editor) => editor.can().toggleBulletList(),
-  },
-
-  {
-    id: "ordered",
-    label: "1.",
-    action: (editor) => editor.chain().focus().toggleOrderedList().run(),
-    active: (editor) => editor.isActive("orderedList"),
-    enabled: (editor) => editor.can().toggleOrderedList(),
-  },
-
+  ...getEditorCommands(["bullet", "ordered"]),
   { separator: true },
-
-  {
-    id: "quote",
-    label: "❝",
-    action: (editor) => editor.chain().focus().toggleBlockquote().run(),
-    active: (editor) => editor.isActive("blockquote"),
-    enabled: (editor) => editor.can().toggleBlockquote(),
-  },
+  ...getEditorCommands(["quote"]),
 ];
 
 export function Toolbar() {
@@ -109,7 +34,7 @@ ${buttons
 class="toolbar-button"
 id="toolbar-${button.id}">
 
-${button.label}
+${button.toolbarLabel}
 
 </button>
 
@@ -137,7 +62,7 @@ export function initToolbar(signal) {
     element.addEventListener(
       "click",
       () => {
-        button.action(editor);
+        executeEditorCommand(button.id, editor);
 
         updateToolbar();
       },
@@ -162,8 +87,10 @@ function updateToolbar() {
 
     if (!element) return;
 
-    element.classList.toggle("active", button.active(editor));
+    const state = getEditorCommandState(button.id, editor);
 
-    element.disabled = !button.enabled(editor);
+    element.classList.toggle("active", state.active);
+
+    element.disabled = !state.enabled;
   });
 }
