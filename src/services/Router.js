@@ -1,6 +1,6 @@
 import { Dashboard } from "../pages/Dashboard";
 import { Projects, initProjects } from "../pages/Projects";
-import { Workspace, initWorkspace } from "../pages/Workspace";
+import { Workspace, destroyWorkspace, initWorkspace } from "../pages/Workspace";
 import { Books } from "../pages/books";
 import { Training } from "../pages/training";
 import { Images } from "../pages/images";
@@ -20,6 +20,7 @@ const routes = {
   workspace: {
     render: Workspace,
     init: initWorkspace,
+    destroy: destroyWorkspace,
   },
 
   books: {

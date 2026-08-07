@@ -45,7 +45,7 @@ export function ChapterEditor() {
   `;
 }
 
-export function initChapterEditor() {
+export function initChapterEditor(signal) {
   const chapter = getCurrentChapter();
 
   if (!chapter) return;
@@ -66,16 +66,20 @@ export function initChapterEditor() {
     },
   });
 
-  initToolbar();
+  initToolbar(signal);
 
   const title = document.getElementById("chapterTitle");
 
   if (title) {
     title.value = chapter.title;
 
-    title.oninput = () => {
-      renameChapter(chapter.id, title.value);
-    };
+    title.addEventListener(
+      "input",
+      () => {
+        renameChapter(chapter.id, title.value);
+      },
+      { signal }
+    );
   }
 }
 

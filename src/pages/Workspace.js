@@ -1,85 +1,13 @@
-import { ChapterList, initChapterList } from "../components/ChapterList";
-
-import { ChapterModal, initChapterModal } from "../components/ChapterModal";
-
-import { ChapterEditor, initChapterEditor } from "../components/ChapterEditor";
-
-import { WorkspaceLayout } from "../components/layout/WorkspaceLayout";
-
-import { initRibbon } from "../components/layout/RibbonController";
-
-import { getCurrentProject } from "../services/WorkspaceService";
+import { workspaceController } from "./workspace/WorkspaceController";
 
 export function Workspace() {
-  const project = getCurrentProject();
-
-  if (!project) {
-    return `
-
-            <div class="workspace-empty">
-
-                <h1>Aucun projet ouvert</h1>
-
-                <p>
-
-                    Ouvrez un projet.
-
-                </p>
-
-            </div>
-
-        `;
-  }
-
-  const content = `
-
-        <div class="workspace-editor">
-
-            <div class="workspace-toolbar">
-
-                <button
-                    id="newChapter"
-                    class="primary-button">
-
-                    ➕ Nouveau chapitre
-
-                </button>
-
-            </div>
-
-            ${ChapterList()}
-
-            <hr class="workspace-separator">
-
-            ${ChapterEditor()}
-
-        </div>
-
-    `;
-
-  return `
-
-        ${WorkspaceLayout(content)}
-
-        ${ChapterModal()}
-
-    `;
+  return workspaceController.render();
 }
 
 export function initWorkspace() {
-  initChapterList(renderWorkspace);
-
-  initChapterModal(renderWorkspace);
-
-  requestAnimationFrame(() => {
-    if (document.getElementById("editor")) {
-      initChapterEditor();
-
-      initRibbon();
-    }
-  });
+  workspaceController.mount();
 }
 
-function renderWorkspace() {
-  window.navigate("workspace");
+export function destroyWorkspace() {
+  workspaceController.destroy();
 }

@@ -24,12 +24,16 @@ export function ChapterCard(chapter) {
   `;
 }
 
-export function initChapterCards(refresh) {
+export function initChapterCards(refresh, signal) {
   document.querySelectorAll(".chapter-card").forEach((card) => {
-    card.onclick = () => {
-      selectChapter(card.dataset.id);
+    card.addEventListener(
+      "click",
+      () => {
+        selectChapter(card.dataset.id);
 
-      refresh();
-    };
+        refresh();
+      },
+      { signal }
+    );
   });
 }

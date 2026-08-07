@@ -18,23 +18,27 @@ const commands = {
   quote: "quote",
 };
 
-export function initRibbon() {
-  bindButtons();
+export function initRibbon(signal) {
+  bindButtons(signal);
 
-  document.addEventListener("editor:refresh", refreshRibbon);
+  document.addEventListener("editor:refresh", refreshRibbon, { signal });
 
   refreshRibbon();
 }
 
-function bindButtons() {
+function bindButtons(signal) {
   Object.keys(commands).forEach((id) => {
     const button = document.getElementById(`ribbon-${id}`);
 
     if (!button) return;
 
-    button.onclick = () => {
-      execute(commands[id]);
-    };
+    button.addEventListener(
+      "click",
+      () => {
+        execute(commands[id]);
+      },
+      { signal }
+    );
   });
 }
 

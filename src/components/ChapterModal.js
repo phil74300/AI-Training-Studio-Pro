@@ -38,7 +38,7 @@ export function ChapterModal() {
   `;
 }
 
-export function initChapterModal(refresh) {
+export function initChapterModal(refresh, signal) {
   const modal = document.getElementById("chapterModal");
   const title = document.getElementById("newChapterTitle");
 
@@ -50,41 +50,61 @@ export function initChapterModal(refresh) {
   const cancelButton = document.getElementById("cancelChapter");
   const createButton = document.getElementById("createChapter");
 
-  newButton.onclick = () => {
-    title.value = "";
+  newButton.addEventListener(
+    "click",
+    () => {
+      title.value = "";
 
-    modal.classList.remove("hidden");
+      modal.classList.remove("hidden");
 
-    title.focus();
-  };
+      title.focus();
+    },
+    { signal }
+  );
 
-  cancelButton.onclick = () => {
-    modal.classList.add("hidden");
-  };
-
-  createButton.onclick = async () => {
-    const value = title.value.trim();
-
-    if (!value) {
-      return;
-    }
-
-    await createChapter(value);
-
-    modal.classList.add("hidden");
-
-    refresh();
-  };
-
-  modal.onclick = (event) => {
-    if (event.target === modal) {
+  cancelButton.addEventListener(
+    "click",
+    () => {
       modal.classList.add("hidden");
-    }
-  };
+    },
+    { signal }
+  );
 
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
+  createButton.addEventListener(
+    "click",
+    async () => {
+      const value = title.value.trim();
+
+      if (!value) {
+        return;
+      }
+
+      await createChapter(value);
+
       modal.classList.add("hidden");
-    }
-  });
+
+      refresh();
+    },
+    { signal }
+  );
+
+  modal.addEventListener(
+    "click",
+    (event) => {
+      if (event.target === modal) {
+        modal.classList.add("hidden");
+      }
+    },
+    { signal }
+  );
+
+  document.addEventListener(
+    "keydown",
+    (event) => {
+      if (event.key === "Escape") {
+        modal.classList.add("hidden");
+      }
+    },
+    { signal }
+  );
 }

@@ -122,7 +122,7 @@ ${button.label}
 `;
 }
 
-export function initToolbar() {
+export function initToolbar(signal) {
   const editor = getEditor();
 
   if (!editor) return;
@@ -134,14 +134,18 @@ export function initToolbar() {
 
     if (!element) return;
 
-    element.onclick = () => {
-      button.action(editor);
+    element.addEventListener(
+      "click",
+      () => {
+        button.action(editor);
 
-      updateToolbar();
-    };
+        updateToolbar();
+      },
+      { signal }
+    );
   });
 
-  document.addEventListener("editor:refresh", updateToolbar);
+  document.addEventListener("editor:refresh", updateToolbar, { signal });
 
   updateToolbar();
 }

@@ -5,10 +5,14 @@ import { getPage } from "./services/Router";
 
 const app = document.getElementById("app");
 
+let activeRoute = null;
+
 // Navigation globale
 window.navigate = render;
 
 async function render(page = "dashboard") {
+  activeRoute?.destroy?.();
+
   const route = getPage(page);
 
   app.innerHTML = `
@@ -32,6 +36,8 @@ async function render(page = "dashboard") {
   if (typeof route.init === "function") {
     await route.init();
   }
+
+  activeRoute = route;
 }
 
 // Démarrage
