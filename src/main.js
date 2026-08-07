@@ -2,6 +2,7 @@ import { app, BrowserWindow, ipcMain } from "electron";
 import path from "node:path";
 import fs from "node:fs";
 import started from "electron-squirrel-startup";
+import { createNativeCredentialInfrastructure } from "./main/ai/credentials/NativeCredentialComposition";
 
 if (started) {
   app.quit();
@@ -9,6 +10,7 @@ if (started) {
 
 let mainWindow;
 let projects = [];
+let disposeCredentialIPC = null;
 
 // ================================
 // Emplacement du fichier JSON
@@ -118,6 +120,12 @@ function createWindow() {
 // =================================
 
 app.whenReady().then(() => {
+  const credentialInfrastructure = createNativeCredentialInfrastructure({
+    ipcMain,
+  });
+
+  disposeCredentialIPC = credentialInfrastructure.dispose;
+
   // Chargement des projets au démarrage
   loadProjectsFromDisk();
 
@@ -158,4 +166,9 @@ app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();
   }
+});
+
+app.on("will-quit", () => {
+  disposeCredentialIPC?.();
+  disposeCredentialIPC = null;
 });

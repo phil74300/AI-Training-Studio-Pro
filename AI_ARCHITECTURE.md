@@ -407,6 +407,12 @@ The following rules are normative:
 
 The renderer is treated as untrusted relative to credentials and privileged operating-system capabilities. IPC callers must not be trusted merely because they originate from an application window.
 
+### Native credential storage
+
+The initial native credential-store implementation targets macOS Keychain through a direct Security.framework binding. It remains behind `CredentialStoreAdapter`, so trusted consumers depend only on `CredentialStore`. Secret records use stable application, provider, and credential identifiers. Safe metadata is stored separately from secret records and is the only credential data returned through renderer-facing IPC.
+
+Native credential adapters are composed only in the Electron main process. Trusted `getSecret()` access is not part of the IPC or preload surface. Unsupported platforms return a normalized `unsupported-platform` error and must never fall back to files, local storage, environment variables, or command-line credential tools.
+
 ## 19. Privacy and safety
 
 Before execution, the application must disclose the destination provider when user content will leave the device. Sensitive context requires explicit confirmation according to policy. Local-provider operation must not be described as offline unless the selected model and all dependencies execute locally.

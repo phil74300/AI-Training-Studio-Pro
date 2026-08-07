@@ -3,6 +3,10 @@ import {
   CredentialMetadataStatus,
 } from "./CredentialMetadata";
 import { CredentialStore } from "./CredentialStore";
+import {
+  CredentialStoreError,
+  CredentialStoreErrorCode,
+} from "./CredentialStoreError";
 
 const requireStore = (store) => {
   const methods = [
@@ -51,7 +55,7 @@ export class CredentialStoreService {
 
   async createCredential({ providerId, credentialId, displayName, secret }) {
     if (await this.#store.exists(providerId, credentialId)) {
-      throw new Error("Credential already exists.");
+      throw new CredentialStoreError(CredentialStoreErrorCode.DUPLICATE);
     }
 
     const timestamp = this.#now();
@@ -72,7 +76,7 @@ export class CredentialStoreService {
     const metadata = await this.#findMetadata(providerId, credentialId);
 
     if (!metadata) {
-      throw new Error("Credential does not exist.");
+      throw new CredentialStoreError(CredentialStoreErrorCode.NOT_FOUND);
     }
 
     const replacement = new CredentialMetadata({

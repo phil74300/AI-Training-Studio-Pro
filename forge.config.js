@@ -4,6 +4,20 @@ const { FuseV1Options, FuseVersion } = require("@electron/fuses");
 module.exports = {
   packagerConfig: {
     asar: true,
+    ignore: (file) => {
+      if (!file) {
+        return false;
+      }
+
+      const allowedParents = ["/node_modules", "/node_modules/@napi-rs"];
+      const isNativeKeyring = file.startsWith("/node_modules/@napi-rs/keyring");
+
+      return (
+        !file.startsWith("/.vite") &&
+        !allowedParents.includes(file) &&
+        !isNativeKeyring
+      );
+    },
   },
   rebuildConfig: {},
   makers: [
@@ -25,6 +39,10 @@ module.exports = {
     },
   ],
   plugins: [
+    {
+      name: "@electron-forge/plugin-auto-unpack-natives",
+      config: {},
+    },
     {
       name: "@electron-forge/plugin-vite",
       config: {

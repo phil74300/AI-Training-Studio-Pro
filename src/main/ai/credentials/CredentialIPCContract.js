@@ -1,4 +1,5 @@
 import { CredentialMetadata } from "./CredentialMetadata";
+import { toPublicCredentialStoreError } from "./CredentialStoreError";
 
 export const CREDENTIAL_IPC_CONTRACT_VERSION = 1;
 export const CREDENTIAL_IPC_CHANNEL = "ai:credentials:v1";
@@ -119,17 +120,11 @@ export const createCredentialIPCHandler = ({ service, validator }) => {
         ok: true,
         result,
       });
-    } catch {
+    } catch (error) {
       return createResponse({
         operation: validation.message.operation,
         ok: false,
-        errors: [
-          Object.freeze({
-            code: "credential-operation-failed",
-            field: "operation",
-            message: "The credential operation could not be completed.",
-          }),
-        ],
+        errors: [toPublicCredentialStoreError(error)],
       });
     }
   };
