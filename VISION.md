@@ -207,6 +207,22 @@ No architecture redesign without validation.
 
 ---
 
+## Evolution Strategy
+
+AI Training Studio Pro evolves through small, independent and fully tested increments.
+
+Large rewrites are avoided.
+
+Every sprint must leave the application in a releasable state.
+
+Each sprint should improve maintainability while preserving existing functionality.
+
+Architectural improvements should be incremental rather than disruptive.
+
+Documentation is considered part of the product and evolves together with the codebase.
+
+---
+
 # Success Criteria
 
 AI Training Studio Pro succeeds when a trainer can:

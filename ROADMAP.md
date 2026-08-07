@@ -1,185 +1,38 @@
-# ROADMAP.md
-
 # AI Training Studio Roadmap
 
 Version: 1.0
 
 ---
 
-# Vision
+# Foundation
 
-Build the best professional AI-powered training authoring application.
-
-The project must evolve progressively while remaining stable.
-
-No regression is acceptable.
+- Sprint 1
+- Sprint 1.5
+- Sprint 1.6
 
 ---
 
-# Current Version
+# Architecture
 
-V0.9
+- B0 Architecture Contract
+- B1 Workspace Lifecycle
+- B2 Session Management
+- B3 Shared Editor Commands
+- B4 Explorer Contract
+- B5 Explorer Integration
+- B6 AI & Status
+- B7 CSS Consolidation
+- B8 Workspace Polish
 
-Current focus:
+---
 
-UI Refactoring
+# Version 0.9
 
-Architecture cleanup
-
-Workspace redesign
+- Editor Improvements
+- AI Engine
+- Export
+- SCORM
 
 ---
 
 # Version 1.0
-
-## Sprint 1
-
-Foundation
-
-- Project cleanup
-- UI architecture
-- Layout
-- Navigation
-- CSS cleanup
-
----
-
-## Sprint 2
-
-Sidebar
-
-- Professional sidebar
-- Navigation
-- Responsive behavior
-- Footer
-- Active states
-
----
-
-## Sprint 3
-
-Workspace
-
-- Explorer
-- Editor
-- AI Panel
-- Responsive layout
-- Split views
-
----
-
-## Sprint 4
-
-Ribbon
-
-- Office-like ribbon
-- Button groups
-- Icons
-- Keyboard shortcuts
-
----
-
-## Sprint 5
-
-Dashboard
-
-- Statistics
-- Recent projects
-- Quick actions
-- Activity timeline
-
----
-
-## Sprint 6
-
-Projects
-
-- Search
-- Sorting
-- Tags
-- Favorites
-
----
-
-## Sprint 7
-
-Editor
-
-- Educational blocks
-- Templates
-- Components
-- Improved editing
-
----
-
-## Sprint 8
-
-AI
-
-- Prompt library
-- Smart suggestions
-- Course generation
-- Quiz generation
-- Translation
-
----
-
-## Sprint 9
-
-Export
-
-- PDF improvements
-- DOCX
-- HTML
-- SCORM optimization
-
----
-
-## Sprint 10
-
-Performance
-
-- Optimization
-- Cleanup
-- Final polishing
-
----
-
-# Long-Term Features
-
-Future versions may include
-
-- Cloud synchronization
-- Team collaboration
-- LMS integration
-- AI workflow automation
-- Plugin system
-- Marketplace
-- EPUB export
-- Video generation
-- Interactive simulations
-
----
-
-# Development Principles
-
-Every sprint must:
-
-- compile successfully
-- preserve existing features
-- include testing
-- include documentation updates
-- avoid technical debt
-
----
-
-# Success Criteria
-
-AI Training Studio becomes:
-
-- Stable
-- Fast
-- Modular
-- Professional
-- Easy to maintain
-- Pleasant to use

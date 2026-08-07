@@ -30,6 +30,20 @@ Electron
 
 ---
 
+# Architecture Contract
+
+- Electron remains the desktop platform.
+- Plain JavaScript ES Modules remain the renderer technology unless explicitly approved otherwise.
+- Tiptap remains the rich-text editor.
+- Business services must remain independent from UI.
+- Workspace owns renderer lifecycle only.
+- Components should have explicit responsibilities.
+- New features must integrate into the existing architecture instead of replacing it.
+- Large rewrites are prohibited unless explicitly approved.
+- Every sprint must leave the application in a releasable state.
+
+---
+
 # Folder Responsibilities
 
 ## components/
