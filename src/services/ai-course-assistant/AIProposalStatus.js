@@ -1,0 +1,7 @@
+export const AIProposalStatus = Object.freeze({
+  PROPOSED: "PROPOSED",
+  UNDER_REVIEW: "UNDER_REVIEW",
+  ACCEPTED: "ACCEPTED",
+  REJECTED: "REJECTED",
+  MODIFIED: "MODIFIED",
+});

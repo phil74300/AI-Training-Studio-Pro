@@ -1,0 +1,8 @@
+export const CourseCreationOutputType = Object.freeze({
+  STRUCTURE: "STRUCTURE",
+  OBJECTIVES: "OBJECTIVES",
+  MODULES: "MODULES",
+  ACTIVITIES: "ACTIVITIES",
+  ASSESSMENT: "ASSESSMENT",
+  MEDIA: "MEDIA",
+});
