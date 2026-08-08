@@ -1,0 +1,6 @@
+export const OrganizationType = Object.freeze({
+  TRAINING_CENTER: "TRAINING_CENTER",
+  CLIENT_COMPANY: "CLIENT_COMPANY",
+  PARTNER: "PARTNER",
+  INTERNAL: "INTERNAL",
+});
