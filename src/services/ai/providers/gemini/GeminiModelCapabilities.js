@@ -14,8 +14,8 @@ const capabilityProfiles = Object.freeze({
     structuredOutput: false,
     tools: false,
     reasoning: true,
-    contextLength: null,
-    maxOutput: null,
+    contextLength: 1_048_576,
+    maxOutput: 65_536,
     supportedParameters: Object.freeze(["maxOutput"]),
   }),
 });

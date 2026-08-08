@@ -40,6 +40,7 @@ export class GeminiProviderDescriptor {
       gemini: Object.freeze({
         liveModelDiscovery: false,
         catalogueSource: "static-gemini-1",
+        api: "interactions-v1",
       }),
     });
 

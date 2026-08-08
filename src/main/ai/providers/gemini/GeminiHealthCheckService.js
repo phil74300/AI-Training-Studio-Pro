@@ -6,7 +6,9 @@ import { GEMINI_PROVIDER_ID } from "../../../../services/ai/providers/gemini/Gem
 import { GeminiConfiguration } from "../../../../services/ai/providers/gemini/configuration/GeminiConfiguration";
 
 export const GEMINI_API_BASE_URL =
-  "https://generativelanguage.googleapis.com/v1beta";
+  "https://generativelanguage.googleapis.com/v1";
+
+export const GEMINI_INTERACTIONS_ENDPOINT = `${GEMINI_API_BASE_URL}/interactions`;
 
 const requireCredentialStore = (credentialStore) => {
   if (

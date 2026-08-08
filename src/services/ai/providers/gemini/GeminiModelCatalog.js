@@ -22,6 +22,7 @@ export const GEMINI_MODEL_CATALOG = Object.freeze([
       gemini: Object.freeze({
         catalogueSource: "static-gemini-1",
         capabilityProfile: GeminiCapabilityProfile.TEXT,
+        api: "interactions-v1",
       }),
     },
   }),

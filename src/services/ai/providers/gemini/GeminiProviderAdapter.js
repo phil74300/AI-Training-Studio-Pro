@@ -37,6 +37,7 @@ const createOfflineError = ({ requestId, modelId }) =>
     providerMetadata: {
       gemini: Object.freeze({
         integrationPhase: "foundation",
+        api: "interactions-v1",
         networkRequestPerformed: false,
       }),
     },

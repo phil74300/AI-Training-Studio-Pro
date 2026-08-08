@@ -3,7 +3,7 @@ import { AIResponse } from "../../../../services/ai/AIResponse";
 import { AIResult, AIResultType } from "../../../../services/ai/AIResult";
 import { GEMINI_PROVIDER_ID } from "../../../../services/ai/providers/gemini/GeminiModelDescriptor";
 import { GeminiConfiguration } from "../../../../services/ai/providers/gemini/configuration/GeminiConfiguration";
-import { GEMINI_API_BASE_URL } from "./GeminiHealthCheckService";
+import { GEMINI_INTERACTIONS_ENDPOINT } from "./GeminiHealthCheckService";
 
 const errorCategories = Object.freeze({
   AUTHENTICATION: "authentication",
@@ -63,8 +63,8 @@ const failedResponse = (request, error, networkRequestPerformed = false) =>
   });
 
 const normalizeMessages = (request) => {
-  const systemParts = [];
-  const contents = [];
+  const systemInstructions = [];
+  const input = [];
 
   request.messages.forEach((message, index) => {
     if (!message || typeof message !== "object" || Array.isArray(message)) {
@@ -78,20 +78,22 @@ const normalizeMessages = (request) => {
     }
 
     if (message.role === "system" || message.role === "developer") {
-      systemParts.push(Object.freeze({ text: message.content }));
+      systemInstructions.push(message.content);
       return;
     }
 
-    const role = message.role === "assistant" ? "model" : message.role;
+    const type = message.role === "assistant" ? "model_output" : "user_input";
 
-    if (role !== "user" && role !== "model") {
+    if (message.role !== "user" && message.role !== "assistant") {
       throw new TypeError(`Unsupported message role: ${message.role}`);
     }
 
-    contents.push(
+    input.push(
       Object.freeze({
-        role,
-        parts: Object.freeze([Object.freeze({ text: message.content })]),
+        type,
+        content: Object.freeze([
+          Object.freeze({ type: "text", text: message.content }),
+        ]),
       })
     );
   });
@@ -104,17 +106,20 @@ const normalizeMessages = (request) => {
       throw new TypeError("Gemini text input must be a non-empty string.");
     }
 
-    contents.push(
+    input.push(
       Object.freeze({
-        role: "user",
-        parts: Object.freeze([
-          Object.freeze({ text: request.input.value.trim() }),
+        type: "user_input",
+        content: Object.freeze([
+          Object.freeze({
+            type: "text",
+            text: request.input.value.trim(),
+          }),
         ]),
       })
     );
   }
 
-  if (contents.length === 0 || contents.at(-1).role === "model") {
+  if (input.length === 0 || input.at(-1).type === "model_output") {
     throw new TypeError(
       "Gemini execution requires a final user message or text input."
     );
@@ -122,10 +127,8 @@ const normalizeMessages = (request) => {
 
   return Object.freeze({
     systemInstruction:
-      systemParts.length > 0
-        ? Object.freeze({ parts: Object.freeze(systemParts) })
-        : null,
-    contents: Object.freeze(contents),
+      systemInstructions.length > 0 ? systemInstructions.join("\n\n") : null,
+    input: Object.freeze(input),
   });
 };
 
@@ -148,7 +151,7 @@ const normalizeGenerationConfig = (parameters) => {
     throw new TypeError("generationParameters.maxOutput must be positive.");
   }
 
-  return Object.freeze({ maxOutputTokens: parameters.maxOutput });
+  return Object.freeze({ max_output_tokens: parameters.maxOutput });
 };
 
 const buildRequestBody = (request) => {
@@ -175,44 +178,52 @@ const buildRequestBody = (request) => {
     );
   }
 
-  const { systemInstruction, contents } = normalizeMessages(request);
+  const { systemInstruction, input } = normalizeMessages(request);
   const generationConfig = normalizeGenerationConfig(
     request.generationParameters
   );
-  const body = { contents, store: false };
+  const body = {
+    model: request.modelId,
+    input,
+    response_format: Object.freeze({
+      type: "text",
+      mime_type: "text/plain",
+    }),
+    stream: false,
+    store: false,
+  };
 
   if (systemInstruction) {
-    body.systemInstruction = systemInstruction;
+    body.system_instruction = systemInstruction;
   }
 
   if (generationConfig) {
-    body.generationConfig = generationConfig;
+    body.generation_config = generationConfig;
   }
 
   return Object.freeze(body);
 };
 
 const parseUsage = (usage = {}) => ({
-  inputUnits: usage.promptTokenCount ?? null,
-  outputUnits: usage.candidatesTokenCount ?? null,
-  totalUnits: usage.totalTokenCount ?? null,
-  cachedInputUnits: usage.cachedContentTokenCount ?? null,
-  reasoningUnits: usage.thoughtsTokenCount ?? null,
+  inputUnits: usage.total_input_tokens ?? null,
+  outputUnits: usage.total_output_tokens ?? null,
+  totalUnits: usage.total_tokens ?? null,
+  cachedInputUnits: usage.total_cached_tokens ?? null,
+  reasoningUnits: usage.total_thought_tokens ?? null,
 });
 
 const extractText = (payload) => {
-  const candidate = Array.isArray(payload?.candidates)
-    ? payload.candidates[0]
-    : null;
-  const parts = candidate?.content?.parts;
-
-  if (!Array.isArray(parts)) {
+  if (!Array.isArray(payload?.steps)) {
     return null;
   }
 
-  const text = parts
-    .filter((part) => typeof part?.text === "string")
-    .map((part) => part.text)
+  const text = payload.steps
+    .filter((step) => step?.type === "model_output")
+    .flatMap((step) => (Array.isArray(step.content) ? step.content : []))
+    .filter(
+      (content) => content?.type === "text" && typeof content.text === "string"
+    )
+    .map((content) => content.text)
     .join("");
 
   return text || null;
@@ -359,10 +370,7 @@ export class GeminiExecutionService {
     }
 
     try {
-      const endpoint = `${GEMINI_API_BASE_URL}/models/${encodeURIComponent(
-        request.modelId
-      )}:generateContent`;
-      const response = await this.#request(endpoint, {
+      const response = await this.#request(GEMINI_INTERACTIONS_ENDPOINT, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -426,18 +434,15 @@ export class GeminiExecutionService {
             generatedForReview: true,
           },
         }),
-        usage: parseUsage(payload.usageMetadata),
-        finishReason: payload.candidates?.[0]?.finishReason || null,
+        usage: parseUsage(payload.usage),
+        finishReason:
+          typeof payload.status === "string" ? payload.status : null,
         providerMetadata: {
           gemini: Object.freeze({
-            responseId:
-              typeof payload.responseId === "string"
-                ? payload.responseId
-                : null,
+            interactionId: typeof payload.id === "string" ? payload.id : null,
             modelVersion:
-              typeof payload.modelVersion === "string"
-                ? payload.modelVersion
-                : null,
+              typeof payload.model === "string" ? payload.model : null,
+            api: "interactions-v1",
             networkRequestPerformed: true,
           }),
         },
