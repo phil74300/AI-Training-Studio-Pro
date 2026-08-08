@@ -59,7 +59,7 @@ export const createNativeCredentialInfrastructure = ({
     clock,
   });
   const validator = new CredentialIPCValidator({
-    supportedProviderIds: ["openai"],
+    supportedProviderIds: ["openai", "gemini"],
   });
   const dispose = registerCredentialIPC({
     ipcMain,

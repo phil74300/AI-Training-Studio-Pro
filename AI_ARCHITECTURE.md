@@ -157,6 +157,13 @@ healthCheck(config)
 
 Adapters must return or emit normalized contracts. Provider-specific errors must be mapped to stable categories while retaining safe diagnostic metadata. Providers must never manipulate the editor or UI directly.
 
+### Provider implementations
+
+- **OpenAI (`openai`):** Uses the shared adapter, configuration, capability, health, execution, credential, response, and error contracts. OpenAI-specific request and response shapes remain inside trusted provider services.
+- **Google Gemini (`gemini`):** Uses the same shared contracts and execution pipeline. The initial Gemini profile supports non-streaming text input and output through the Gemini `generateContent` API, a static model catalog, and separate trusted health and execution services. Tools, images, streaming, function calling, and automatic context serialization are outside the initial Gemini scope.
+
+Both providers resolve credential references through the trusted `CredentialStore`. Their secrets must never enter renderer memory, provider descriptors, normalized responses, health results, logs, or persisted configuration. Registering a provider without its trusted services must remain network-inert.
+
 ### Provider health checks
 
 Provider health checks use the provider-manager-controlled availability path and are separate from content execution tasks. They do not render prompts, create tasks or results, or generate content.
