@@ -1,0 +1,15 @@
+export const ContentBlockType = Object.freeze({
+  TEXT: "TEXT",
+  IMAGE: "IMAGE",
+  VIDEO: "VIDEO",
+  AUDIO: "AUDIO",
+  QUOTE: "QUOTE",
+  TABLE: "TABLE",
+  CALLOUT: "CALLOUT",
+  CODE: "CODE",
+  DOCUMENT: "DOCUMENT",
+  INTERACTIVE: "INTERACTIVE",
+  QUIZ: "QUIZ",
+  SCENARIO: "SCENARIO",
+  SIMULATION: "SIMULATION",
+});
