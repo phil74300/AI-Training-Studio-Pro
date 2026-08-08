@@ -1,0 +1,10 @@
+export const ActivityType = Object.freeze({
+  TEXT: "TEXT",
+  VIDEO: "VIDEO",
+  IMAGE: "IMAGE",
+  INTERACTIVE: "INTERACTIVE",
+  QUIZ: "QUIZ",
+  SCENARIO: "SCENARIO",
+  SIMULATION: "SIMULATION",
+  EXERCISE: "EXERCISE",
+});
