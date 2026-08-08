@@ -1,0 +1,8 @@
+export const InteractiveType = Object.freeze({
+  GENIALLY: "GENIALLY",
+  CANVA: "CANVA",
+  IFRAME: "IFRAME",
+  EMBED_SCRIPT: "EMBED_SCRIPT",
+  HTML_INTERACTIVE: "HTML_INTERACTIVE",
+  SIMULATION: "SIMULATION",
+});

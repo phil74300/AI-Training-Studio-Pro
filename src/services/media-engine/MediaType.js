@@ -1,0 +1,9 @@
+export const MediaType = Object.freeze({
+  IMAGE: "IMAGE",
+  VIDEO: "VIDEO",
+  AUDIO: "AUDIO",
+  DOCUMENT: "DOCUMENT",
+  ANIMATION: "ANIMATION",
+  INTERACTIVE: "INTERACTIVE",
+  EMBED: "EMBED",
+});
