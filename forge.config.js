@@ -11,11 +11,17 @@ module.exports = {
 
       const allowedParents = ["/node_modules", "/node_modules/@napi-rs"];
       const isNativeKeyring = file.startsWith("/node_modules/@napi-rs/keyring");
+      const isPDFParser = file.startsWith("/node_modules/pdfjs-dist");
+      const isPDFCanvasRuntime = file.startsWith(
+        "/node_modules/@napi-rs/canvas"
+      );
 
       return (
         !file.startsWith("/.vite") &&
         !allowedParents.includes(file) &&
-        !isNativeKeyring
+        !isNativeKeyring &&
+        !isPDFParser &&
+        !isPDFCanvasRuntime
       );
     },
   },
