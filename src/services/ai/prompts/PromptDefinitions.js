@@ -102,6 +102,26 @@ export const promptOutputSchemas = Object.freeze({
     version: "1.0",
     expectedResultType: PromptResultType.EDITOR_SUGGESTION,
   }),
+  pedagogicalAnalysis: new PromptOutputSchema({
+    id: "pedagogical-analysis-output",
+    version: "1.0",
+    expectedResultType: PromptResultType.TEXT,
+    definition: {
+      format: "json",
+      requiredFields: [
+        "documentSummary",
+        "detectedSubjects",
+        "detectedAudience",
+        "estimatedLearnerLevel",
+        "suggestedAssessmentMethods",
+        "suggestedImprovements",
+        "missingPedagogicalElements",
+        "potentialInconsistencies",
+        "warnings",
+        "confidenceScores",
+      ],
+    },
+  }),
 });
 
 const createTemplate = ({
@@ -150,6 +170,26 @@ const structuredTextCapabilities = Object.freeze({
 });
 
 export const promptTemplates = Object.freeze([
+  createTemplate({
+    id: "analyze-training-document",
+    name: "Analyze training document",
+    description: "Produces a pedagogical analysis proposal for trainer review.",
+    supportedAction: AIAction.ANALYZE_TRAINING_DOCUMENT,
+    variables: [
+      requiredText("documentTitle", "Title of the selected training document."),
+      requiredText(
+        "documentContext",
+        "Explicit, trainer-provided training document context."
+      ),
+      requiredText("language", "Language used by the training document."),
+    ],
+    outputSchema: promptOutputSchemas.pedagogicalAnalysis,
+    systemInstructions:
+      "Act as a pedagogical analysis assistant. Analyze only the supplied training document. Do not rewrite, apply, or approve content. Return a JSON object that follows the declared output schema. State uncertainty instead of inventing missing learner, assessment, regulatory, or source information. Every proposal requires trainer review.",
+    templateContent:
+      "Analyze this training document in {{language}}. Return JSON only, with these fields: documentSummary (string), detectedSubjects (array of strings), detectedAudience (string or null), estimatedLearnerLevel (beginner, intermediate, expert, or unknown), suggestedAssessmentMethods (array of objects with method and rationale), suggestedImprovements (array of strings), missingPedagogicalElements (array of strings), potentialInconsistencies (array of strings), warnings (array of strings), confidenceScores (object containing numeric values from 0 to 1). Do not make claims outside the supplied document. Document title: {{documentTitle}}. Document context: {{documentContext}}",
+    capabilityRequirements: textCapabilities,
+  }),
   createTemplate({
     id: "generate-lesson",
     name: "Generate lesson",

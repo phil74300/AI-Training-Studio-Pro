@@ -7,6 +7,7 @@ export const AIAction = Object.freeze({
   GENERATE_QUIZ: "generate-quiz",
   GENERATE_IMAGE: "generate-image",
   EXPLAIN: "explain",
+  ANALYZE_TRAINING_DOCUMENT: "analyze-training-document",
 });
 
 export const aiActions = Object.freeze([
