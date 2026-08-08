@@ -1,0 +1,18 @@
+export const ExportFormat = Object.freeze({
+  PDF: "pdf",
+  DOCX: "docx",
+  PPTX: "pptx",
+  HTML: "html",
+  SCORM_1_2: "scorm-1.2",
+  SCORM_2004: "scorm-2004",
+  XAPI: "xapi",
+  CMI5: "cmi5",
+  IFRAME: "iframe",
+  EMBED_SCRIPT: "embed-script",
+  TEAMS: "teams",
+  GOOGLE_CLASSROOM: "google-classroom",
+  LMS: "lms",
+  VIDEO: "video",
+  AUDIO: "audio",
+  IMAGE: "image",
+});
