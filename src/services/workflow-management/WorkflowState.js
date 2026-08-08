@@ -1,0 +1,8 @@
+export const WorkflowState = Object.freeze({
+  CREATED: "CREATED",
+  ASSIGNED: "ASSIGNED",
+  IN_PROGRESS: "IN_PROGRESS",
+  COMPLETED: "COMPLETED",
+  VALIDATED: "VALIDATED",
+  CLOSED: "CLOSED",
+});
