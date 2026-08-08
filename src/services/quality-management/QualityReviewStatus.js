@@ -1,0 +1,5 @@
+export const QualityReviewStatus = Object.freeze({
+  PENDING_HUMAN_VALIDATION: "PENDING_HUMAN_VALIDATION",
+  HUMAN_VALIDATED: "HUMAN_VALIDATED",
+  REJECTED: "REJECTED",
+});
