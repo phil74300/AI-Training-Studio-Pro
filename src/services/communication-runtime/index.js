@@ -1,0 +1,11 @@
+export { CommunicationAuditReference } from "./CommunicationAuditReference";
+export { CommunicationMessage } from "./CommunicationMessage";
+export { CommunicationPreference } from "./CommunicationPreference";
+export { CommunicationRuntime } from "./CommunicationRuntime";
+export { DeliveryChannel } from "./DeliveryChannel";
+export { DeliveryRecord } from "./DeliveryRecord";
+export { DeliveryRequest } from "./DeliveryRequest";
+export { MessageTemplate } from "./MessageTemplate";
+export { NotificationRequest } from "./NotificationRequest";
+export { NotificationRule } from "./NotificationRule";
+export { NotificationTrigger } from "./NotificationTrigger";
