@@ -10,6 +10,7 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
+    "credential:setup": "vite build --config vite.credential.config.mjs && node .vite/credential-setup/credential-setup.cjs",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write \"src/**/*.{js,css}\" \"*.{js,mjs,json,html}\""
