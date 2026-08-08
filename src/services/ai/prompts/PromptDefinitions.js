@@ -171,6 +171,26 @@ const structuredTextCapabilities = Object.freeze({
 
 export const promptTemplates = Object.freeze([
   createTemplate({
+    id: "generate-improvement-suggestions",
+    name: "Generate improvement suggestions",
+    description: "Produces reviewable pedagogical improvement suggestions.",
+    supportedAction: AIAction.GENERATE_IMPROVEMENT_SUGGESTIONS,
+    variables: [
+      requiredText("documentTitle", "Title of the selected training document."),
+      requiredText(
+        "analysisContext",
+        "Explicit pedagogical analysis supplied for improvement planning."
+      ),
+      requiredText("language", "Language used by the training document."),
+    ],
+    outputSchema: promptOutputSchemas.pedagogicalAnalysis,
+    systemInstructions:
+      "Act as a pedagogical improvement assistant. Use only the supplied document analysis. Propose structured improvements for human review; do not rewrite, apply, approve, or save content. State uncertainty rather than inventing context.",
+    templateContent:
+      "For {{documentTitle}} in {{language}}, transform the supplied pedagogical analysis into improvement proposals. Return JSON only with suggestedImprovements (array of strings), missingPedagogicalElements (array of strings), potentialInconsistencies (array of strings), warnings (array of strings), and confidenceScores (object with numeric values from 0 to 1). Explain only proposals supported by the analysis. Analysis: {{analysisContext}}",
+    capabilityRequirements: textCapabilities,
+  }),
+  createTemplate({
     id: "analyze-training-document",
     name: "Analyze training document",
     description: "Produces a pedagogical analysis proposal for trainer review.",
