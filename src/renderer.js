@@ -1,47 +1,107 @@
 import "./index.css";
 
-import { Sidebar } from "./components/sidebar";
+import { AppLayout } from "./components/AppLayout";
 import { getPage } from "./services/Router";
 
 const app = document.getElementById("app");
 
-let activeRoute = null;
+/* ==========================================================
+   NAVIGATION GLOBALE
+========================================================== */
 
-// Navigation globale
-window.navigate = render;
+window.navigate = navigate;
 
-async function render(page = "dashboard") {
-  activeRoute?.destroy?.();
+/* ==========================================================
+   RENDER
+========================================================== */
 
-  const route = getPage(page);
+async function navigate(page = "dashboard") {
 
-  app.innerHTML = `
+    const route = getPage(page);
 
-    <div class="app">
+    if (!route) {
 
-      ${Sidebar(page)}
+        console.error(
+            "Route inconnue :",
+            page
+        );
 
-      ${route.render()}
+        return;
 
-    </div>
+    }
 
-  `;
+    app.innerHTML = AppLayout({
 
-  document.querySelectorAll(".sidebar button").forEach((button) => {
-    button.onclick = () => {
-      render(button.dataset.page);
-    };
-  });
+        active: page,
 
-  if (typeof route.init === "function") {
-    await route.init();
-  }
+        page: route.render()
 
-  activeRoute = route;
+    });
+
+    bindNavigation();
+
+    if (typeof route.init === "function") {
+
+        try {
+
+            await route.init();
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+        }
+
+    }
+
 }
 
-// Démarrage
-render("dashboard");
+/* ==========================================================
+   SIDEBAR
+========================================================== */
 
-// Test IPC
-window.api.ping().then(console.log);
+function bindNavigation() {
+
+    document
+        .querySelectorAll(".sidebar-item")
+        .forEach(button => {
+
+            button.onclick = () => {
+
+                const page =
+                    button.dataset.page;
+
+                if (!page) {
+
+                    return;
+
+                }
+
+                navigate(page);
+
+            };
+
+        });
+
+}
+
+/* ==========================================================
+   START
+========================================================== */
+
+navigate();
+
+/* ==========================================================
+   IPC TEST
+========================================================== */
+
+if (window.api?.ping) {
+
+    window.api
+        .ping()
+        .then(console.log)
+        .catch(console.error);
+
+}

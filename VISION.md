@@ -223,6 +223,7 @@ Documentation is considered part of the product and evolves together with the co
 
 ---
 
+
 # Success Criteria
 
 AI Training Studio Pro succeeds when a trainer can:
